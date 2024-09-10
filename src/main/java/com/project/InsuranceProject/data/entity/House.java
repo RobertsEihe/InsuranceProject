@@ -8,7 +8,7 @@ public class House {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int houseId;
+    private int house_id;
 
     @Column(nullable = false)
     private String address;
@@ -17,13 +17,13 @@ public class House {
     private String type;
 
     @Column(nullable = false)
-    private int yearBuilt;
+    private int year_built;
 
     @Column(nullable = false)
     private float area;
 
     @Column(nullable = false)
-    private String matType;
+    private String mat_type;
 
     @ManyToOne
     @JoinColumn(name = "risk_id", nullable = false)
@@ -31,21 +31,21 @@ public class House {
 
     public House() {}
 
-    public House(String address, String type, int yearBuilt, float area, String matType, Risk risk) {
+    public House(String address, String type, int year_built, float area, String mat_type, Risk risk) {
         this.address = address;
         this.type = type;
-        this.yearBuilt = yearBuilt;
+        this.year_built = year_built;
         this.area = area;
-        this.matType = matType;
+        this.mat_type = mat_type;
         this.risk = risk;
     }
 
-    public int getHouseId() {
-        return houseId;
+    public int getHouse_id() {
+        return house_id;
     }
 
-    public void setHouseId(int houseId) {
-        this.houseId = houseId;
+    public void setHouse_id(int house_id) {
+        this.house_id = house_id;
     }
 
     public String getAddress() {
@@ -64,12 +64,12 @@ public class House {
         this.type = type;
     }
 
-    public int getYearBuilt() {
-        return yearBuilt;
+    public int getYear_built() {
+        return year_built;
     }
 
-    public void setYearBuilt(int yearBuilt) {
-        this.yearBuilt = yearBuilt;
+    public void setYear_built(int year_built) {
+        this.year_built = year_built;
     }
 
     public float getArea() {
@@ -80,12 +80,12 @@ public class House {
         this.area = area;
     }
 
-    public String getMatType() {
-        return matType;
+    public String getMat_type() {
+        return mat_type;
     }
 
-    public void setMatType(String matType) {
-        this.matType = matType;
+    public void setMat_type(String mat_type) {
+        this.mat_type = mat_type;
     }
 
     public Risk getRisk() {

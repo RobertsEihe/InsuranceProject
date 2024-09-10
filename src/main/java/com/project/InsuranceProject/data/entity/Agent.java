@@ -10,31 +10,31 @@ public class Agent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int agentId;
+    private int agent_id;
 
     @Column(nullable = false)
     private String name;
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private Date dateOfBirth;
+    private Date date_of_birth;
 
     @OneToMany(mappedBy = "agent")
     private List<Policy> policies;
 
     public Agent() {}
 
-    public Agent(String name, Date dateOfBirth) {
+    public Agent(String name, Date date_of_birth) {
         this.name = name;
-        this.dateOfBirth = dateOfBirth;
+        this.date_of_birth = date_of_birth;
     }
 
-    public int getAgentId() {
-        return agentId;
+    public int getAgent_id() {
+        return agent_id;
     }
 
-    public void setAgentId(int agentId) {
-        this.agentId = agentId;
+    public void setAgent_id(int agent_id) {
+        this.agent_id = agent_id;
     }
 
     public String getName() {
@@ -45,12 +45,12 @@ public class Agent {
         this.name = name;
     }
 
-    public Date getDateOfBirth() {
-        return dateOfBirth;
+    public Date getDate_of_birth() {
+        return date_of_birth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public void setDate_of_birth(Date date_of_birth) {
+        this.date_of_birth = date_of_birth;
     }
 
     public List<Policy> getPolicies() {

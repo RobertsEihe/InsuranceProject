@@ -8,24 +8,23 @@ public class Health {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int healthId;
+    private int health_id;
 
     @OneToOne
     @JoinColumn(name = "risk_id", nullable = false)
     private Risk risk;
 
-    public Health() {}
-
-    public Health(Risk risk) {
+    public Health(int health_id, Risk risk) {
+        this.health_id = health_id;
         this.risk = risk;
     }
 
-    public int getHealthId() {
-        return healthId;
+    public int getHealth_id() {
+        return health_id;
     }
 
-    public void setHealthId(int healthId) {
-        this.healthId = healthId;
+    public void setHealth_id(int health_id) {
+        this.health_id = health_id;
     }
 
     public Risk getRisk() {
@@ -35,5 +34,6 @@ public class Health {
     public void setRisk(Risk risk) {
         this.risk = risk;
     }
-// Getters and setters
+
+    // Getters and setters
 }

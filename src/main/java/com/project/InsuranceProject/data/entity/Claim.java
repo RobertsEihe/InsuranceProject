@@ -9,14 +9,14 @@ public class Claim {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int claimId;
+    private int claim_id;
 
     @Column(nullable = false)
     private String type;
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private Date dateLoss;
+    private Date date_loss;
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
@@ -29,26 +29,26 @@ public class Claim {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "policy_id", nullable = false)
+    @JoinColumn(name = "policyId", nullable = false)
     private Policy policy;
 
     public Claim() {}
 
-    public Claim(String type, Date dateLoss, Date date, float amount, String description, Policy policy) {
+    public Claim(String type, Date date_loss, Date date, float amount, String description, Policy policy) {
         this.type = type;
-        this.dateLoss = dateLoss;
+        this.date_loss = date_loss;
         this.date = date;
         this.amount = amount;
         this.description = description;
         this.policy = policy;
     }
 
-    public int getClaimId() {
-        return claimId;
+    public int getClaim_id() {
+        return claim_id;
     }
 
-    public void setClaimId(int claimId) {
-        this.claimId = claimId;
+    public void setClaim_id(int claim_id) {
+        this.claim_id = claim_id;
     }
 
     public String getType() {
@@ -59,12 +59,12 @@ public class Claim {
         this.type = type;
     }
 
-    public Date getDateLoss() {
-        return dateLoss;
+    public Date getDate_loss() {
+        return date_loss;
     }
 
-    public void setDateLoss(Date dateLoss) {
-        this.dateLoss = dateLoss;
+    public void setDate_loss(Date date_loss) {
+        this.date_loss = date_loss;
     }
 
     public Date getDate() {
@@ -98,5 +98,6 @@ public class Claim {
     public void setPolicy(Policy policy) {
         this.policy = policy;
     }
+
 // Getters and setters
 }

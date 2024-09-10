@@ -8,7 +8,7 @@ public class Vehicle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int vehicleId;
+    private int vehicle_id;
 
     @Column(nullable = false)
     private String make;
@@ -23,29 +23,29 @@ public class Vehicle {
     private int odd;
 
     @Column(nullable = false)
-    private float currentValue;
+    private float current_value;
 
     @ManyToOne
-    @JoinColumn(name = "risk_id", nullable = false)
+    @JoinColumn(name = "riskId", nullable = false)
     private Risk risk;
 
     public Vehicle() {}
 
-    public Vehicle(String make, String model, int year, int odd, float currentValue, Risk risk) {
+    public Vehicle(String make, String model, int year, int odd, float current_value, Risk risk) {
         this.make = make;
         this.model = model;
         this.year = year;
         this.odd = odd;
-        this.currentValue = currentValue;
+        this.current_value = current_value;
         this.risk = risk;
     }
 
-    public int getVehicleId() {
-        return vehicleId;
+    public int getVehicle_id() {
+        return vehicle_id;
     }
 
-    public void setVehicleId(int vehicleId) {
-        this.vehicleId = vehicleId;
+    public void setVehicle_id(int vehicle_id) {
+        this.vehicle_id = vehicle_id;
     }
 
     public String getMake() {
@@ -80,12 +80,12 @@ public class Vehicle {
         this.odd = odd;
     }
 
-    public float getCurrentValue() {
-        return currentValue;
+    public float getCurrent_value() {
+        return current_value;
     }
 
-    public void setCurrentValue(float currentValue) {
-        this.currentValue = currentValue;
+    public void setCurrent_value(float current_value) {
+        this.current_value = current_value;
     }
 
     public Risk getRisk() {

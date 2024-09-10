@@ -9,14 +9,14 @@ public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int paymentId;
+    private int payment_id;
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private Date paymentDate;
+    private Date payment_date;
 
     @Column(nullable = false)
-    private String paymentType;
+    private String payment_type;
 
     @Column(nullable = false)
     private float amount;
@@ -27,35 +27,35 @@ public class Payment {
 
     public Payment() {}
 
-    public Payment(Date paymentDate, String paymentType, float amount, Policy policy) {
-        this.paymentDate = paymentDate;
-        this.paymentType = paymentType;
+    public Payment(Date payment_date, String payment_type, float amount, Policy policy) {
+        this.payment_date = payment_date;
+        this.payment_type = payment_type;
         this.amount = amount;
         this.policy = policy;
     }
 
-    public int getPaymentId() {
-        return paymentId;
+    public int getPayment_id() {
+        return payment_id;
     }
 
-    public void setPaymentId(int paymentId) {
-        this.paymentId = paymentId;
+    public void setPayment_id(int payment_id) {
+        this.payment_id = payment_id;
     }
 
-    public Date getPaymentDate() {
-        return paymentDate;
+    public Date getPayment_date() {
+        return payment_date;
     }
 
-    public void setPaymentDate(Date paymentDate) {
-        this.paymentDate = paymentDate;
+    public void setPayment_date(Date payment_date) {
+        this.payment_date = payment_date;
     }
 
-    public String getPaymentType() {
-        return paymentType;
+    public String getPayment_type() {
+        return payment_type;
     }
 
-    public void setPaymentType(String paymentType) {
-        this.paymentType = paymentType;
+    public void setPayment_type(String payment_type) {
+        this.payment_type = payment_type;
     }
 
     public float getAmount() {

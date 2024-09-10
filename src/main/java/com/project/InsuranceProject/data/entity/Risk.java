@@ -9,7 +9,7 @@ public class Risk {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int riskId;
+    private int risk_id;
 
     @Column(nullable = false)
     private String type;
@@ -20,9 +20,9 @@ public class Risk {
     @Column(nullable = false)
     private float rate;
 
-    @Column(nullable = false)
-    private int policyId;
-
+    @ManyToOne
+    @JoinColumn(name = "policy_id", nullable = false)
+    private Policy policy;
     @OneToMany(mappedBy = "risk")
     private List<Vehicle> vehicles;
 
@@ -32,21 +32,30 @@ public class Risk {
     @OneToOne(mappedBy = "risk")
     private Health health;
 
-    public Risk() {}
-
-    public Risk(String type, float risk, float rate, int policyId) {
+    public Risk(int risk_id, String type, float risk, float rate, Policy policy, List<Vehicle> vehicles, List<House> houses, Health health) {
+        this.risk_id = risk_id;
         this.type = type;
         this.risk = risk;
         this.rate = rate;
-        this.policyId = policyId;
+        this.policy = policy;
+        this.vehicles = vehicles;
+        this.houses = houses;
+        this.health = health;
     }
 
-    public int getRiskId() {
-        return riskId;
+    public Risk(int risk_id, String type, float risk, float rate) {
+        this.risk_id = risk_id;
+        this.type = type;
+        this.risk = risk;
+        this.rate = rate;
     }
 
-    public void setRiskId(int riskId) {
-        this.riskId = riskId;
+    public int getRisk_id() {
+        return risk_id;
+    }
+
+    public void setRisk_id(int risk_id) {
+        this.risk_id = risk_id;
     }
 
     public String getType() {
@@ -73,12 +82,12 @@ public class Risk {
         this.rate = rate;
     }
 
-    public int getPolicyId() {
-        return policyId;
+    public Policy getPolicy() {
+        return policy;
     }
 
-    public void setPolicyId(int policyId) {
-        this.policyId = policyId;
+    public void setPolicy(Policy policy) {
+        this.policy = policy;
     }
 
     public List<Vehicle> getVehicles() {

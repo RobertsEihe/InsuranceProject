@@ -10,7 +10,7 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int customerId;
+    private int customer_id;
 
     @Column(nullable = false)
     private String name;
@@ -26,50 +26,50 @@ public class Customer {
 
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
-    private Date dateOfBirth;
+    private Date date_of_birth;
 
     @Column(nullable = false)
     private int loyalty;
 
     @Column(nullable = false)
-    private String dlNum;
+    private String dl_num;
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private Date dlIssueDate;
+    private Date dl_issue_date;
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private Date dlExpireDate;
+    private Date dl_expire_Date;
 
     @Column(nullable = false)
-    private String bankAccount;
+    private String bank_account;
 
     @OneToMany(mappedBy = "customer")
     private List<Policy> policies;
 
     public Customer() {}
 
-    public Customer(String name, String email, String phone, String address, Date dateOfBirth, int loyalty,
-                    String dlNum, Date dlIssueDate, Date dlExpireDate, String bankAccount) {
+    public Customer(String name, String email, String phone, String address, Date date_of_birth, int loyalty,
+                    String dl_num, Date dl_issue_date, Date dl_expire_Date, String bank_account) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.address = address;
-        this.dateOfBirth = dateOfBirth;
+        this.date_of_birth = date_of_birth;
         this.loyalty = loyalty;
-        this.dlNum = dlNum;
-        this.dlIssueDate = dlIssueDate;
-        this.dlExpireDate = dlExpireDate;
-        this.bankAccount = bankAccount;
+        this.dl_num = dl_num;
+        this.dl_issue_date = dl_issue_date;
+        this.dl_expire_Date = dl_expire_Date;
+        this.bank_account = bank_account;
     }
 
-    public int getCustomerId() {
-        return customerId;
+    public int getCustomer_id() {
+        return customer_id;
     }
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+    public void setCustomer_id(int customer_id) {
+        this.customer_id = customer_id;
     }
 
     public String getName() {
@@ -104,12 +104,12 @@ public class Customer {
         this.address = address;
     }
 
-    public Date getDateOfBirth() {
-        return dateOfBirth;
+    public Date getDate_of_birth() {
+        return date_of_birth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public void setDate_of_birth(Date date_of_birth) {
+        this.date_of_birth = date_of_birth;
     }
 
     public int getLoyalty() {
@@ -120,36 +120,36 @@ public class Customer {
         this.loyalty = loyalty;
     }
 
-    public String getDlNum() {
-        return dlNum;
+    public String getDl_num() {
+        return dl_num;
     }
 
-    public void setDlNum(String dlNum) {
-        this.dlNum = dlNum;
+    public void setDl_num(String dl_num) {
+        this.dl_num = dl_num;
     }
 
-    public Date getDlIssueDate() {
-        return dlIssueDate;
+    public Date getDl_issue_date() {
+        return dl_issue_date;
     }
 
-    public void setDlIssueDate(Date dlIssueDate) {
-        this.dlIssueDate = dlIssueDate;
+    public void setDl_issue_date(Date dl_issue_date) {
+        this.dl_issue_date = dl_issue_date;
     }
 
-    public Date getDlExpireDate() {
-        return dlExpireDate;
+    public Date getDl_expire_Date() {
+        return dl_expire_Date;
     }
 
-    public void setDlExpireDate(Date dlExpireDate) {
-        this.dlExpireDate = dlExpireDate;
+    public void setDl_expire_Date(Date dl_expire_Date) {
+        this.dl_expire_Date = dl_expire_Date;
     }
 
-    public String getBankAccount() {
-        return bankAccount;
+    public String getBank_account() {
+        return bank_account;
     }
 
-    public void setBankAccount(String bankAccount) {
-        this.bankAccount = bankAccount;
+    public void setBank_account(String bank_account) {
+        this.bank_account = bank_account;
     }
 
     public List<Policy> getPolicies() {

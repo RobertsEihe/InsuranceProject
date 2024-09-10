@@ -10,11 +10,11 @@ public class Policy {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int policyId;
+    private int policy_id;
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private Date startDate;
+    private Date start_date;
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
@@ -24,13 +24,13 @@ public class Policy {
     private int duration;
 
     @Column(nullable = false)
-    private boolean autRenewal;
+    private boolean aut_renewal;
 
     @Column(nullable = false)
     private String status;
 
     @Column(nullable = false)
-    private String urStatus;
+    private String ur_status;
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
@@ -48,32 +48,32 @@ public class Policy {
 
     public Policy() {}
 
-    public Policy(Date startDate, Date endDate, int duration, boolean autRenewal, String status, String urStatus,
+    public Policy(Date start_date, Date endDate, int duration, boolean aut_renewal, String status, String ur_status,
                   Customer customer, Agent agent) {
-        this.startDate = startDate;
+        this.start_date = start_date;
         this.endDate = endDate;
         this.duration = duration;
-        this.autRenewal = autRenewal;
+        this.aut_renewal = aut_renewal;
         this.status = status;
-        this.urStatus = urStatus;
+        this.ur_status = ur_status;
         this.customer = customer;
         this.agent = agent;
     }
 
-    public int getPolicyId() {
-        return policyId;
+    public int getPolicy_id() {
+        return policy_id;
     }
 
-    public void setPolicyId(int policyId) {
-        this.policyId = policyId;
+    public void setPolicy_id(int policy_id) {
+        this.policy_id = policy_id;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public Date getStart_date() {
+        return start_date;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setStart_date(Date start_date) {
+        this.start_date = start_date;
     }
 
     public Date getEndDate() {
@@ -92,12 +92,12 @@ public class Policy {
         this.duration = duration;
     }
 
-    public boolean isAutRenewal() {
-        return autRenewal;
+    public boolean isAut_renewal() {
+        return aut_renewal;
     }
 
-    public void setAutRenewal(boolean autRenewal) {
-        this.autRenewal = autRenewal;
+    public void setAut_renewal(boolean aut_renewal) {
+        this.aut_renewal = aut_renewal;
     }
 
     public String getStatus() {
@@ -108,12 +108,12 @@ public class Policy {
         this.status = status;
     }
 
-    public String getUrStatus() {
-        return urStatus;
+    public String getUr_status() {
+        return ur_status;
     }
 
-    public void setUrStatus(String urStatus) {
-        this.urStatus = urStatus;
+    public void setUr_status(String ur_status) {
+        this.ur_status = ur_status;
     }
 
     public Customer getCustomer() {
