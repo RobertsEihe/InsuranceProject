@@ -18,7 +18,7 @@ public class Policy {
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private Date endDate;
+    private Date end_date;
 
     @Column(nullable = false)
     private int duration;
@@ -48,10 +48,10 @@ public class Policy {
 
     public Policy() {}
 
-    public Policy(Date start_date, Date endDate, int duration, boolean aut_renewal, String status, String ur_status,
+    public Policy(Date start_date, Date end_date, int duration, boolean aut_renewal, String status, String ur_status,
                   Customer customer, Agent agent) {
         this.start_date = start_date;
-        this.endDate = endDate;
+        this.end_date = end_date;
         this.duration = duration;
         this.aut_renewal = aut_renewal;
         this.status = status;
@@ -77,11 +77,11 @@ public class Policy {
     }
 
     public Date getEndDate() {
-        return endDate;
+        return end_date;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setEndDate(Date end_date) {
+        this.end_date = end_date;
     }
 
     public int getDuration() {
