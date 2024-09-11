@@ -1,7 +1,7 @@
 
 package com.project.InsuranceProject.security;
 
-import com.project.InsuranceProject.views.HelloView;
+//import com.project.InsuranceProject.views.HelloView;
 import com.project.InsuranceProject.views.LoginView;
 import com.vaadin.flow.spring.security.VaadinWebSecurity;
 import jakarta.servlet.http.HttpServletRequest;
