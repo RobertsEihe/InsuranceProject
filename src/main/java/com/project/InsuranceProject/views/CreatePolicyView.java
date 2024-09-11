@@ -19,11 +19,11 @@ import java.time.LocalDate;
 
 @PermitAll
 @Route("createpolicy")
-public class CreatePolicy extends VerticalLayout {
+public class CreatePolicyView extends VerticalLayout {
     private ComboBox<String> agentComboBox;
     private ComboBox<String> insuranceTypeComboBox;
 
-    public CreatePolicy() {
+    public CreatePolicyView() {
         createPolicyView();
     }
 
