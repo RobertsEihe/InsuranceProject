@@ -9,7 +9,7 @@ public class Risk {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int risk_id;
+    private Long risk_id;
 
     @Column(nullable = false)
     private String type;
@@ -32,8 +32,8 @@ public class Risk {
     @OneToOne(mappedBy = "risk")
     private Health health;
 
-    public Risk(int risk_id, String type, float risk, float rate, Policy policy, List<Vehicle> vehicles, List<House> houses, Health health) {
-        this.risk_id = risk_id;
+    public Risk(String type, float risk, float rate, Policy policy, List<Vehicle> vehicles, List<House> houses, Health health) {
+
         this.type = type;
         this.risk = risk;
         this.rate = rate;
@@ -43,18 +43,17 @@ public class Risk {
         this.health = health;
     }
 
-    public Risk(int risk_id, String type, float risk, float rate) {
-        this.risk_id = risk_id;
+    public Risk( String type, float risk, float rate) {
         this.type = type;
         this.risk = risk;
         this.rate = rate;
     }
 
-    public int getRisk_id() {
+    public Long getRisk_id() {
         return risk_id;
     }
 
-    public void setRisk_id(int risk_id) {
+    public void setRisk_id(Long risk_id) {
         this.risk_id = risk_id;
     }
 
@@ -113,5 +112,4 @@ public class Risk {
     public void setHealth(Health health) {
         this.health = health;
     }
-// Getters and setters
 }

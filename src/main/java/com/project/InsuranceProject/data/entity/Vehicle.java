@@ -8,7 +8,7 @@ public class Vehicle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int vehicle_id;
+    private Long vehicle_id;
 
     @Column(nullable = false)
     private String make;
@@ -26,7 +26,7 @@ public class Vehicle {
     private float current_value;
 
     @ManyToOne
-    @JoinColumn(name = "riskId", nullable = false)
+    @JoinColumn(name = "risk_id", nullable = false)
     private Risk risk;
 
     public Vehicle() {}
@@ -40,11 +40,11 @@ public class Vehicle {
         this.risk = risk;
     }
 
-    public int getVehicle_id() {
+    public Long getVehicle_id() {
         return vehicle_id;
     }
 
-    public void setVehicle_id(int vehicle_id) {
+    public void setVehicle_id(Long vehicle_id) {
         this.vehicle_id = vehicle_id;
     }
 
@@ -95,5 +95,4 @@ public class Vehicle {
     public void setRisk(Risk risk) {
         this.risk = risk;
     }
-// Getters and setters
 }

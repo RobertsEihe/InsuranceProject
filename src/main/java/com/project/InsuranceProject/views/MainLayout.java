@@ -11,7 +11,7 @@ import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.theme.lumo.LumoUtility;
-import com.project.InsuranceProject.views.helloworld.HelloWorldView;
+//import com.project.InsuranceProject.views.helloworld.HelloWorldView;
 
 
 /**
