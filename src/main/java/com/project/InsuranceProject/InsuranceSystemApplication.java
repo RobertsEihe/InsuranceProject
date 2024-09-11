@@ -16,5 +16,4 @@ public class InsuranceSystemApplication extends SpringBootServletInitializer {
 		SpringApplication.run(InsuranceSystemApplication.class, args);
 	}
 
-	// roberts edit
 }

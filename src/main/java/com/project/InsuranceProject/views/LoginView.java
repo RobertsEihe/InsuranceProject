@@ -42,6 +42,8 @@ public class LoginView extends VerticalLayout implements BeforeEnterListener {
             UI.getCurrent().navigate("/hello");  // Change "/hello" to your desired route
         });
 
+
+
     }
 
 
