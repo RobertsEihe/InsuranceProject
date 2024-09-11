@@ -1,7 +1,7 @@
-
 package com.project.InsuranceProject.security;
 
-//import com.project.InsuranceProject.views.HelloView;
+import com.project.InsuranceProject.views.helloworld.HelloWorldView;
+
 import com.project.InsuranceProject.views.LoginView;
 import com.vaadin.flow.spring.security.VaadinWebSecurity;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,8 +25,6 @@ public class SecurityConfig extends VaadinWebSecurity {
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
         setLoginView(http, LoginView.class);
-
-
     }
 
     @Override
@@ -34,7 +32,6 @@ public class SecurityConfig extends VaadinWebSecurity {
         web.ignoring().requestMatchers("/images/**");
         super.configure(web);
     }
-
 
     @Bean
     //@Override
@@ -44,5 +41,4 @@ public class SecurityConfig extends VaadinWebSecurity {
                 .roles("USER")
                 .build());
     }
-
 }
