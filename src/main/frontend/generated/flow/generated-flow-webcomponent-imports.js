@@ -1,8 +1,13 @@
 import { injectGlobalWebcomponentCss } from 'Frontend/generated/jar-resources/theme-util.js';
 
+import { injectGlobalCss } from 'Frontend/generated/jar-resources/theme-util.js';
+
+import { css, unsafeCSS, registerStyles } from '@vaadin/vaadin-themable-mixin';
+import $cssFromFile_0 from 'Frontend/styles/shared-styles.css?inline';
+import '@vaadin/polymer-legacy-adapter/style-modules.js';
+import '@vaadin/vertical-layout/theme/lumo/vaadin-vertical-layout.js';
 import '@vaadin/field-highlighter/theme/lumo/vaadin-field-highlighter.js';
 import '@vaadin/common-frontend/ConnectionIndicator.js';
-import '@vaadin/polymer-legacy-adapter/style-modules.js';
 import '@vaadin/accordion/theme/lumo/vaadin-accordion.js';
 import '@vaadin/details/theme/lumo/vaadin-details.js';
 import '@vaadin/accordion/theme/lumo/vaadin-accordion-panel.js';
@@ -65,7 +70,6 @@ import '@vaadin/message-list/theme/lumo/vaadin-message-list.js';
 import '@vaadin/notification/theme/lumo/vaadin-notification.js';
 import '@vaadin/horizontal-layout/theme/lumo/vaadin-horizontal-layout.js';
 import '@vaadin/scroller/theme/lumo/vaadin-scroller.js';
-import '@vaadin/vertical-layout/theme/lumo/vaadin-vertical-layout.js';
 import '@vaadin/progress-bar/theme/lumo/vaadin-progress-bar.js';
 import '@vaadin/radio-group/theme/lumo/vaadin-radio-button.js';
 import '@vaadin/radio-group/theme/lumo/vaadin-radio-group.js';
@@ -95,6 +99,9 @@ import '@vaadin/vaadin-lumo-styles/sizing.js';
 import '@vaadin/vaadin-lumo-styles/spacing.js';
 import '@vaadin/vaadin-lumo-styles/style.js';
 import '@vaadin/vaadin-lumo-styles/vaadin-iconset.js';
+
+injectGlobalCss($cssFromFile_0.toString(), 'CSSImport end', document);
+injectGlobalWebcomponentCss($cssFromFile_0.toString());
 const loadOnDemand = (key) => { return Promise.resolve(0); }
 window.Vaadin = window.Vaadin || {};
 window.Vaadin.Flow = window.Vaadin.Flow || {};

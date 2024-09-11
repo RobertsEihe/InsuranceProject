@@ -1,6 +1,5 @@
 package com.project.InsuranceProject;
 
-
 import com.vaadin.flow.spring.annotation.EnableVaadin;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,4 +16,5 @@ public class InsuranceSystemApplication extends SpringBootServletInitializer {
 		SpringApplication.run(InsuranceSystemApplication.class, args);
 	}
 
+	// roberts edit
 }

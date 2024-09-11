@@ -12,7 +12,7 @@
 //
 //// ApplicationServiceInitListener
 //
-///**
+// /**
 // * A simple Vaadin View class that shows all Movies in a database.
 // * <p>
 // * See {@link MovieService} for details on the database, and
