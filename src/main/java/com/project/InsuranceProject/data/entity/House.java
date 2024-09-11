@@ -8,7 +8,7 @@ public class House {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int house_id;
+    private Long house_id;
 
     @Column(nullable = false)
     private String address;
@@ -40,11 +40,11 @@ public class House {
         this.risk = risk;
     }
 
-    public int getHouse_id() {
+    public Long getHouse_id() {
         return house_id;
     }
 
-    public void setHouse_id(int house_id) {
+    public void setHouse_id(Long house_id) {
         this.house_id = house_id;
     }
 
@@ -95,5 +95,4 @@ public class House {
     public void setRisk(Risk risk) {
         this.risk = risk;
     }
-// Getters and setters
 }

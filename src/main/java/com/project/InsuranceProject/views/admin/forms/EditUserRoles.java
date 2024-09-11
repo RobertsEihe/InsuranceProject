@@ -1,4 +1,4 @@
-package com.project.InsuranceProject.views.admin.checkoutform;
+package com.project.InsuranceProject.views.admin.forms;
 
 import com.project.InsuranceProject.views.admin.AdminLayout;
 import com.vaadin.flow.component.Component;
@@ -33,10 +33,12 @@ import com.vaadin.flow.theme.lumo.LumoUtility.MaxWidth;
 import com.vaadin.flow.theme.lumo.LumoUtility.Padding;
 import com.vaadin.flow.theme.lumo.LumoUtility.Position;
 import com.vaadin.flow.theme.lumo.LumoUtility.TextColor;
+import jakarta.annotation.security.PermitAll;
+
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
+@PermitAll
 @PageTitle("Edit User Roles")
 @Route(value = "admin/edit-users", layout = AdminLayout.class)
 public class EditUserRoles extends Div {

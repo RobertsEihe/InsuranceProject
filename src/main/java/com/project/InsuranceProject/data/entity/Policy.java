@@ -1,7 +1,7 @@
 package com.project.InsuranceProject.data.entity;
 
 import jakarta.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -10,15 +10,15 @@ public class Policy {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int policy_id;
+    private Long policy_id;
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private Date start_date;
+    private LocalDate start_date;
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private Date end_date;
+    private LocalDate end_date;
 
     @Column(nullable = false)
     private int duration;
@@ -48,7 +48,7 @@ public class Policy {
 
     public Policy() {}
 
-    public Policy(Date start_date, Date end_date, int duration, boolean aut_renewal, String status, String ur_status,
+    public Policy(LocalDate start_date, LocalDate end_date, int duration, boolean aut_renewal, String status, String ur_status,
                   Customer customer, Agent agent) {
         this.start_date = start_date;
         this.end_date = end_date;
@@ -60,27 +60,27 @@ public class Policy {
         this.agent = agent;
     }
 
-    public int getPolicy_id() {
+    public Long getPolicy_id() {
         return policy_id;
     }
 
-    public void setPolicy_id(int policy_id) {
+    public void setPolicy_id(Long policy_id) {
         this.policy_id = policy_id;
     }
 
-    public Date getStart_date() {
+    public LocalDate getStart_date() {
         return start_date;
     }
 
-    public void setStart_date(Date start_date) {
+    public void setStart_date(LocalDate start_date) {
         this.start_date = start_date;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEnd_date() {
         return end_date;
     }
 
-    public void setEndDate(Date end_date) {
+    public void setEnd_date(LocalDate end_date) {
         this.end_date = end_date;
     }
 
@@ -147,5 +147,4 @@ public class Policy {
     public void setDocuments(List<Document> documents) {
         this.documents = documents;
     }
-// Getters and setters
 }
