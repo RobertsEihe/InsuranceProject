@@ -1,9 +1,7 @@
 package com.project.InsuranceProject.views.admin.forms;
 
-import com.project.InsuranceProject.data.entity.Agent;
-import com.project.InsuranceProject.data.entity.Customer;
+import com.project.InsuranceProject.data.entity.Users;
 import com.project.InsuranceProject.data.services.UserService;
-import com.project.InsuranceProject.data.services.AgentService;
 import com.project.InsuranceProject.views.admin.AdminLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -14,6 +12,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.IntegerField;
+import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
@@ -29,48 +28,36 @@ import org.springframework.transaction.support.TransactionTemplate;
 public class AddUsers extends VerticalLayout {
 
     private final UserService userService;
-    private final AgentService agentService;
     private final TransactionTemplate transactionTemplate;
-    private ComboBox<String> userTypeSelect;
+    private ComboBox<String> roleSelect;
     private FormLayout form;
-    private Binder<Customer> customerBinder;
-    private Binder<Agent> agentBinder;
+    private Binder<Users> userBinder;
 
     @Autowired
-    public AddUsers(UserService userService, AgentService agentService, TransactionTemplate transactionTemplate) {
+    public AddUsers(UserService userService, TransactionTemplate transactionTemplate) {
         this.userService = userService;
-        this.agentService = agentService;
         this.transactionTemplate = transactionTemplate;
         setSizeFull();
 
         H2 header = new H2("Add New User");
-        userTypeSelect = new ComboBox<>("Select user type");
-        userTypeSelect.setItems("Customer", "Agent");
-        userTypeSelect.addValueChangeListener(event -> {
-            form.removeAll();
-            createForm(event.getValue());
-        });
+        roleSelect = new ComboBox<>("Select user role");
+        roleSelect.setItems("CUSTOMER", "AGENT", "EMPLOYEE", "ADMIN");
+        roleSelect.addValueChangeListener(event -> createForm());
 
         form = new FormLayout();
-        customerBinder = new Binder<>(Customer.class);
-        agentBinder = new Binder<>(Agent.class);
+        userBinder = new Binder<>(Users.class);
 
         Button saveButton = new Button("Save", event -> saveUser());
 
-        add(header, userTypeSelect, form, saveButton);
+        add(header, roleSelect, form, saveButton);
     }
 
-    private void createForm(String userType) {
-        if ("Customer".equals(userType)) {
-            createCustomerForm();
-        } else if ("Agent".equals(userType)) {
-            createAgentForm();
-        }
-    }
+    private void createForm() {
+        form.removeAll();
+        Users user = new Users();
 
-    private void createCustomerForm() {
-        Customer customer = new Customer();
-
+        TextField username = new TextField("Username");
+        PasswordField password = new PasswordField("Password");
         TextField name = new TextField("Name");
         EmailField email = new EmailField("Email");
         TextField phone = new TextField("Phone");
@@ -82,54 +69,34 @@ public class AddUsers extends VerticalLayout {
         DatePicker dlExpireDate = new DatePicker("DL Expire Date");
         TextField bankAccount = new TextField("Bank Account");
 
-        form.add(name, email, phone, address, dateOfBirth, loyalty, dlNum, dlIssueDate, dlExpireDate, bankAccount);
+        form.add(username, password, name, email, phone, address, dateOfBirth, loyalty, dlNum, dlIssueDate, dlExpireDate, bankAccount);
 
-        customerBinder = new Binder<>(Customer.class);
-        customerBinder.forField(name).asRequired("Name is required").bind(Customer::getName, Customer::setName);
-        customerBinder.forField(email).asRequired("Email is required").bind(Customer::getEmail, Customer::setEmail);
-        customerBinder.forField(phone).asRequired("Phone is required").bind(Customer::getPhone, Customer::setPhone);
-        customerBinder.forField(address).asRequired("Address is required").bind(Customer::getAddress, Customer::setAddress);
-        customerBinder.forField(dateOfBirth).asRequired("Date of Birth is required").bind(Customer::getDate_of_birth, Customer::setDate_of_birth);
-        customerBinder.forField(loyalty).asRequired("Loyalty is required").bind(Customer::getLoyalty, Customer::setLoyalty);
-        customerBinder.forField(dlNum).asRequired("Driver's License Number is required").bind(Customer::getDl_num, Customer::setDl_num);
-        customerBinder.forField(dlIssueDate).asRequired("DL Issue Date is required").bind(Customer::getDl_issue_date, Customer::setDl_issue_date);
-        customerBinder.forField(dlExpireDate).asRequired("DL Expire Date is required").bind(Customer::getDl_expire_Date, Customer::setDl_expire_Date);
-        customerBinder.forField(bankAccount).asRequired("Bank Account is required").bind(Customer::getBank_account, Customer::setBank_account);
+        userBinder = new Binder<>(Users.class);
+        userBinder.forField(username).asRequired("Username is required").bind(Users::getUsername, Users::setUsername);
+        userBinder.forField(password).asRequired("Password is required").bind(Users::getPassword, Users::setPassword);
+        userBinder.forField(name).bind(Users::getName, Users::setName);
+        userBinder.forField(email).bind(Users::getEmail, Users::setEmail);
+        userBinder.forField(phone).bind(Users::getPhone, Users::setPhone);
+        userBinder.forField(address).bind(Users::getAddress, Users::setAddress);
+        userBinder.forField(dateOfBirth).bind(Users::getDate_of_birth, Users::setDate_of_birth);
+        userBinder.forField(loyalty).bind(Users::getLoyalty, Users::setLoyalty);
+        userBinder.forField(dlNum).bind(Users::getDl_num, Users::setDl_num);
+        userBinder.forField(dlIssueDate).bind(Users::getDl_issue_date, Users::setDl_issue_date);
+        userBinder.forField(dlExpireDate).bind(Users::getDl_expire_Date, Users::setDl_expire_Date);
+        userBinder.forField(bankAccount).bind(Users::getBank_account, Users::setBank_account);
 
-        customerBinder.readBean(customer);
-    }
-
-    private void createAgentForm() {
-        Agent agent = new Agent();
-
-        TextField name = new TextField("Name");
-        DatePicker dateOfBirth = new DatePicker("Date of Birth");
-
-        form.add(name, dateOfBirth);
-
-        agentBinder = new Binder<>(Agent.class);
-        agentBinder.forField(name).asRequired("Name is required").bind(Agent::getName, Agent::setName);
-        agentBinder.forField(dateOfBirth).asRequired("Date of Birth is required").bind(Agent::getDate_of_birth, Agent::setDate_of_birth);
-
-        agentBinder.readBean(agent);
+        userBinder.readBean(user);
     }
 
     private void saveUser() {
         transactionTemplate.execute(status -> {
             try {
-                if ("Customer".equals(userTypeSelect.getValue())) {
-                    Customer customer = new Customer();
-                    customerBinder.writeBean(customer);
-                    userService.saveCustomer(customer);
-                    Notification.show("Customer saved successfully");
-                    clearForm();
-                } else if ("Agent".equals(userTypeSelect.getValue())) {
-                    Agent agent = new Agent();
-                    agentBinder.writeBean(agent);
-                    agentService.saveAgent(agent);
-                    Notification.show("Agent saved successfully");
-                    clearForm();
-                }
+                Users user = new Users();
+                userBinder.writeBean(user);
+                user.setRole(roleSelect.getValue());
+                Users savedUser = userService.saveUser(user);
+                Notification.show(savedUser.getRole() + " saved successfully");
+                clearForm();
             } catch (ValidationException e) {
                 Notification.show("Please check the form for errors: " + e.getMessage());
             }
@@ -138,9 +105,8 @@ public class AddUsers extends VerticalLayout {
     }
 
     private void clearForm() {
-        userTypeSelect.clear();
+        roleSelect.clear();
         form.removeAll();
-        customerBinder = new Binder<>(Customer.class);
-        agentBinder = new Binder<>(Agent.class);
+        userBinder = new Binder<>(Users.class);
     }
 }

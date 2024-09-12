@@ -1,8 +1,10 @@
 package com.project.InsuranceProject.views.employee.tables;
 
+import com.project.InsuranceProject.data.entity.Policy;
+import com.project.InsuranceProject.data.services.EmployeeViewService;
 import com.project.InsuranceProject.views.employee.EmployeeLayout;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -13,9 +15,19 @@ import jakarta.annotation.security.PermitAll;
 @PageTitle("View Policies")
 public class ViewPolicies extends VerticalLayout {
 
-    public ViewPolicies() {
+    private final EmployeeViewService employeeViewService;
+
+    public ViewPolicies(EmployeeViewService employeeViewService) {
+        this.employeeViewService = employeeViewService;
+
         H2 header = new H2("Policy Overview");
-        Paragraph description = new Paragraph("Here you can view and manage all insurance policies.");
-        add(header, description);
+        add(header);
+
+        Grid<Policy> grid = new Grid<>(Policy.class);
+        grid.setItems(employeeViewService.getAllPolicies());
+        grid.setColumns("policy_id", "start_date", "end_date", "duration", "aut_renewal", "status", "ur_status");
+
+        add(grid);
+        setSizeFull();
     }
 }

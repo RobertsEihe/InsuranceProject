@@ -9,7 +9,5 @@ import java.util.List;
 @Repository
 public interface PolicyRepository extends JpaRepository<Policy, Long> {
 
-	// Use the correct field name 'ur_status' in the method name
 	List<Policy> findByStatus(String status);
-
 }

@@ -33,12 +33,8 @@ public class Policy {
     private String ur_status;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
-
-    @ManyToOne
-    @JoinColumn(name = "agent_id", nullable = false)
-    private Agent agent;
+    @JoinColumn(name = "id")
+    private Users users;
 
     @OneToMany(mappedBy = "policy")
     private List<Claim> claims;
@@ -49,15 +45,14 @@ public class Policy {
     public Policy() {}
 
     public Policy(LocalDate start_date, LocalDate end_date, int duration, boolean aut_renewal, String status, String ur_status,
-                  Customer customer, Agent agent) {
+                  Users users) {
         this.start_date = start_date;
         this.end_date = end_date;
         this.duration = duration;
         this.aut_renewal = aut_renewal;
         this.status = status;
         this.ur_status = ur_status;
-        this.customer = customer;
-        this.agent = agent;
+        this.users = users;
     }
 
     public Long getPolicy_id() {
@@ -116,20 +111,12 @@ public class Policy {
         this.ur_status = ur_status;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public Users getUsers() {
+        return users;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public Agent getAgent() {
-        return agent;
-    }
-
-    public void setAgent(Agent agent) {
-        this.agent = agent;
+    public void setUsers(Users users) {
+        this.users = users;
     }
 
     public List<Claim> getClaims() {

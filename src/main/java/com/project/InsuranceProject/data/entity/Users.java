@@ -1,57 +1,105 @@
 package com.project.InsuranceProject.data.entity;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "customer")
-public class Customer {
+@Table(name = "users")
+@Inheritance(strategy = InheritanceType.JOINED)  // Use inheritance for User subclasses
+public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long customer_id;
+    private Long id;
+
+    @Column(nullable = false, unique = true)
+    private String username;
 
     @Column(nullable = false)
+    private String password;
+
+    @Column
     private String name;
 
-    @Column(nullable = false)
+    @Column
     private String email;
 
-    @Column(nullable = false)
+    @Column
     private String phone;
 
-    @Column(nullable = false)
+    @Column
     private String address;
 
-    @Column(nullable = false)
+    @Column
     @Temporal(TemporalType.DATE)
-    private LocalDate  date_of_birth;
+    private LocalDate date_of_birth;
 
-    @Column(nullable = false)
+    @Column
     private int loyalty;
 
-    @Column(nullable = false)
+    @Column
     private String dl_num;
 
     @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
+    @Column
     private LocalDate  dl_issue_date;
 
     @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
+    @Column
     private LocalDate  dl_expire_Date;
 
-    @Column(nullable = false)
+    @Column
     private String bank_account;
 
-    @OneToMany(mappedBy = "customer")
+    @Column
+    private String role;
+
+    @OneToMany(mappedBy = "users")
     private List<Policy> policies;
 
-    public Customer() {}
 
-    public Customer(String name, String email, String phone, String address, LocalDate  date_of_birth, int loyalty,
-                    String dl_num, LocalDate  dl_issue_date, LocalDate  dl_expire_Date, String bank_account) {
+    public Users() {}
+
+    public Users(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public Users(String username, String password, String role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
+
+    public Users(String username, String password, String name, String email, String phone, String address, LocalDate date_of_birth, String role) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.date_of_birth = date_of_birth;
+        this.role = role;
+    }
+
+    public Users(Long id, String username, String password, String name, String email, String phone, String address, LocalDate date_of_birth, String role) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.date_of_birth = date_of_birth;
+        this.role = role;
+    }
+
+    public Users(Long id, String username, String password, String name, String email, String phone, String address, LocalDate date_of_birth, int loyalty, String dl_num, LocalDate dl_issue_date, LocalDate dl_expire_Date, String bank_account, String role, List<Policy> policies) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
         this.name = name;
         this.email = email;
         this.phone = phone;
@@ -62,14 +110,32 @@ public class Customer {
         this.dl_issue_date = dl_issue_date;
         this.dl_expire_Date = dl_expire_Date;
         this.bank_account = bank_account;
+        this.role = role;
+        this.policies = policies;
     }
 
-    public Long getCustomer_id() {
-        return customer_id;
+    public Long getId() {
+        return id;
     }
 
-    public void setCustomer_id(Long customer_id) {
-        this.customer_id = customer_id;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getName() {
@@ -150,6 +216,14 @@ public class Customer {
 
     public void setBank_account(String bank_account) {
         this.bank_account = bank_account;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public List<Policy> getPolicies() {
