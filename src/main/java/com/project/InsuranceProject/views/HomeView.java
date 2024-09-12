@@ -1,4 +1,5 @@
 package com.project.InsuranceProject.views;
+import com.project.InsuranceProject.views.LandingpageUI.AppLayoutNavbar;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
@@ -28,8 +29,10 @@ public class HomeView extends VerticalLayout {
 
         HorizontalLayout formLayouth = new HorizontalLayout(Login,Register);
         formLayouth.setJustifyContentMode(JustifyContentMode.CENTER);
-        formLayoutv.add(heading);
 
+        AppLayoutNavbar appLayoutNavbar = new AppLayoutNavbar();
+        formLayouth.add(appLayoutNavbar);
+        formLayoutv.add(heading);
         add(formLayoutv);
         add(formLayouth);
         setAlignItems(Alignment.CENTER);
