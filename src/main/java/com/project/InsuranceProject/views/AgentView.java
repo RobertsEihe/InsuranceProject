@@ -17,7 +17,14 @@ import java.util.List;
 public class AgentView extends VerticalLayout {
 
 	private final Grid<Policy> policyGrid = new Grid<>(Policy.class);
+
 	private final AgentPolicyService agentService;
+
+	private final List<Policy> policies = new ArrayList<>();
+
+	public AgentView() {
+		// Dummy data for testing UI
+//setupDummyPolicies();
 
 	@Autowired
 	public AgentView(AgentPolicyService agentService) {
@@ -29,9 +36,23 @@ public class AgentView extends VerticalLayout {
 		// Setup the policy grid
 		setupPolicyGrid();
 
+
 		// Load real policies from the database
 		loadPendingPolicies();
 	}
+
+		// Add grid to layout
+		add(policyGrid);
+	}
+
+	// Setup dummy policies for testing
+//	private void setupDummyPolicies() {
+//		policies.add(new Policy("Andrejs", "2023-01-01", "2024-01-01", 12, true, "UNDER_REVIEW", "UR"));
+//		policies.add(new Policy("Aleksandrs", "2023-05-01", "2024-05-01", 12, false, "UNDER_REVIEW", "UR"));
+//		policies.add(new Policy("Roberts", "2022-12-01", "2023-12-01", 12, true, "UNDER_REVIEW", "UR"));
+//		policies.add(new Policy("Madhavendra", "2022-12-01", "2023-12-01", 12, true, "UNDER_REVIEW", "UR"));
+//	}
+main
 
 	// Configure the Vaadin Grid to display policies
 	private void setupPolicyGrid() {
