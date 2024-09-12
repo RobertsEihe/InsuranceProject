@@ -1,7 +1,7 @@
 package com.project.InsuranceProject.data.entity;
 
 import jakarta.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -10,7 +10,7 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int customer_id;
+    private Long customer_id;
 
     @Column(nullable = false)
     private String name;
@@ -26,7 +26,7 @@ public class Customer {
 
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
-    private Date date_of_birth;
+    private LocalDate  date_of_birth;
 
     @Column(nullable = false)
     private int loyalty;
@@ -36,11 +36,11 @@ public class Customer {
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private Date dl_issue_date;
+    private LocalDate  dl_issue_date;
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private Date dl_expire_Date;
+    private LocalDate  dl_expire_Date;
 
     @Column(nullable = false)
     private String bank_account;
@@ -50,8 +50,8 @@ public class Customer {
 
     public Customer() {}
 
-    public Customer(String name, String email, String phone, String address, Date date_of_birth, int loyalty,
-                    String dl_num, Date dl_issue_date, Date dl_expire_Date, String bank_account) {
+    public Customer(String name, String email, String phone, String address, LocalDate  date_of_birth, int loyalty,
+                    String dl_num, LocalDate  dl_issue_date, LocalDate  dl_expire_Date, String bank_account) {
         this.name = name;
         this.email = email;
         this.phone = phone;
@@ -64,11 +64,11 @@ public class Customer {
         this.bank_account = bank_account;
     }
 
-    public int getCustomer_id() {
+    public Long getCustomer_id() {
         return customer_id;
     }
 
-    public void setCustomer_id(int customer_id) {
+    public void setCustomer_id(Long customer_id) {
         this.customer_id = customer_id;
     }
 
@@ -104,11 +104,11 @@ public class Customer {
         this.address = address;
     }
 
-    public Date getDate_of_birth() {
+    public LocalDate getDate_of_birth() {
         return date_of_birth;
     }
 
-    public void setDate_of_birth(Date date_of_birth) {
+    public void setDate_of_birth(LocalDate date_of_birth) {
         this.date_of_birth = date_of_birth;
     }
 
@@ -128,19 +128,19 @@ public class Customer {
         this.dl_num = dl_num;
     }
 
-    public Date getDl_issue_date() {
+    public LocalDate getDl_issue_date() {
         return dl_issue_date;
     }
 
-    public void setDl_issue_date(Date dl_issue_date) {
+    public void setDl_issue_date(LocalDate dl_issue_date) {
         this.dl_issue_date = dl_issue_date;
     }
 
-    public Date getDl_expire_Date() {
+    public LocalDate getDl_expire_Date() {
         return dl_expire_Date;
     }
 
-    public void setDl_expire_Date(Date dl_expire_Date) {
+    public void setDl_expire_Date(LocalDate dl_expire_Date) {
         this.dl_expire_Date = dl_expire_Date;
     }
 
@@ -159,5 +159,4 @@ public class Customer {
     public void setPolicies(List<Policy> policies) {
         this.policies = policies;
     }
-// Getters and setters
 }

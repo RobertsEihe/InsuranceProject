@@ -8,13 +8,13 @@ public class Document {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int document_id;
+    private Long document_id;
 
     @Column(nullable = false)
     private String document;
 
     @ManyToOne
-    @JoinColumn(name = "policyId", nullable = false)
+    @JoinColumn(name = "policy_id", nullable = false)
     private Policy policy;
 
     public Document() {}
@@ -24,11 +24,11 @@ public class Document {
         this.policy = policy;
     }
 
-    public int getDocument_id() {
+    public Long getDocument_id() {
         return document_id;
     }
 
-    public void setDocument_id(int document_id) {
+    public void setDocument_id(Long document_id) {
         this.document_id = document_id;
     }
 
@@ -47,6 +47,4 @@ public class Document {
     public void setPolicy(Policy policy) {
         this.policy = policy;
     }
-
-// Getters and setters
 }

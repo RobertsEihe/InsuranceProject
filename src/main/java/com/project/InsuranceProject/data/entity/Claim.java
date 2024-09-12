@@ -9,7 +9,7 @@ public class Claim {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int claim_id;
+    private Long claim_id;
 
     @Column(nullable = false)
     private String type;
@@ -29,7 +29,7 @@ public class Claim {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "policyId", nullable = false)
+    @JoinColumn(name = "policy_id", nullable = false)
     private Policy policy;
 
     public Claim() {}
@@ -43,11 +43,11 @@ public class Claim {
         this.policy = policy;
     }
 
-    public int getClaim_id() {
+    public Long getClaim_id() {
         return claim_id;
     }
 
-    public void setClaim_id(int claim_id) {
+    public void setClaim_id(Long claim_id) {
         this.claim_id = claim_id;
     }
 
@@ -98,6 +98,4 @@ public class Claim {
     public void setPolicy(Policy policy) {
         this.policy = policy;
     }
-
-// Getters and setters
 }

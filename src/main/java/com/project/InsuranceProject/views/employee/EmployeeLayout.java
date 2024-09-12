@@ -1,4 +1,4 @@
-package com.project.InsuranceProject.views.admin;
+package com.project.InsuranceProject.views.employee;
 
 import com.project.InsuranceProject.views.admin.forms.AddUsers;
 import com.project.InsuranceProject.views.admin.tables.UserManagementView;
@@ -6,6 +6,7 @@ import com.project.InsuranceProject.views.admin.forms.EditUserRoles;
 import com.project.InsuranceProject.views.admin.myview.MyViewView;
 
 
+import com.project.InsuranceProject.views.employee.tables.*;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.Footer;
@@ -19,16 +20,11 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
 import com.vaadin.flow.component.icon.VaadinIcon;
-
-
-/**
- * The main view is a top-level placeholder for other views.
- */
-public class AdminLayout extends AppLayout {
+public class EmployeeLayout extends AppLayout {
 
     private H1 viewTitle;
 
-    public AdminLayout() {
+    public EmployeeLayout() {
         setPrimarySection(Section.DRAWER);
         addDrawerContent();
         addHeaderContent();
@@ -45,7 +41,7 @@ public class AdminLayout extends AppLayout {
     }
 
     private void addDrawerContent() {
-        Span appName = new Span("Admin menu");
+        Span appName = new Span();
         appName.addClassNames(LumoUtility.FontWeight.SEMIBOLD, LumoUtility.FontSize.LARGE);
         Header header = new Header(appName);
 
@@ -58,9 +54,11 @@ public class AdminLayout extends AppLayout {
         SideNav nav = new SideNav();
 
 
-        nav.addItem(new SideNavItem("View Users", UserManagementView.class, VaadinIcon.FILE.create()));
-        nav.addItem(new SideNavItem("Add Users", AddUsers.class, VaadinIcon.PENCIL.create()));
-        nav.addItem(new SideNavItem("View something else", MyViewView.class, VaadinIcon.CREDIT_CARD.create()));
+        nav.addItem(new SideNavItem("View Policeies", ViewPolicies.class, VaadinIcon.FILE.create()));
+        nav.addItem(new SideNavItem("View Risks", ViewRisks.class, VaadinIcon.PENCIL.create()));
+        nav.addItem(new SideNavItem("View Payments", ViewPayments.class, VaadinIcon.CREDIT_CARD.create()));
+        nav.addItem(new SideNavItem("View Documents", ViewDocuments.class, VaadinIcon.CREDIT_CARD.create()));
+        nav.addItem(new SideNavItem("View Claims", ViewClaims.class, VaadinIcon.CREDIT_CARD.create()));
 
         return nav;
     }

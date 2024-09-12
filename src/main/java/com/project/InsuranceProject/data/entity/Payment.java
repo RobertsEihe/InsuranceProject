@@ -9,7 +9,7 @@ public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int payment_id;
+    private Long payment_id;
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
@@ -34,11 +34,11 @@ public class Payment {
         this.policy = policy;
     }
 
-    public int getPayment_id() {
+    public Long getPayment_id() {
         return payment_id;
     }
 
-    public void setPayment_id(int payment_id) {
+    public void setPayment_id(Long payment_id) {
         this.payment_id = payment_id;
     }
 
@@ -73,5 +73,4 @@ public class Payment {
     public void setPolicy(Policy policy) {
         this.policy = policy;
     }
-// Getters and setters
 }

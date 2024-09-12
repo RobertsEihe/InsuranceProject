@@ -1,89 +1,123 @@
-# Database connection example using Spring JdbcTemplate
+# Insurance Management System
+# NEEDS TO BE FINSIHED!!!!!
+## Project Overview
 
-This is a simple example project that demonstrates how to fetch data from a SQL database and show it in a Vaadin application. 
+This Insurance Management System is a comprehensive web application designed for an insurance company. It provides functionality for customers, agents, employees, and system administrators to manage various aspects of insurance policies, claims, and user management.
 
-The app uses an embedded H2 database and generates some dummy data (in the ApplicationServiceInitListener class), but you can point it to any  database.
+## Key Features
 
-To use your own database:
+- Multi-user system with role-based access control
+- Policy management for vehicle, house, and health insurance
+- Risk assessment and premium calculation
+- Claims processing and approval system
+- Customer loyalty program
+- Fraud detection system
+- Automated invoicing and email notifications ???
 
-1. Configure the connection properties in the `application.properties` file to match your DB
-2. Change the JDBC driver dependency in `pom.xml` to match your database type and vendor:
+## User Roles
 
-```
-	    <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-```
-3. Remove the dummy data creation in `ApplicationServiceInitListener.java`
-4. Modify the `Movie`, `Director`, and `MovieService` classes to match your database structure.
-5. Modify the `MainView` class to match your data structure
+1. **Customer**
+  - Register and manage account
+  - Create and purchase insurance policies
+  - File and track claims
+  - View policy details and payment history
 
+2. **Agent**
+  - Review and approve/deny policies under review
+  - Manage customer accounts
+  - Process claims
 
-## Running the Application
-There are two ways to run the application :  using `mvn spring-boot:run` or by running the `Application` class directly from your IDE.
+3. **Employee**
+  - Manage insurance products
+  - Adjust risk rates and coverage options
+  - Review suspicious claims
 
-You can use any IDE of your preference,but we suggest Eclipse or Intellij IDEA.
-Below are the configuration details to start the project using a `spring-boot:run` command. Both Eclipse and Intellij IDEA are covered.
+4. **System Administrator**
+  - User management (add/remove agents, employees, admins)
+  - System-wide configuration and maintenance
 
-#### Eclipse
-- Right click on a project folder and select `Run As` --> `Maven build..` . After that a configuration window is opened.
-- In the window set the value of the **Goals** field to `spring-boot:run` 
-- You can optionally select `Skip tests` checkbox
-- All the other settings can be left to default
+## Technical Stack
 
-Once configurations are set clicking `Run` will start the application
+- Backend: Spring Boot
+- Frontend: Vaadin
+- Database: PostgreSQL (Supabase.com)
+- Security: Spring Security
 
-#### Intellij IDEA
-- On the right side of the window, select Maven --> Plugins--> `spring-boot` --> `spring-boot:run` goal
-- Optionally, you can disable tests by clicking on a `Skip Tests mode` blue button.
+## Key Components
 
-Clicking on the green run button will start the application.
+1. **User Management**
+  - Authentication and authorization
+  - Role-based access control
 
-After the application has started, you can view your it at http://localhost:8080/ in your browser.
+2. **Policy Management**
+  - Policy creation and quotation
+  - Risk assessment and premium calculation
+  - Policy renewal and expiration handling
 
+3. **Claims Processing**
+  - Claim submission and tracking
+  - Approval workflow
+  - Fraud detection system
 
-If you want to run the application locally in the production mode, use `spring-boot:run -Pproduction` command instead.
-### Running Integration Tests
+4. **Payment Handling**
+  - Invoice generation
+  - Payment tracking
 
-Integration tests are implemented using [Vaadin TestBench](https://vaadin.com/testbench). The tests take a few minutes to run and are therefore included in a separate Maven profile. We recommend running tests with a production build to minimize the chance of development time toolchains affecting test stability. To run the tests using Google Chrome, execute
+5. **Document Management**
+  - Store and retrieve policy-related documents
 
-`mvn verify -Pit,production`
+6. **Reporting and Analytics**
+  - Customer history view
+  - Policy performance metrics
 
-and make sure you have a valid TestBench license installed.
+## Database Schema
 
-Profile `it` adds the following parameters to run integration tests:
-```sh
--Dwebdriver.chrome.driver=path_to_driver
--Dcom.vaadin.testbench.Parameters.runLocally=chrome
-```
+The system uses a relational database with the following key tables:
+- Users (Customer, Agent, Employee)
+- Policies
+- Risks(House,Vehicle,Health)
+- Claims
+- Payments
+- Documents
 
-If you would like to run a separate test make sure you have added these parameters to VM Options of JUnit run configuration
+## User Interfaces
 
-## Project overview
+1. **Customer Portal**
+  - Policy creation wizard
+  - Policy management dashboard
+  - Claim submission form
 
-Project follow the Maven's [standard directory layout structure](https://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html):
-- Under the `srs/main/java` are located Application sources
-   - `Application.java` is a runnable Java application class and a starting point
-   - `GreetService.java` is a  Spring service class
-   - `MainView.java` is a default view and entry point of the application
-- Under the `srs/test` are located test files
-- `src/main/resources` contains configuration files and static resources
-- The `frontend` directory in the root folder contains client-side dependencies and resource files
-   - All CSS styles used by the application are located under the root directory `frontend/styles`    
-   - Templates would be stored under the `frontend/src`
+2. **Agent Dashboard**
+  - Policy review queue
+  - Customer search and management
+  - Claim processing interface
 
+3. **Employee Tools**
+  - Risk and rate management interface
+  - Product configuration panel
 
-## More Information and Next Steps
+4. **Admin Console**
+  - User management interface
+  - System configuration panel
 
-- Vaadin Basics [https://vaadin.com/docs](https://vaadin.com/docs)
-- More components at [https://vaadin.com/components](https://vaadin.com/components) and [https://vaadin.com/directory](https://vaadin.com/directory)
-- Download this and other examples at [https://vaadin.com/start](https://vaadin.com/start)
-- Using Vaadin and Spring [https://vaadin.com/docs/v14/flow/spring/tutorial-spring-basic.html](https://vaadin.com/docs/v14/flow/spring/tutorial-spring-basic.html) article
-- Join discussion and ask a question at [https://vaadin.com/forum](https://vaadin.com/forum)
+## Security Features
 
+- Encrypted password storage
+- Secure communication (HTTPS)
+- Role-based access control
+- Session management?
+- Password reset functionality?
 
-## Notes
+## Future Enhancements
 
-If you run application from a command line, remember to prepend a `mvn` to the command.
+- Multi-language support
+- Chatbot for customer support
+- Mobile application
+- Integration with external risk assessment APIs
+
+## Getting Started
+
+1. Clone the repository
+2. Configure the database connection in `application.properties`
+3. Run `mvn clean install` to build the project
+4. Start the application 

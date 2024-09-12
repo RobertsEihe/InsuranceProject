@@ -7,7 +7,9 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility.Gap;
+import jakarta.annotation.security.PermitAll;
 
+@PermitAll
 @PageTitle("viewX")
 @Route(value = "admin/viewx", layout = AdminLayout.class)
 public class MyViewView extends Composite<VerticalLayout> {
