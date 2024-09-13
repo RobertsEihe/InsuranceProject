@@ -1,5 +1,6 @@
 package com.project.InsuranceProject.views;
 import com.project.InsuranceProject.views.LandingpageUI.AppLayoutNavbar;
+import com.project.InsuranceProject.views.registerUser.RegisterView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
@@ -7,9 +8,12 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 import jakarta.annotation.security.PermitAll;
+
+@Route("")
 @PermitAll
-@Route("Home")
+@AnonymousAllowed
 public class HomeView extends VerticalLayout {
 
     public HomeView() { homeview();}
@@ -24,7 +28,7 @@ public class HomeView extends VerticalLayout {
             UI.getCurrent().navigate(LoginView.class);
         });
         Button Register = new Button("Register", e -> {
-            UI.getCurrent().navigate(LoginView.class);
+            UI.getCurrent().navigate(RegisterView.class);
         });
 
         HorizontalLayout formLayouth = new HorizontalLayout(Login,Register);

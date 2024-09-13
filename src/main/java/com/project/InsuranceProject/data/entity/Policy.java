@@ -32,8 +32,11 @@ public class Policy {
     @Column(nullable = false)
     private String ur_status;
 
-    @ManyToOne
-    @JoinColumn(name = "id")
+//    @ManyToOne
+//    @JoinColumn(name = "id")
+//    private Users users;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")  // This is the foreign key column
     private Users users;
 
     @OneToMany(mappedBy = "policy")
