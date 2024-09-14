@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -20,34 +19,42 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public Users saveUser(Users user) {
         return userRepository.save(user);
     }
 
+    @Transactional(readOnly = true)
     public Optional<Users> getUserById(Long id) {
         return userRepository.findById(id);
     }
 
+    @Transactional(readOnly = true)
     public Optional<Users> getUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
+    @Transactional(readOnly = true)
     public List<Users> getAllUsers() {
         return userRepository.findAll();
     }
 
+    @Transactional
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     public List<Users> getUsersByRole(String role) {
         return userRepository.findByRole(role);
     }
 
+    @Transactional
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
     }
 
+    @Transactional
     public Users updateUser(Users user) {
         if (userRepository.existsById(user.getId())) {
             return userRepository.save(user);

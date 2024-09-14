@@ -1,5 +1,6 @@
 package com.project.InsuranceProject.views.admin.myview;
 
+import com.project.InsuranceProject.security.Roles;
 import com.project.InsuranceProject.views.admin.AdminLayout;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -8,10 +9,11 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility.Gap;
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 
-@PermitAll
 @PageTitle("viewX")
 @Route(value = "admin/viewx", layout = AdminLayout.class)
+@RolesAllowed(Roles.ADMIN)
 public class MyViewView extends Composite<VerticalLayout> {
 
     public MyViewView() {
