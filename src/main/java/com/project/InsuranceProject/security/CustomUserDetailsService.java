@@ -28,9 +28,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
-                user.getPassword(), // The password is already encrypted using BCrypt
+                user.getPassword(),
                 Collections.singletonList(new SimpleGrantedAuthority(user.getRole()))
         );
     }
 }
-

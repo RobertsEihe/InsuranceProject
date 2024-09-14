@@ -1,5 +1,6 @@
 package com.project.InsuranceProject.views;
 
+import com.project.InsuranceProject.security.Roles;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.charts.model.Label;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
@@ -13,12 +14,14 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.html.H1;
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 
 import java.io.Console;
 import java.time.LocalDate;
 
 @PermitAll
-@Route("createpolicy")
+@Route(value = "createpolicy", layout = MainLayout.class)
+@RolesAllowed(Roles.CUSTOMER)
 public class CreatePolicyView extends VerticalLayout {
     private ComboBox<String> agentComboBox;
     private ComboBox<String> insuranceTypeComboBox;

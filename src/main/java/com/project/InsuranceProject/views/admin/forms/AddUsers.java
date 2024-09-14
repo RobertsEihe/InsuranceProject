@@ -2,6 +2,7 @@ package com.project.InsuranceProject.views.admin.forms;
 
 import com.project.InsuranceProject.data.entity.Users;
 import com.project.InsuranceProject.data.services.UserService;
+import com.project.InsuranceProject.security.Roles;
 import com.project.InsuranceProject.views.admin.AdminLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -19,12 +20,14 @@ import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.support.TransactionTemplate;
 
 @PermitAll
 @PageTitle("Add New User")
 @Route(value = "admin/add-user", layout = AdminLayout.class)
+@RolesAllowed(Roles.ADMIN)
 public class AddUsers extends VerticalLayout {
 
     private final UserService userService;

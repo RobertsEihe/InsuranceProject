@@ -1,5 +1,6 @@
 package com.project.InsuranceProject.views.admin;
 
+import com.project.InsuranceProject.security.SecurityService;
 import com.project.InsuranceProject.views.admin.forms.AddUsers;
 import com.project.InsuranceProject.views.admin.tables.UserManagementView;
 import com.project.InsuranceProject.views.admin.forms.EditUserRoles;
@@ -8,6 +9,7 @@ import com.project.InsuranceProject.views.admin.myview.MyViewView;
 
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Header;
@@ -27,8 +29,10 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 public class AdminLayout extends AppLayout {
 
     private H1 viewTitle;
+    private SecurityService securityService;
 
-    public AdminLayout() {
+    public AdminLayout(SecurityService securityService) {
+        this.securityService = securityService;
         setPrimarySection(Section.DRAWER);
         addDrawerContent();
         addHeaderContent();
@@ -40,8 +44,9 @@ public class AdminLayout extends AppLayout {
 
         viewTitle = new H1();
         viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
+        Button logOut = new Button("Log out", e -> securityService.logout());
 
-        addToNavbar(true, toggle, viewTitle);
+        addToNavbar(true, toggle, viewTitle, logOut);
     }
 
     private void addDrawerContent() {

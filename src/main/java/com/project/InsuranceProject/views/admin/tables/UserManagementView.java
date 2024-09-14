@@ -2,6 +2,7 @@ package com.project.InsuranceProject.views.admin.tables;
 
 import com.project.InsuranceProject.data.entity.Users;
 import com.project.InsuranceProject.data.services.UserService;
+import com.project.InsuranceProject.security.Roles;
 import com.project.InsuranceProject.views.admin.AdminLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -9,12 +10,14 @@ import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 
 import java.util.List;
 
-@PermitAll
 @PageTitle("User Management")
 @Route(value = "admin/user-management", layout = AdminLayout.class)
+@PermitAll
+@RolesAllowed(Roles.ADMIN)
 public class UserManagementView extends VerticalLayout {
 
     private final UserService userService;
