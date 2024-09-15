@@ -14,9 +14,6 @@ public class Claim {
     @Column
     private String type;
 
-    @Column(nullable = false)
-    private String status;  // maybe delete later
-
     @Temporal(TemporalType.DATE)
     @Column
     private Date date_loss;
@@ -113,13 +110,4 @@ public class Claim {
         this.policy = policy;
     }
 
-    // Maybe delete later
-    // Getter and Setter for 'status'
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }

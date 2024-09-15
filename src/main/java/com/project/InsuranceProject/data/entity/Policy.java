@@ -63,6 +63,9 @@ public class Policy {
 
     }
 
+    public Policy(LocalDate now, LocalDate localDate, int i, boolean b, String ur, String pending, Object o) {
+    }
+
     public Long getPolicy_id() {
         return policy_id;
     }
