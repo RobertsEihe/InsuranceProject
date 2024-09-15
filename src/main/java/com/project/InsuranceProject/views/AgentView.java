@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-@PageTitle("Agent")
+@PageTitle("Agent View")
 @Route(value = "agent", layout = AgentLayout.class)
 //@RolesAllowed("ROLE_AGENT")
 @PermitAll
