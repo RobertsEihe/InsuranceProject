@@ -11,11 +11,11 @@ public class Health {
     private Long health_id;
 
     @OneToOne
-    @JoinColumn(name = "risk_id", nullable = false)
-    private Risk risk;
+    @JoinColumn(name = "policy_risk_id")
+    private Policy_risk policy_risk_id;
 
-    public Health(Long id, Risk risk) {
-        this.risk = risk;
+    public Health(Long id, Policy_risk policy_risk) {
+        this.policy_risk_id = policy_risk;
     }
 
     public Long getHealth_id() {
@@ -26,11 +26,11 @@ public class Health {
         this.health_id = health_id;
     }
 
-    public Risk getRisk() {
-        return risk;
+    public Policy_risk getRisk() {
+        return policy_risk_id;
     }
 
-    public void setRisk(Risk risk) {
-        this.risk = risk;
+    public void setPolicyRisk(Policy_risk policy_risk_id) {
+        this.policy_risk_id = policy_risk_id;
     }
 }

@@ -13,28 +13,28 @@ public class Policy {
     private Long policy_id;
 
     @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
+    @Column
     private LocalDate start_date;
 
     @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
+    @Column
     private LocalDate end_date;
 
-    @Column(nullable = false)
+    @Column
     private int duration;
 
-    @Column(nullable = false)
+    @Column
     private boolean aut_renewal;
 
-    @Column(nullable = false)
+    @Column
     private String status;
 
-    @Column(nullable = false)
+    @Column
     private String ur_status;
 
-//    @ManyToOne
-//    @JoinColumn(name = "id")
-//    private Users users;
+    @Column
+    private String agent_id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")  // This is the foreign key column
     private Users users;
@@ -45,9 +45,12 @@ public class Policy {
     @OneToMany(mappedBy = "policy")
     private List<Document> documents;
 
+    @OneToMany(mappedBy = "policy", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Policy_risk> policy_risks;
+
     public Policy() {}
 
-    public Policy(LocalDate start_date, LocalDate end_date, int duration, boolean aut_renewal, String status, String ur_status,
+    public Policy(LocalDate start_date, LocalDate end_date, int duration, boolean aut_renewal, String status, String ur_status, String agent_id,
                   Users users) {
         this.start_date = start_date;
         this.end_date = end_date;
@@ -55,7 +58,9 @@ public class Policy {
         this.aut_renewal = aut_renewal;
         this.status = status;
         this.ur_status = ur_status;
+        this.agent_id = agent_id;
         this.users = users;
+
     }
 
     public Long getPolicy_id() {
@@ -120,6 +125,14 @@ public class Policy {
 
     public void setUsers(Users users) {
         this.users = users;
+    }
+
+    public String getAgentId() {
+        return agent_id;
+    }
+
+    public void setAgentId(String agent_id) {
+        this.agent_id = agent_id;
     }
 
     public List<Claim> getClaims() {
