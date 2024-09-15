@@ -68,6 +68,9 @@ public class Users {
     @Column
     private String role;
 
+    @Column
+    private boolean fraud_status = false;
+
 //    @OneToMany(mappedBy = "users")
 //    private List<Policy> policies;
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -237,6 +240,14 @@ public class Users {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public boolean getFraudStatus() {
+        return fraud_status;
+    }
+
+    public void setFraudStatus(boolean fraud_status) {
+        this.fraud_status = fraud_status;
     }
 
     public List<Policy> getPolicies() {

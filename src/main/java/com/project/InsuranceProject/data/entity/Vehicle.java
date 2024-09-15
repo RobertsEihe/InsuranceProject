@@ -26,18 +26,18 @@ public class Vehicle {
     private float current_value;
 
     @ManyToOne
-    @JoinColumn(name = "risk_id", nullable = false)
-    private Risk risk;
+    @JoinColumn(name = "policy_risk_id")
+    private Policy_risk policy_risk_id;
 
     public Vehicle() {}
 
-    public Vehicle(String make, String model, int year, int odd, float current_value, Risk risk) {
+    public Vehicle(String make, String model, int year, int odd, float current_value, Policy_risk policy_risk_id) {
         this.make = make;
         this.model = model;
         this.year = year;
         this.odd = odd;
         this.current_value = current_value;
-        this.risk = risk;
+        this.policy_risk_id = policy_risk_id;
     }
 
     public Long getVehicle_id() {
@@ -88,11 +88,11 @@ public class Vehicle {
         this.current_value = current_value;
     }
 
-    public Risk getRisk() {
-        return risk;
+    public Policy_risk getRisk() {
+        return policy_risk_id;
     }
 
-    public void setRisk(Risk risk) {
-        this.risk = risk;
+    public void setPolicyRisk(Policy_risk policy_risk_id) {
+        this.policy_risk_id = policy_risk_id;
     }
 }
