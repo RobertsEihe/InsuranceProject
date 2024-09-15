@@ -14,6 +14,9 @@ public class Claim {
     @Column(nullable = false)
     private String type;
 
+    @Column(nullable = false)
+    private String status;  // maybe delete later
+
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private Date date_loss;
@@ -97,5 +100,15 @@ public class Claim {
 
     public void setPolicy(Policy policy) {
         this.policy = policy;
+    }
+
+    // Maybe delete later
+    // Getter and Setter for 'status'
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
