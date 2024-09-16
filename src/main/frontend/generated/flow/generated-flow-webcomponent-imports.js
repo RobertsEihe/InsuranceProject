@@ -3,7 +3,7 @@ import { injectGlobalWebcomponentCss } from 'Frontend/generated/jar-resources/th
 import { injectGlobalCss } from 'Frontend/generated/jar-resources/theme-util.js';
 
 import { css, unsafeCSS, registerStyles } from '@vaadin/vaadin-themable-mixin';
-import $cssFromFile_0 from 'Frontend/themes/chat-theme/styles.css?inline';
+import $cssFromFile_0 from 'Frontend/styles/shared-styles.css?inline';
 import '@vaadin/polymer-legacy-adapter/style-modules.js';
 import '@vaadin/app-layout/theme/lumo/vaadin-app-layout.js';
 import '@vaadin/vertical-layout/theme/lumo/vaadin-vertical-layout.js';

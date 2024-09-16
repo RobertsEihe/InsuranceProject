@@ -1,7 +1,7 @@
 package com.project.InsuranceProject.data.services;
 import com.project.InsuranceProject.data.entity.Users;
 import com.project.InsuranceProject.security.Roles;
-import com.project.InsuranceProject.views.registerUser.RegisterForm;
+import com.project.InsuranceProject.views.shared.RegisterForm;
 
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;

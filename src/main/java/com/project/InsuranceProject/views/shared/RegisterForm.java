@@ -1,4 +1,4 @@
-package com.project.InsuranceProject.views.registerUser;
+package com.project.InsuranceProject.views.shared;
 
 import com.vaadin.flow.component.HasValueAndElement;
 import com.vaadin.flow.component.button.Button;

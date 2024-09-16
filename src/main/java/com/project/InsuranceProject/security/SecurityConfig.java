@@ -1,6 +1,6 @@
 package com.project.InsuranceProject.security;
 
-import com.project.InsuranceProject.views.LoginView;
+import com.project.InsuranceProject.views.shared.LoginView;
 import com.vaadin.flow.spring.security.VaadinWebSecurity;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

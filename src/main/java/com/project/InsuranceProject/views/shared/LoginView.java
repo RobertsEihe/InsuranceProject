@@ -1,5 +1,5 @@
 
-package com.project.InsuranceProject.views;
+package com.project.InsuranceProject.views.shared;
 
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Anchor;
@@ -13,7 +13,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 
-@Route("login")
+@Route(value = "login", layout = AppLayoutNavbar.class)
 @PageTitle("LoginView")
 @AnonymousAllowed
 //@CssImport("./styles/shared-styles.css")

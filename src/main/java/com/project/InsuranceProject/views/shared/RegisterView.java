@@ -1,9 +1,7 @@
-package com.project.InsuranceProject.views.registerUser;
-import com.project.InsuranceProject.data.entity.Users;
-import com.project.InsuranceProject.data.repositories.UserRepository;
+package com.project.InsuranceProject.views.shared;
 import com.project.InsuranceProject.data.services.RegisterFormBinder;
 import com.project.InsuranceProject.data.services.UserService;
-import com.project.InsuranceProject.views.registerUser.RegisterForm;
+import com.project.InsuranceProject.views.shared.RegisterForm;
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
@@ -12,7 +10,7 @@ import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Route("register")
+@Route(value= "register", layout = AppLayoutNavbar.class)
 @PermitAll
 @AnonymousAllowed
 public class RegisterView extends VerticalLayout {
