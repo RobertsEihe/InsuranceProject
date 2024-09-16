@@ -19,13 +19,20 @@ public class PolicyService {
 		this.policyRepository = policyRepository;
 	}
 
-	// Fetch all policies that are under review (urStatus = "UR")
+	// Fetch all policies that are under review
 	@Transactional(readOnly = true)
 	public List<Policy> getPoliciesUnderReview() {
-		return policyRepository.findByUrStatus("UR");
+		List<Policy> policies = policyRepository.findByUrStatus("UR");
+
+		// Manually initialize lazy-loaded properties
+		policies.forEach(policy -> {
+			Hibernate.initialize(policy.getClaims());  // This forces initialization of the claims collection
+		});
+		return policies;
 	}
 
-	// Search policies by username or status
+
+	// Search policies by search text (name or status)
 	@Transactional(readOnly = true)
 	public List<Policy> searchPolicies(String searchText) {
 		return policyRepository.searchPolicies(searchText);
@@ -34,14 +41,14 @@ public class PolicyService {
 	// Approve a policy
 	@Transactional
 	public void approvePolicy(Policy policy) {
-		policy.setUrStatus("APPROVED");  // Renamed setter to setUrStatus
+		policy.setUrStatus("APPROVED");
 		policyRepository.save(policy);
 	}
 
 	// Deny a policy
 	@Transactional
 	public void denyPolicy(Policy policy) {
-		policy.setUrStatus("DENIED");  // Renamed setter to setUrStatus
+		policy.setUrStatus("DENIED");
 		policyRepository.save(policy);
 	}
 
@@ -49,11 +56,7 @@ public class PolicyService {
 	@Transactional(readOnly = true)
 	public List<Policy> getAllPolicies() {
 		List<Policy> policies = policyRepository.findAll();
-		policies.forEach(policy -> {
-			Hibernate.initialize(policy.getDocuments());  // Force initialization of documents
-			Hibernate.initialize(policy.getClaims());     // Force initialization of claims
-		});
+		policies.forEach(policy -> Hibernate.initialize(policy.getUsers()));  // Initialize users collection
 		return policies;
 	}
-
 }

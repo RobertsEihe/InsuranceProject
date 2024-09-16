@@ -20,10 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-@PageTitle("Agent View")
 @Route(value = "agent", layout = AgentLayout.class)
 @RolesAllowed({Roles.AGENT, Roles.ADMIN})
 @PermitAll
+@PageTitle("Agent View")
 public class AgentView extends VerticalLayout {
 
 	private final PolicyService policyService;
@@ -53,6 +53,7 @@ public class AgentView extends VerticalLayout {
 		policyGrid.addColumn(Policy::getStart_date).setHeader("Start Date");
 		policyGrid.addColumn(Policy::getEnd_date).setHeader("End Date");
 		policyGrid.addColumn(Policy::getStatus).setHeader("Status");
+
 		policyGrid.addComponentColumn(policy -> {
 			Button approveButton = new Button("Approve", click -> approvePolicy(policy));
 			Button denyButton = new Button("Deny", click -> denyPolicy(policy));
@@ -64,15 +65,7 @@ public class AgentView extends VerticalLayout {
 	}
 
 	private void updatePolicyList() {
-		String searchText = searchField.getValue();
-		List<Policy> policies;
-
-		if (searchText == null || searchText.isEmpty()) {
-			policies = policyService.getPoliciesUnderReview();
-		} else {
-			policies = policyService.searchPolicies(searchText);
-		}
-
+		List<Policy> policies = policyService.getAllPolicies();  // Fetch all policies
 		policyGrid.setItems(policies);
 	}
 
