@@ -133,7 +133,6 @@ public class CreatePolicyView extends VerticalLayout {
 
         // Add the agent and insurance type fields to the layout
         formLayout.add(agentComboBox, insuranceTypeComboBox);
-
     }
 
     private void createVehicleForm(VerticalLayout formLayout) {
@@ -192,7 +191,6 @@ public class CreatePolicyView extends VerticalLayout {
         formLayout.add(startDateField, durationComboBox);
     }
 
-
     private boolean isFormValid(ComboBox<String> agentComboBox, ComboBox<String> insuranceTypeComboBox) {
         boolean isValid = true;
 
@@ -210,8 +208,6 @@ public class CreatePolicyView extends VerticalLayout {
         } else {
             insuranceTypeComboBox.setInvalid(false);
         }
-
         return isValid;
     }
-
 }
