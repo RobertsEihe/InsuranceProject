@@ -12,11 +12,9 @@ public class Policy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long policy_id;
 
-    @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private LocalDate start_date;
 
-    @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private LocalDate end_date;
 
@@ -30,31 +28,28 @@ public class Policy {
     private String status;
 
     @Column(nullable = false)
-    private String ur_status;
+    private String urStatus;
 
-//    @ManyToOne
-//    @JoinColumn(name = "id")
-//    private Users users;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")  // This is the foreign key column
+    @JoinColumn(name = "user_id")
     private Users users;
 
-    @OneToMany(mappedBy = "policy")
+    @OneToMany(mappedBy = "policy", fetch = FetchType.EAGER)
     private List<Claim> claims;
 
-    @OneToMany(mappedBy = "policy")
+    @OneToMany(mappedBy = "policy", fetch = FetchType.EAGER)
     private List<Document> documents;
 
     public Policy() {}
 
-    public Policy(LocalDate start_date, LocalDate end_date, int duration, boolean aut_renewal, String status, String ur_status,
-                  Users users) {
+    public Policy(LocalDate start_date, LocalDate end_date, int duration, boolean aut_renewal, String status, String urStatus,
+        Users users) {
         this.start_date = start_date;
         this.end_date = end_date;
         this.duration = duration;
         this.aut_renewal = aut_renewal;
         this.status = status;
-        this.ur_status = ur_status;
+        this.urStatus = urStatus;
         this.users = users;
     }
 
@@ -106,12 +101,12 @@ public class Policy {
         this.status = status;
     }
 
-    public String getUr_status() {
-        return ur_status;
+    public String getUrStatus() {
+        return urStatus;
     }
 
-    public void setUr_status(String ur_status) {
-        this.ur_status = ur_status;
+    public void setUrStatus(String urStatus) {
+        this.urStatus = urStatus;
     }
 
     public Users getUsers() {

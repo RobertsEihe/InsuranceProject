@@ -1,7 +1,9 @@
-package com.project.InsuranceProject.views;
+package com.project.InsuranceProject.views.agent.tables;
 
 import com.project.InsuranceProject.data.entity.Policy;
 import com.project.InsuranceProject.data.services.PolicyService;
+import com.project.InsuranceProject.security.Roles;
+import com.project.InsuranceProject.views.agent.AgentLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
@@ -20,9 +22,8 @@ import java.util.List;
 
 @PageTitle("Agent View")
 @Route(value = "agent", layout = AgentLayout.class)
-//@RolesAllowed("ROLE_AGENT")
+@RolesAllowed({Roles.AGENT, Roles.ADMIN})
 @PermitAll
-@AnonymousAllowed
 public class AgentView extends VerticalLayout {
 
 	private final PolicyService policyService;

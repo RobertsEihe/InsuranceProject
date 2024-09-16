@@ -34,4 +34,9 @@ public class ClaimService {
 		claim.setStatus("DENIED");
 		claimRepository.save(claim);
 	}
+
+	@Transactional(readOnly = true)
+	public List<Claim> getAllClaims() {
+		return claimRepository.findAll();
+	}
 }

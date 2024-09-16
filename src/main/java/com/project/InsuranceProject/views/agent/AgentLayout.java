@@ -1,17 +1,23 @@
-package com.project.InsuranceProject.views;
+package com.project.InsuranceProject.views.agent;
 
+import com.project.InsuranceProject.views.admin.AdminLayout;
+import com.project.InsuranceProject.views.agent.tables.AgentView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.router.PageTitle;
+import com.project.InsuranceProject.security.Roles;
+import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RolesAllowed;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
+import jakarta.annotation.security.RolesAllowed;
 
-//@RolesAllowed("ROLE_AGENT")  // Restrict this layout to Agents
+@PageTitle("Agent Layout")
 @PermitAll
-@AnonymousAllowed
+@Route(value = "agent/agent-layout", layout = AgentLayout.class)
+@RolesAllowed({Roles.AGENT, Roles.ADMIN})
 public class AgentLayout extends AppLayout {
 
 	public AgentLayout() {
