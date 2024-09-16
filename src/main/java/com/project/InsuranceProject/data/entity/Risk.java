@@ -24,6 +24,9 @@ public class Risk {
     @OneToMany(mappedBy = "risk", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Policy_risk> policy_risk;
 
+    public Risk() {
+    }
+
     public Risk(String type, String risk, double rate, List<Policy_risk> policy_risk) {
 
         this.type = type;
