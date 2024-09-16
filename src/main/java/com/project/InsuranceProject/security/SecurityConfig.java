@@ -28,6 +28,7 @@ public class SecurityConfig extends VaadinWebSecurity {
         setLoginView(http, LoginView.class);
 
         http
+
                 .formLogin(formLogin ->
                         formLogin
                                 .loginPage("/login")

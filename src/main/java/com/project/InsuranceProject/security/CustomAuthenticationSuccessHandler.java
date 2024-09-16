@@ -24,7 +24,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                 response.sendRedirect("/admin/user-management");
                 return;
             } else if (authority.getAuthority().equals(Roles.CUSTOMER)) {
-                response.sendRedirect("/createpolicy");
+                response.sendRedirect("/Customerpolicy");
                 return;
             }
         }

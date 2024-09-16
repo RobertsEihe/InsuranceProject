@@ -1,6 +1,10 @@
 package com.project.InsuranceProject.views.LandingpageUI;
 
+import com.project.InsuranceProject.views.LoginView;
+import com.project.InsuranceProject.views.registerUser.RegisterView;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.theme.lumo.LumoUtility;
@@ -12,10 +16,17 @@ public class AppLayoutNavbar extends AppLayout {
                 .set("left", "var(--lumo-space-l)").set("margin", "0")
                 .set("position", "absolute");
 
+        Button Login = new Button("Login", e -> {
+            UI.getCurrent().navigate(LoginView.class);
+        });
+        Button Register = new Button("Register", e -> {
+            UI.getCurrent().navigate(RegisterView.class);
+        });
+
         HorizontalLayout navigation = getNavigation();
         navigation.getElement();
 
-        addToNavbar(title, navigation);
+        addToNavbar(title, navigation,Login,Register);
     }
     private HorizontalLayout getNavigation() {
         HorizontalLayout navigation = new HorizontalLayout();
