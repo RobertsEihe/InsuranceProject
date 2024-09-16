@@ -1,12 +1,6 @@
 package com.project.InsuranceProject.views.employee;
 
-import com.project.InsuranceProject.views.admin.forms.AddUsers;
-import com.project.InsuranceProject.views.admin.tables.UserManagementView;
-import com.project.InsuranceProject.views.admin.forms.EditUserRoles;
-import com.project.InsuranceProject.views.admin.myview.MyViewView;
-
-
-import com.project.InsuranceProject.views.employee.tables.*;
+import com.project.InsuranceProject.views.employee.tables.ViewRisks;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.Footer;
@@ -54,11 +48,7 @@ public class EmployeeLayout extends AppLayout {
         SideNav nav = new SideNav();
 
 
-        nav.addItem(new SideNavItem("View Policeies", ViewPolicies.class, VaadinIcon.FILE.create()));
         nav.addItem(new SideNavItem("View Risks", ViewRisks.class, VaadinIcon.PENCIL.create()));
-        nav.addItem(new SideNavItem("View Payments", ViewPayments.class, VaadinIcon.CREDIT_CARD.create()));
-        nav.addItem(new SideNavItem("View Documents", ViewDocuments.class, VaadinIcon.CREDIT_CARD.create()));
-        nav.addItem(new SideNavItem("View Claims", ViewClaims.class, VaadinIcon.CREDIT_CARD.create()));
 
         return nav;
     }

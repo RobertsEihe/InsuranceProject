@@ -4,8 +4,10 @@ import com.project.InsuranceProject.data.entity.*;
 import com.project.InsuranceProject.data.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeViewService {
@@ -28,31 +30,38 @@ public class EmployeeViewService {
         return riskRepository.findAll();
     }
 
-    public List<House> getAllHouses() {
-        return houseRepository.findAll();
+    public Optional<Risk> getRiskById(Long id) {
+        return riskRepository.findById(id);
     }
 
-    public List<Vehicle> getAllVehicles() {
-        return vehicleRepository.findAll();
+    @Transactional
+    public Risk saveRisk(Risk risk) {
+        return riskRepository.save(risk);
     }
 
-    public List<Health> getAllHealth() {
-        return healthRepository.findAll();
+    @Transactional
+    public Risk updateRisk(Risk risk) {
+        if (riskRepository.existsById(risk.getRisk_id())) {
+            return riskRepository.save(risk);
+        } else {
+            throw new RuntimeException("Risk not found with id: " + risk.getRisk_id());
+        }
     }
 
-    public List<Payment> getAllPayments() {
-        return paymentRepository.findAll();
+    @Transactional
+    public void deleteRisk(Long id) {
+        riskRepository.deleteById(id);
     }
 
-    public List<Users> getAllUsers() {
-        return userRepository.findAll();
+    public List<Risk> getRisksByType(String type) {
+        return riskRepository.findByType(type);
+    }
+    @Transactional
+    public Risk addRisk(Risk risk) {
+        if (risk.getRisk_id() != null) {
+            throw new IllegalArgumentException("New risk should not have an ID");
+        }
+        return riskRepository.save(risk);
     }
 
-    public List<Document> getAllDocuments() {
-        return documentRepository.findAll();
-    }
-
-    public List<Claim> getAllClaims() {
-        return claimRepository.findAll();
-    }
 }

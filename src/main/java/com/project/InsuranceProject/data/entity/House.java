@@ -26,18 +26,18 @@ public class House {
     private String mat_type;
 
     @ManyToOne
-    @JoinColumn(name = "risk_id", nullable = false)
-    private Risk risk;
+    @JoinColumn(name = "policy_risk_id")
+    private Policy_risk policy_risk_id;
 
     public House() {}
 
-    public House(String address, String type, int year_built, float area, String mat_type, Risk risk) {
+    public House(String address, String type, int year_built, float area, String mat_type, Policy_risk policy_risk_id) {
         this.address = address;
         this.type = type;
         this.year_built = year_built;
         this.area = area;
         this.mat_type = mat_type;
-        this.risk = risk;
+        this.policy_risk_id = policy_risk_id;
     }
 
     public Long getHouse_id() {
@@ -88,11 +88,11 @@ public class House {
         this.mat_type = mat_type;
     }
 
-    public Risk getRisk() {
-        return risk;
+    public Policy_risk getRisk() {
+        return policy_risk_id;
     }
 
-    public void setRisk(Risk risk) {
-        this.risk = risk;
+    public void setPolicyRisk(Policy_risk policy_risk_id) {
+        this.policy_risk_id = policy_risk_id;
     }
 }

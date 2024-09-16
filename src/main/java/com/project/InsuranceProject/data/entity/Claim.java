@@ -11,25 +11,25 @@ public class Claim {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long claim_id;
 
-    @Column(nullable = false)
+    @Column
     private String type;
 
-    @Column(nullable = false)
-    private String status;  // maybe delete later
-
     @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
+    @Column
     private Date date_loss;
 
     @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
+    @Column
     private Date date;
 
-    @Column(nullable = false)
-    private float amount;
+    @Column
+    private double amount;
 
-    @Column(nullable = false)
+    @Column
     private String description;
+
+    @Column
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "policy_id", nullable = false)
@@ -78,7 +78,7 @@ public class Claim {
         this.date = date;
     }
 
-    public float getAmount() {
+    public double getAmount() {
         return amount;
     }
 
@@ -94,6 +94,14 @@ public class Claim {
         this.description = description;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public Policy getPolicy() {
         return policy;
     }
@@ -102,13 +110,4 @@ public class Claim {
         this.policy = policy;
     }
 
-    // Maybe delete later
-    // Getter and Setter for 'status'
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }

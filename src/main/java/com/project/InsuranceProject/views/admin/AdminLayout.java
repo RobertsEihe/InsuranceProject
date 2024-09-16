@@ -3,10 +3,6 @@ package com.project.InsuranceProject.views.admin;
 import com.project.InsuranceProject.security.SecurityService;
 import com.project.InsuranceProject.views.admin.forms.AddUsers;
 import com.project.InsuranceProject.views.admin.tables.UserManagementView;
-import com.project.InsuranceProject.views.admin.forms.EditUserRoles;
-import com.project.InsuranceProject.views.admin.myview.MyViewView;
-
-
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
@@ -65,7 +61,6 @@ public class AdminLayout extends AppLayout {
 
         nav.addItem(new SideNavItem("View Users", UserManagementView.class, VaadinIcon.FILE.create()));
         nav.addItem(new SideNavItem("Add Users", AddUsers.class, VaadinIcon.PENCIL.create()));
-        nav.addItem(new SideNavItem("View something else", MyViewView.class, VaadinIcon.CREDIT_CARD.create()));
 
         return nav;
     }

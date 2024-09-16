@@ -8,6 +8,7 @@ import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
@@ -48,16 +49,24 @@ public class MainLayout extends AppLayout {
         Header header = new Header(appName);
 
         Scroller scroller = new Scroller(createNavigation());
-
+        scroller.setClassName(LumoUtility.Padding.SMALL);
         addToDrawer(header, scroller, createFooter());
+        setPrimarySection(Section.DRAWER);
     }
 
     private SideNav createNavigation() {
-        SideNav nav = new SideNav();
+
 
 //        nav.addItem(new SideNavItem("Hello World", HelloWorldView.class, LineAwesomeIcon.GLOBE_SOLID.create()));
-
+        SideNav nav = new SideNav();
+        nav.addItem(
+                new SideNavItem("Your Policies", "/Customerpolicy",
+                        VaadinIcon.DASHBOARD.create()),
+                new SideNavItem("Create New Policy", "/createpolicy", VaadinIcon.LIST.create()),
+                new SideNavItem("Your Claims", "/",
+                        VaadinIcon.RECORDS.create()));
         return nav;
+
     }
 
     private Footer createFooter() {

@@ -24,17 +24,16 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    @Transactional(readOnly = true)
+
     public Optional<Users> getUserById(Long id) {
         return userRepository.findById(id);
     }
 
-    @Transactional(readOnly = true)
+
     public Optional<Users> getUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
-    @Transactional(readOnly = true)
     public List<Users> getAllUsers() {
         return userRepository.findAll();
     }
@@ -44,12 +43,11 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    @Transactional(readOnly = true)
     public List<Users> getUsersByRole(String role) {
         return userRepository.findByRole(role);
     }
 
-    @Transactional
+
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
     }

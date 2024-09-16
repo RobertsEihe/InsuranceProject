@@ -1,5 +1,6 @@
 package com.project.InsuranceProject.views;
 
+import com.project.InsuranceProject.data.services.AgentRetrieveService;
 import com.project.InsuranceProject.security.Roles;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.charts.model.Label;
@@ -15,18 +16,26 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.html.H1;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
+import com.project.InsuranceProject.data.entity.Users;// Adjust the package path as per your project structure
+import org.springframework.beans.factory.annotation.Autowired;
+
 
 import java.io.Console;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @PermitAll
-@Route(value = "createpolicy", layout = MainLayout.class)
+@Route(value = "createpolicy")
 @RolesAllowed(Roles.CUSTOMER)
 public class CreatePolicyView extends VerticalLayout {
     private ComboBox<String> agentComboBox;
     private ComboBox<String> insuranceTypeComboBox;
+    private final AgentRetrieveService agentRetrieveService;
 
-    public CreatePolicyView() {
+    @Autowired
+    public CreatePolicyView(AgentRetrieveService agentRetrieveService) {
+        this.agentRetrieveService = agentRetrieveService;
         createPolicyView();
     }
 
@@ -96,8 +105,10 @@ public class CreatePolicyView extends VerticalLayout {
 
     private void showAgentAndInsuranceFields(VerticalLayout formLayout) {
         // Initialize the ComboBox for selecting an agent
+
         agentComboBox = new ComboBox<>("Select Agent");
-        agentComboBox.setItems("Agent 1", "Agent 2", "Agent 3");
+        List<String> agentNames = agentRetrieveService.getAllAgentNames();
+        agentComboBox.setItems(agentNames);
         agentComboBox.setRequiredIndicatorVisible(true);
         agentComboBox.addValueChangeListener(event -> {
             if (event.getValue() == null) {

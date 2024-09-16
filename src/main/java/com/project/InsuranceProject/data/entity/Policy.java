@@ -12,45 +12,58 @@ public class Policy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long policy_id;
 
-    @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
+    @Column
     private LocalDate start_date;
 
-    @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
+    @Column
     private LocalDate end_date;
 
-    @Column(nullable = false)
+    @Column
     private int duration;
 
-    @Column(nullable = false)
+    @Column
     private boolean aut_renewal;
 
-    @Column(nullable = false)
+    @Column
     private String status;
 
-    @Column(nullable = false)
-    private String urStatus;
+    @Column
+    private String ur_status;
+
+    @Column
+    private String agent_id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id")  // This is the foreign key column
     private Users users;
 
-    @OneToMany(mappedBy = "policy", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "policy")
     private List<Claim> claims;
 
-    @OneToMany(mappedBy = "policy", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "policy")
     private List<Document> documents;
+
+    @OneToMany(mappedBy = "policy", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Policy_risk> policy_risks;
 
     public Policy() {}
 
-    public Policy(LocalDate start_date, LocalDate end_date, int duration, boolean aut_renewal, String status, String urStatus,
-        Users users) {
+    public Policy(LocalDate start_date, LocalDate end_date, int duration, boolean aut_renewal, String status, String ur_status, String agent_id,
+                  Users users) {
         this.start_date = start_date;
         this.end_date = end_date;
         this.duration = duration;
         this.aut_renewal = aut_renewal;
         this.status = status;
-        this.urStatus = urStatus;
+        this.ur_status = ur_status;
+        this.agent_id = agent_id;
         this.users = users;
+
+    }
+
+    public Policy(LocalDate now, LocalDate localDate, int i, boolean b, String ur, String pending, Object o) {
     }
 
     public Long getPolicy_id() {
@@ -101,12 +114,12 @@ public class Policy {
         this.status = status;
     }
 
-    public String getUrStatus() {
-        return urStatus;
+    public String getUr_status() {
+        return ur_status;
     }
 
-    public void setUrStatus(String urStatus) {
-        this.urStatus = urStatus;
+    public void setUr_status(String ur_status) {
+        this.ur_status = ur_status;
     }
 
     public Users getUsers() {
@@ -115,6 +128,14 @@ public class Policy {
 
     public void setUsers(Users users) {
         this.users = users;
+    }
+
+    public String getAgentId() {
+        return agent_id;
+    }
+
+    public void setAgentId(String agent_id) {
+        this.agent_id = agent_id;
     }
 
     public List<Claim> getClaims() {
