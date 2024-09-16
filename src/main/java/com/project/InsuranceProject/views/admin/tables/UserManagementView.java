@@ -4,19 +4,23 @@ import com.project.InsuranceProject.data.entity.Users;
 import com.project.InsuranceProject.data.services.UserService;
 import com.project.InsuranceProject.security.Roles;
 import com.project.InsuranceProject.views.admin.AdminLayout;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @PageTitle("User Management")
 @Route(value = "admin/user-management", layout = AdminLayout.class)
-@PermitAll
 @RolesAllowed(Roles.ADMIN)
 public class UserManagementView extends VerticalLayout {
 
@@ -27,50 +31,78 @@ public class UserManagementView extends VerticalLayout {
     public UserManagementView(UserService userService) {
         this.userService = userService;
         setSizeFull();
-
         createRoleFilter();
         createUserGrid();
-
         add(roleFilter, userGrid);
     }
 
     private void createRoleFilter() {
         roleFilter = new Select<>();
         roleFilter.setLabel("Filter by Role");
-        roleFilter.setItems("All", "Customer", "Agent", "Employee", "Admin");
+        roleFilter.setItems("All", Roles.CUSTOMER, Roles.AGENT, Roles.EMPLOYEE, Roles.ADMIN);
         roleFilter.setValue("All");
         roleFilter.addValueChangeListener(event -> updateGrid());
     }
 
     private void createUserGrid() {
         userGrid = new Grid<>(Users.class);
-        userGrid.setColumns("id", "username", "name", "email", "phone", "address", "date_of_birth", "role");
-        userGrid.getColumns().forEach(col -> col.setAutoWidth(true));
-        userGrid.getColumnByKey("id").setHeader("ID");
-        userGrid.getColumnByKey("username").setHeader("Username");
-        userGrid.getColumnByKey("name").setHeader("Name");
-        userGrid.getColumnByKey("email").setHeader("Email");
-        userGrid.getColumnByKey("phone").setHeader("Phone");
-        userGrid.getColumnByKey("address").setHeader("Address");
-        userGrid.getColumnByKey("date_of_birth").setHeader("Date of Birth");
-        userGrid.getColumnByKey("role").setHeader("Role");
-        userGrid.addColumn(user -> "CUSTOMER".equals(user.getRole()) ? user.getLoyalty() : "-")
+        userGrid.setColumns("id", "username", "name", "email", "phone", "address");
+
+        userGrid.addColumn(user -> user.getDate_of_birth() != null ?
+                        user.getDate_of_birth().format(DateTimeFormatter.ISO_LOCAL_DATE) : "")
+                .setHeader("Date of Birth")
+                .setKey("date_of_birth");
+
+        Binder<Users> binder = new Binder<>(Users.class);
+
+        Grid.Column<Users> roleColumn = userGrid.addComponentColumn(user -> {
+            Select<String> roleSelect = new Select<>();
+            roleSelect.setItems(Roles.CUSTOMER, Roles.AGENT, Roles.EMPLOYEE, Roles.ADMIN);
+            roleSelect.setValue(user.getRole());
+            roleSelect.addValueChangeListener(event -> user.setRole(event.getValue()));
+            return roleSelect;
+        }).setHeader("Role").setKey("role");
+
+        userGrid.addColumn(user -> Roles.CUSTOMER.equals(user.getRole()) ? user.getLoyalty() : "-")
                 .setHeader("Loyalty Points")
                 .setKey("loyalty");
+
+        Grid.Column<Users> fraudStatusColumn = userGrid.addComponentColumn(user -> {
+            Checkbox fraudCheckbox = new Checkbox(user.getFraudStatus());
+            fraudCheckbox.addValueChangeListener(event -> user.setFraudStatus(event.getValue()));
+            return fraudCheckbox;
+        }).setHeader("Fraud Status").setKey("fraudStatus");
+
+        userGrid.addComponentColumn(user -> {
+            Button saveButton = new Button("Save");
+            saveButton.addClickListener(event -> {
+                try {
+                    userService.updateUser(user);
+                    Notification.show("User updated successfully", 3000, Notification.Position.MIDDLE);
+                } catch (Exception e) {
+                    Notification.show("Error updating user: " + e.getMessage(), 3000, Notification.Position.MIDDLE);
+                }
+            });
+            return saveButton;
+        }).setHeader("Actions");
+
+        userGrid.getColumns().forEach(col -> col.setAutoWidth(true).setSortable(true));
 
         updateGrid();
     }
 
     private void updateGrid() {
-        List<Users> users;
-        String selectedRole = roleFilter.getValue();
-
-        if ("All".equals(selectedRole)) {
-            users = userService.getAllUsers();
-        } else {
-            users = userService.getUsersByRole(selectedRole);
+        try {
+            List<Users> users;
+            String selectedRole = roleFilter.getValue();
+            if ("All".equals(selectedRole)) {
+                users = userService.getAllUsers();
+            } else {
+                users = userService.getUsersByRole(selectedRole);
+            }
+            userGrid.setItems(users);
+        } catch (Exception e) {
+            Notification.show("Error loading users: " + e.getMessage(), 3000, Notification.Position.MIDDLE);
         }
-
-        userGrid.setItems(users);
     }
 }
