@@ -50,80 +50,81 @@ public class AgentView extends VerticalLayout {
 	}
 
 	private void configurePolicyGrid() {
-		// Display the Agent ID
-		policyGrid.addColumn(policy -> policy.getUsers() != null ? policy.getUsers().getId().toString() : "N/A")
-				.setHeader("Agent ID")
-				.setKey("agent_id");
-
 		// Display the Policy ID
 		policyGrid.addColumn(Policy::getPolicy_id)
 				.setHeader("Policy ID")
-				.setKey("policy_id");
+				.setKey("policy_id")
+				.setWidth("70px");  // Set width
 
 		// Display the Duration
 		policyGrid.addColumn(Policy::getDuration)
 				.setHeader("Duration")
-				.setKey("duration");
+				.setKey("duration")
+				.setWidth("70px");  // Set width
 
 		// Display Username
 		policyGrid.addColumn(policy -> policy.getUsers() != null ? policy.getUsers().getUsername() : "N/A")
 				.setHeader("Username")
-				.setKey("username");
-
-		// Display Name
-		policyGrid.addColumn(policy -> policy.getUsers() != null ? policy.getUsers().getName() : "N/A")
-				.setHeader("Name")
-				.setKey("name");
+				.setKey("username")
+				.setWidth("150px");  // Set width
 
 		// Display Email
 		policyGrid.addColumn(policy -> policy.getUsers() != null ? policy.getUsers().getEmail() : "N/A")
 				.setHeader("Email")
-				.setKey("email");
+				.setKey("email")
+				.setWidth("200px");  // Set width
 
 		// Display Phone
 		policyGrid.addColumn(policy -> policy.getUsers() != null ? policy.getUsers().getPhone() : "N/A")
 				.setHeader("Phone")
-				.setKey("phone");
+				.setKey("phone")
+				.setWidth("150px");  // Set width
 
 		// Display Start Date
 		policyGrid.addColumn(policy -> policy.getStart_date() != null ?
 						policy.getStart_date().format(DateTimeFormatter.ISO_LOCAL_DATE) : "N/A")
 				.setHeader("Start Date")
-				.setKey("start_date");
+				.setKey("start_date")
+				.setWidth("150px");  // Set width
 
 		// Display End Date
 		policyGrid.addColumn(policy -> policy.getEnd_date() != null ?
 						policy.getEnd_date().format(DateTimeFormatter.ISO_LOCAL_DATE) : "N/A")
 				.setHeader("End Date")
-				.setKey("end_date");
+				.setKey("end_date")
+				.setWidth("150px");  // Set width
 
 		// Display Status
 		policyGrid.addColumn(Policy::getStatus)
 				.setHeader("Status")
-				.setKey("status");
+				.setKey("status")
+				.setWidth("70px");  // Set width
 
 		// Display Claims
 		policyGrid.addColumn(policy -> {
-			if (policy.getClaims() != null && !policy.getClaims().isEmpty()) {
-				return policy.getClaims().stream()
-						.map(claim -> "" + claim.getClaim_id())
-						.reduce((claim1, claim2) -> claim1 + ", " + claim2)  // Concatenate claim IDs
-						.orElse("No Claims");
-			} else {
-				return "No Claims";
-			}
-		}).setHeader("Claims");
+					if (policy.getClaims() != null && !policy.getClaims().isEmpty()) {
+						return policy.getClaims().stream()
+								.map(claim -> "" + claim.getClaim_id())
+								.reduce((claim1, claim2) -> claim1 + ", " + claim2)  // Concatenate claim IDs
+								.orElse("No Claims");
+					} else {
+						return "No Claims";
+					}
+				}).setHeader("Claims")
+				.setWidth("100px");  // Set width
 
 		// Add action buttons for approving/denying policies
 		policyGrid.addComponentColumn(policy -> {
-			Button approveButton = new Button("Approve", click -> approvePolicy(policy));
-			Button denyButton = new Button("Deny", click -> denyPolicy(policy));
-			HorizontalLayout actionButtons = new HorizontalLayout(approveButton, denyButton);
-			return actionButtons;
-		}).setHeader("Actions");
+					Button approveButton = new Button("Approve", click -> approvePolicy(policy));
+					Button denyButton = new Button("Deny", click -> denyPolicy(policy));
+					HorizontalLayout actionButtons = new HorizontalLayout(approveButton, denyButton);
+					return actionButtons;
+				}).setHeader("Actions")
+				.setWidth("180px");  // Set width
 
 		policyGrid.setSizeFull();
 	}
+
 
 	private void updatePolicyList() {
 		List<Policy> policies = policyService.getAllPolicies();  // Fetch all policies
