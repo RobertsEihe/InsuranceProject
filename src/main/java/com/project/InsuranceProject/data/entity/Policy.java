@@ -34,6 +34,10 @@ public class Policy {
     @JoinColumn(name = "user_id")
     private Users users;
 
+    // Recovered agent_id as a simple column
+    @Column(nullable = true)
+    private Long agent_id;
+
     @OneToMany(mappedBy = "policy", fetch = FetchType.EAGER)
     private List<Claim> claims;
 
@@ -43,7 +47,7 @@ public class Policy {
     public Policy() {}
 
     public Policy(LocalDate start_date, LocalDate end_date, int duration, boolean aut_renewal, String status, String urStatus,
-        Users users) {
+        Users users, Long agent_id) {
         this.start_date = start_date;
         this.end_date = end_date;
         this.duration = duration;
@@ -51,6 +55,7 @@ public class Policy {
         this.status = status;
         this.urStatus = urStatus;
         this.users = users;
+        this.agent_id = agent_id;
     }
 
     public Long getPolicy_id() {
@@ -115,6 +120,14 @@ public class Policy {
 
     public void setUsers(Users users) {
         this.users = users;
+    }
+
+    public Long getAgent_id() {
+        return agent_id;
+    }
+
+    public void setAgent_id(Long agent_id) {
+        this.agent_id = agent_id;
     }
 
     public List<Claim> getClaims() {
