@@ -13,11 +13,11 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Route(value = "agent", layout = AgentLayout.class)
@@ -27,7 +27,7 @@ import java.util.List;
 public class AgentView extends VerticalLayout {
 
 	private final PolicyService policyService;
-	private Grid<Policy> policyGrid = new Grid<>(Policy.class);
+	private Grid<Policy> policyGrid = new Grid<>();
 	private TextField searchField = new TextField("Search Policies");
 
 	@Autowired
@@ -50,10 +50,71 @@ public class AgentView extends VerticalLayout {
 	}
 
 	private void configurePolicyGrid() {
-		policyGrid.addColumn(Policy::getStart_date).setHeader("Start Date");
-		policyGrid.addColumn(Policy::getEnd_date).setHeader("End Date");
-		policyGrid.addColumn(Policy::getStatus).setHeader("Status");
+		// Display the Agent ID
+		policyGrid.addColumn(policy -> policy.getUsers() != null ? policy.getUsers().getId().toString() : "N/A")
+				.setHeader("Agent ID")
+				.setKey("agent_id");
 
+		// Display the Policy ID
+		policyGrid.addColumn(Policy::getPolicy_id)
+				.setHeader("Policy ID")
+				.setKey("policy_id");
+
+		// Display the Duration
+		policyGrid.addColumn(Policy::getDuration)
+				.setHeader("Duration")
+				.setKey("duration");
+
+		// Display Username
+		policyGrid.addColumn(policy -> policy.getUsers() != null ? policy.getUsers().getUsername() : "N/A")
+				.setHeader("Username")
+				.setKey("username");
+
+		// Display Name
+		policyGrid.addColumn(policy -> policy.getUsers() != null ? policy.getUsers().getName() : "N/A")
+				.setHeader("Name")
+				.setKey("name");
+
+		// Display Email
+		policyGrid.addColumn(policy -> policy.getUsers() != null ? policy.getUsers().getEmail() : "N/A")
+				.setHeader("Email")
+				.setKey("email");
+
+		// Display Phone
+		policyGrid.addColumn(policy -> policy.getUsers() != null ? policy.getUsers().getPhone() : "N/A")
+				.setHeader("Phone")
+				.setKey("phone");
+
+		// Display Start Date
+		policyGrid.addColumn(policy -> policy.getStart_date() != null ?
+						policy.getStart_date().format(DateTimeFormatter.ISO_LOCAL_DATE) : "N/A")
+				.setHeader("Start Date")
+				.setKey("start_date");
+
+		// Display End Date
+		policyGrid.addColumn(policy -> policy.getEnd_date() != null ?
+						policy.getEnd_date().format(DateTimeFormatter.ISO_LOCAL_DATE) : "N/A")
+				.setHeader("End Date")
+				.setKey("end_date");
+
+		// Display Status
+		policyGrid.addColumn(Policy::getStatus)
+				.setHeader("Status")
+				.setKey("status");
+
+		// Display Claims
+		policyGrid.addColumn(policy -> {
+			if (policy.getClaims() != null && !policy.getClaims().isEmpty()) {
+				return policy.getClaims().stream()
+						.map(claim -> "" + claim.getClaim_id())
+						.reduce((claim1, claim2) -> claim1 + ", " + claim2)  // Concatenate claim IDs
+						.orElse("No Claims");
+			} else {
+				return "No Claims";
+			}
+		}).setHeader("Claims");
+
+		// Add action buttons for approving/denying policies
 		policyGrid.addComponentColumn(policy -> {
 			Button approveButton = new Button("Approve", click -> approvePolicy(policy));
 			Button denyButton = new Button("Deny", click -> denyPolicy(policy));
