@@ -26,9 +26,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Console;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @PermitAll
@@ -193,6 +191,14 @@ public class CreatePolicyView extends VerticalLayout {
             policyService.savePolicy(policy);
 
 
+            Vehicle vehicle = new Vehicle();
+            vehicle.setMake(carMakeField.getValue());
+            vehicle.setModel(carModelField.getValue());
+            vehicle.setYear(Integer.parseInt(carYearField.getValue()));
+            vehicle.setOdd(Integer.parseInt(carOdometerField.getValue()));
+            vehicle.setCurrent_value(Float.parseFloat(marketValueField.getValue()));
+            vehicleService.saveVehicle(vehicle);
+
             Set<String> selectedRisks = riskCheckboxGroup.getValue();
             for (String riskName : selectedRisks) {
                 Optional<Risk> risk = riskRetrieveService.findByNameAndType(riskName,insuranceTypeComboBox.getValue());
@@ -202,9 +208,12 @@ public class CreatePolicyView extends VerticalLayout {
                     policyRisk.setRisk(risk.get());
                     policyRisk.setSum_insured(Double.parseDouble(marketValueField.getValue()));
                     // Save each Policy_risk entry
+                    policyRisk.setVehicle(vehicle);
                     policyRiskService.savePolicyRisk(policyRisk);
                 }
             }
+
+
         });
 
 
