@@ -25,14 +25,19 @@ public class Policy_risk {
     @Column
     private double total_premium;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vehicle_id")
+    private Vehicle vehicle;
+
     public Policy_risk() {
     }
 
-    public Policy_risk(Policy policy, Risk risk, double sum_insured, double total_premium) {
+    public Policy_risk(Policy policy, Risk risk, double sum_insured, double total_premium, Vehicle vehicle) {
         this.policy = policy;
         this.risk = risk;
         this.sum_insured = sum_insured;
         this.total_premium = total_premium;
+        this.vehicle = vehicle;
     }
 
     public Long getPolicy_risk_id() {
@@ -73,5 +78,12 @@ public class Policy_risk {
 
     public void setTotal_premium(double total_premium) {
         this.total_premium = total_premium;
+    }
+
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
     }
 }
