@@ -27,10 +27,10 @@ public class Policy {
     @Column(nullable = false)
     private String status;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String urStatus;
 
-    @Column
+    @Column(nullable = false)
     private double sum_insured;
 
     @ManyToOne(fetch = FetchType.LAZY)

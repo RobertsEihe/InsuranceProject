@@ -175,6 +175,8 @@ public class CreatePolicyView extends VerticalLayout {
             policy.setDuration(durationComboBox.getValue());
             policy.setEnd_date(startDateField.getValue().plusMonths(durationComboBox.getValue()));
             policy.setStart_date(startDateField.getValue());
+            policy.setSum_insured(Double.parseDouble(marketValueField.getValue()));
+            policy.setStatus("NEW");
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String username = null;
             if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
@@ -202,10 +204,10 @@ public class CreatePolicyView extends VerticalLayout {
                     Policy_risk policyRisk = new Policy_risk();
                     policyRisk.setPolicy(policy);
                     policyRisk.setRisk(risk.get());
-                    policyRisk.setSum_insured(Double.parseDouble(marketValueField.getValue()));
                     // Save each Policy_risk entry
                     policyRisk.setVehicle(vehicle);
                     policyRiskService.savePolicyRisk(policyRisk);
+
                 }
             }
 
