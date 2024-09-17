@@ -62,11 +62,9 @@ public class MainLayout extends AppLayout {
 //        nav.addItem(new SideNavItem("Hello World", HelloWorldView.class, LineAwesomeIcon.GLOBE_SOLID.create()));
         SideNav nav = new SideNav();
         nav.addItem(
-                new SideNavItem("Your Policies", "/Customerpolicy",
-                        VaadinIcon.DASHBOARD.create()),
-                new SideNavItem("Create New Policy", "/createpolicy", VaadinIcon.LIST.create()),
-                new SideNavItem("Your Claims", "/",
-                        VaadinIcon.RECORDS.create()));
+                new SideNavItem("Your Policies", "customer/policy", VaadinIcon.DASHBOARD.create()),
+                new SideNavItem("Create New Policy", "customer/createpolicy", VaadinIcon.LIST.create()),
+                new SideNavItem("Your Claims", "customer/claims", VaadinIcon.RECORDS.create()));
         return nav;
 
     }

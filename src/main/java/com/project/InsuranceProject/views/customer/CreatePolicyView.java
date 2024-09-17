@@ -1,15 +1,13 @@
-package com.project.InsuranceProject.views;
+package com.project.InsuranceProject.views.customer;
 
 import com.project.InsuranceProject.data.entity.*;
 import com.project.InsuranceProject.data.services.*;
 import com.project.InsuranceProject.security.Roles;
+import com.project.InsuranceProject.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.charts.model.Label;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
-import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -24,14 +22,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
-import java.io.Console;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
-@PermitAll
-@Route(value = "createpolicy")
-@RolesAllowed(Roles.CUSTOMER)
+
+@Route(value = "customer/createpolicy", layout = MainLayout.class)//someone for got to add this
+@RolesAllowed({Roles.ADMIN, Roles.CUSTOMER})
 public class CreatePolicyView extends VerticalLayout {
     private ComboBox<String> agentComboBox;
     private ComboBox<String> insuranceTypeComboBox;

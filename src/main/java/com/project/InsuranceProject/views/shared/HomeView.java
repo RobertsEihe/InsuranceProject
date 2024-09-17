@@ -6,7 +6,10 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.orderedlayout.*;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.FlexLayout;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 
@@ -21,88 +24,45 @@ public class HomeView extends VerticalLayout {
         setPadding(false);
         setSpacing(false);
 
-        // Main Content Layout
-        VerticalLayout mainLayout = new VerticalLayout();
-        mainLayout.setSizeFull();
-        mainLayout.setSpacing(false);
-        mainLayout.setPadding(true);
-        mainLayout.setAlignItems(Alignment.CENTER);
-        mainLayout.setJustifyContentMode(JustifyContentMode.CENTER);
+        HorizontalLayout contentLayout = new HorizontalLayout();
+        contentLayout.setSizeFull();
 
-        // Cards Layout
-        HorizontalLayout cardsLayout = new HorizontalLayout();
-        cardsLayout.setWidthFull();
-        cardsLayout.setHeight("300px");  // Adjust this value as needed
-        cardsLayout.setPadding(false);
-        cardsLayout.setSpacing(true);
-        cardsLayout.setJustifyContentMode(JustifyContentMode.CENTER);
+        Image characterImage = new Image("images/suitman.png", "Character Image");
+        characterImage.setMaxHeight("80vh");
+        characterImage.setWidth("auto");
+        characterImage.getStyle().set("object-fit", "contain");
 
-        cardsLayout.add(
-                createCard("Insurance", "images/house.jpg", "Secure your future with our comprehensive insurance plans."),
-                createCard("Health", "images/health.jpg", "Your health is our priority. Explore our health services."),
-                createCard("Vehicle", "images/car.png", "Get the best deals on vehicle insurance and services.")
-        );
+        FlexLayout imageContainer = new FlexLayout(characterImage);
+        imageContainer.setAlignItems(FlexComponent.Alignment.CENTER);
+        imageContainer.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
+        imageContainer.setSizeFull();
 
-        // Get Started Button
+        VerticalLayout textLayout = new VerticalLayout();
+        textLayout.setPadding(true);
+        textLayout.setSpacing(true);
+        textLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
+
+        Span heading = new Span("Insurance");
+        heading.getStyle().set("font-size", "36px").set("font-weight", "bold");
+
+        Span description = new Span("We offer a variety of insurance services to help secure your future. "
+                + "From health and vehicle insurance to life coverage, we've got you covered.");
+        description.getStyle().set("font-size", "18px").set("color", "#666666");
+
         Button getStartedButton = new Button("Get Started");
-        getStartedButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_LARGE);
-        getStartedButton.getStyle().set("background-color", "#E6F3FF");
-        getStartedButton.getStyle().set("color", "#000000");
-        getStartedButton.getStyle().set("font-size", "20px");
-        getStartedButton.getStyle().set("padding", "15px 30px");
-        getStartedButton.getStyle().set("margin-top", "20px");
+        getStartedButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        getStartedButton.getStyle().set("background-color", "#007bff").set("color", "white");
 
-        // Add click listener to navigate to register page
-        getStartedButton.addClickListener(e -> UI.getCurrent().navigate("register"));
+        textLayout.add(heading, description, getStartedButton);
 
-        HorizontalLayout buttonWrapper = new HorizontalLayout(getStartedButton);
-        buttonWrapper.setWidthFull();
-        buttonWrapper.setJustifyContentMode(JustifyContentMode.CENTER);
+        contentLayout.add(imageContainer, textLayout);
+        contentLayout.setFlexGrow(1, imageContainer);
+        contentLayout.setFlexGrow(1, textLayout);
 
-        // Add components to the main layout
-        mainLayout.add(cardsLayout, buttonWrapper);
+        Footer footer = new Footer();
 
-        add(mainLayout);
-        setSizeFull();
-    }
-
-    private VerticalLayout createCard(String title, String imageUrl, String description) {
-        VerticalLayout cardLayout = new VerticalLayout();
-        cardLayout.setWidth("300px");  // Fixed width for cards
-        cardLayout.setHeight("100%");
-        cardLayout.setPadding(false);
-        cardLayout.setSpacing(false);
-        cardLayout.getStyle().set("border", "1px solid #e0e0e0");
-        cardLayout.getStyle().set("border-radius", "8px");
-        cardLayout.getStyle().set("overflow", "hidden");
-        cardLayout.getStyle().set("box-shadow", "0 2px 5px rgba(0, 0, 0, 0.1)");
-        cardLayout.getStyle().set(
-                "background-color",
-                "#E8E8E8"
-        );
-
-        // Card Image
-        Image cardImage = new Image(imageUrl, title + " Image");
-        cardImage.setWidth("100%");
-        cardImage.setHeight("150px");  // Reduced height
-        cardImage.getStyle().set("object-fit", "cover");
-
-        // Card Content
-        VerticalLayout cardContent = new VerticalLayout();
-        cardContent.setPadding(true);
-        cardContent.setSpacing(false);
-
-        Span cardTitle = new Span(title);
-        cardTitle.getStyle().set("font-weight", "bold");
-        cardTitle.getStyle().set("font-size", "16px");  // Reduced font size
-
-        Span cardDescription = new Span(description);
-        cardDescription.getStyle().set("color", "#666666");
-        cardDescription.getStyle().set("font-size", "12px");  // Reduced font size
-
-        cardContent.add(cardTitle, cardDescription);
-        cardLayout.add(cardImage, cardContent);
-
-        return cardLayout;
+        add(contentLayout);
+        setFlexGrow(1, contentLayout);  // Ensures content layout grows to take up available space
+        add(footer);
     }
 }

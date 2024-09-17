@@ -1,11 +1,10 @@
-package com.project.InsuranceProject.views;
+package com.project.InsuranceProject.views.customer;
 import com.project.InsuranceProject.data.entity.Policy;
 import com.project.InsuranceProject.data.services.PolicyRetrieveService;
 import com.project.InsuranceProject.security.Roles;
-import com.vaadin.flow.component.Component;
+import com.project.InsuranceProject.views.MainLayout;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.charts.model.Label;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
@@ -21,12 +20,11 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Collection;
 import java.util.List;
 
-@PermitAll
-@Route(value = "Customerpolicy", layout = MainLayout.class)
-@RolesAllowed(Roles.CUSTOMER)
+
+@Route(value = "customer/policy", layout = MainLayout.class)
+@RolesAllowed({Roles.ADMIN, Roles.CUSTOMER})
 @CssImport("./themes/chat-theme/styles.css")
 public class CustomerView extends VerticalLayout {
 

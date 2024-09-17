@@ -1,6 +1,8 @@
 package com.project.InsuranceProject.data.entity;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -16,11 +18,11 @@ public class Claim {
 
     @Temporal(TemporalType.DATE)
     @Column
-    private Date date_loss;
+    private LocalDate date_loss;
 
     @Temporal(TemporalType.DATE)
     @Column
-    private Date date;
+    private LocalDate date;
 
     @Column
     private double amount;
@@ -37,7 +39,7 @@ public class Claim {
 
     public Claim() {}
 
-    public Claim(String type, Date date_loss, Date date, float amount, String description, Policy policy) {
+    public Claim(String type, LocalDate date_loss, LocalDate date, float amount, String description, Policy policy) {
         this.type = type;
         this.date_loss = date_loss;
         this.date = date;
@@ -62,19 +64,19 @@ public class Claim {
         this.type = type;
     }
 
-    public Date getDate_loss() {
+    public LocalDate getDate_loss() {
         return date_loss;
     }
 
-    public void setDate_loss(Date date_loss) {
+    public void setDate_loss(LocalDate date_loss) {
         this.date_loss = date_loss;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
