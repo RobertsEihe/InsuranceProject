@@ -1,7 +1,9 @@
-package com.project.InsuranceProject.views;
+package com.project.InsuranceProject.views.agent.tables;
 
 import com.project.InsuranceProject.data.entity.Policy;
 import com.project.InsuranceProject.data.services.PolicyService;
+import com.project.InsuranceProject.security.Roles;
+import com.project.InsuranceProject.views.agent.AgentLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
@@ -18,11 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-@PageTitle("Agent View")
 @Route(value = "agent", layout = AgentLayout.class)
-//@RolesAllowed("ROLE_AGENT")
+@RolesAllowed({Roles.AGENT, Roles.ADMIN})
 @PermitAll
-@AnonymousAllowed
+@PageTitle("Agent View")
 public class AgentView extends VerticalLayout {
 
 	private final PolicyService policyService;
@@ -52,6 +53,7 @@ public class AgentView extends VerticalLayout {
 		policyGrid.addColumn(Policy::getStart_date).setHeader("Start Date");
 		policyGrid.addColumn(Policy::getEnd_date).setHeader("End Date");
 		policyGrid.addColumn(Policy::getStatus).setHeader("Status");
+
 		policyGrid.addComponentColumn(policy -> {
 			Button approveButton = new Button("Approve", click -> approvePolicy(policy));
 			Button denyButton = new Button("Deny", click -> denyPolicy(policy));
@@ -63,15 +65,7 @@ public class AgentView extends VerticalLayout {
 	}
 
 	private void updatePolicyList() {
-		String searchText = searchField.getValue();
-		List<Policy> policies;
-
-		if (searchText == null || searchText.isEmpty()) {
-			policies = policyService.getPoliciesUnderReview();
-		} else {
-			policies = policyService.searchPolicies(searchText);
-		}
-
+		List<Policy> policies = policyService.getAllPolicies();  // Fetch all policies
 		policyGrid.setItems(policies);
 	}
 

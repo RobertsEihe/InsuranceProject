@@ -23,8 +23,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             if (authority.getAuthority().equals(Roles.ADMIN)) {
                 response.sendRedirect("/admin/user-management");
                 return;
-            } else if (authority.getAuthority().equals(Roles.CUSTOMER)) {
-                response.sendRedirect("/Customerpolicy");
+            } else if (authority.getAuthority().equals(Roles.AGENT)) {
+                response.sendRedirect("/agent");
                 return;
             }
         }

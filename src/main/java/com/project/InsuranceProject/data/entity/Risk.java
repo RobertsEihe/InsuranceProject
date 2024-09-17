@@ -21,8 +21,6 @@ public class Risk {
     @Column(nullable = false)
     private double rate;
 
-    @OneToMany(mappedBy = "risk", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Policy_risk> policy_risk;
 
     public Risk() {
     }
@@ -32,7 +30,7 @@ public class Risk {
         this.type = type;
         this.risk = risk;
         this.rate = rate;
-        this.policy_risk = policy_risk;
+
     }
 
     public Risk( String type, String risk, double rate) {
@@ -73,11 +71,4 @@ public class Risk {
         this.rate = rate;
     }
 
-    public List<Policy_risk> getPolicy_risk() {
-        return policy_risk;
-    }
-
-    public void setPolicy_risk(List<Policy_risk> policy_risk) {
-        this.policy_risk = policy_risk;
-    }
 }

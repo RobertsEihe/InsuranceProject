@@ -1,6 +1,7 @@
 package com.project.InsuranceProject.views;
 
-import com.project.InsuranceProject.data.services.AgentRetrieveService;
+import com.project.InsuranceProject.data.entity.*;
+import com.project.InsuranceProject.data.services.*;
 import com.project.InsuranceProject.security.Roles;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.charts.model.Label;
@@ -16,13 +17,18 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.html.H1;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
-import com.project.InsuranceProject.data.entity.Users;// Adjust the package path as per your project structure
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
 import java.io.Console;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @PermitAll
@@ -33,9 +39,20 @@ public class CreatePolicyView extends VerticalLayout {
     private ComboBox<String> insuranceTypeComboBox;
     private final AgentRetrieveService agentRetrieveService;
 
+    private final VehicleService vehicleService;
+    private final PolicyRetrieveService policyService;
+    private final PolicyRiskService policyRiskService;
+    private final UserService userService;
+    private final RiskRetrieveService riskRetrieveService;
+
     @Autowired
-    public CreatePolicyView(AgentRetrieveService agentRetrieveService) {
+    public CreatePolicyView(AgentRetrieveService agentRetrieveService, VehicleService vehicleService, PolicyRetrieveService policyService, PolicyRiskService policyRiskService, UserService userService, RiskRetrieveService riskRetrieveService) {
         this.agentRetrieveService = agentRetrieveService;
+        this.vehicleService = vehicleService;
+        this.policyService = policyService;
+        this.policyRiskService = policyRiskService;
+        this.userService = userService;
+        this.riskRetrieveService = riskRetrieveService;
         createPolicyView();
     }
 
@@ -79,7 +96,7 @@ public class CreatePolicyView extends VerticalLayout {
                 // Process form data
                 if (insuranceType.equals("Vehicle")) {
                     createVehicleForm(formLayout);
-                    datepick(formLayout);
+                    //datepick(formLayout);
                     PremiumCalc.setVisible(true);
                 } else if (insuranceType.equals("House")) {
                     createHouseForm(formLayout);
@@ -133,10 +150,9 @@ public class CreatePolicyView extends VerticalLayout {
 
         // Add the agent and insurance type fields to the layout
         formLayout.add(agentComboBox, insuranceTypeComboBox);
-
     }
-
-    private void createVehicleForm(VerticalLayout formLayout) {
+    @Transactional
+    protected void createVehicleForm(VerticalLayout formLayout) {
         TextField licenseNumberField = new TextField("Driver's License Number");
         DatePicker issueDateField = new DatePicker("Issue Date");
         DatePicker expireDateField = new DatePicker("Expire Date");
@@ -151,8 +167,51 @@ public class CreatePolicyView extends VerticalLayout {
         riskCheckboxGroup.setLabel("Select Risks to Cover");
         riskCheckboxGroup.setItems("Theft", "Crash", "Flood", "Vandalism");
 
+        DatePicker startDateField = new DatePicker("Start Date");
+        startDateField.setMin(LocalDate.now());
+
+        ComboBox<Integer> durationComboBox = new ComboBox<>("Duration (months)");
+        durationComboBox.setItems(1, 3, 6, 12);
+        durationComboBox.setValue(1);
+
+
+        Button submitButton = new Button("Submit", event -> {
+
+            Policy policy = new Policy();
+            policy.setDuration(durationComboBox.getValue());
+            policy.setEnd_date(startDateField.getValue().plusMonths(durationComboBox.getValue()));
+            policy.setStart_date(startDateField.getValue());
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String username = null;
+            if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+                username = ((UserDetails) authentication.getPrincipal()).getUsername();
+            }
+            Optional<Users> user = userService.getUserByUsername(username);
+            policy.setUsers(user.get());
+            Optional<Users> agent = userService.getUserByUsername(agentComboBox.getValue());
+            policy.setAgent_id(agent.get().getId());
+            policyService.savePolicy(policy);
+
+
+            Set<String> selectedRisks = riskCheckboxGroup.getValue();
+            for (String riskName : selectedRisks) {
+                Optional<Risk> risk = riskRetrieveService.findByNameAndType(riskName,insuranceTypeComboBox.getValue());
+                if (risk.isPresent()) {
+                    Policy_risk policyRisk = new Policy_risk();
+                    policyRisk.setPolicy(policy);
+                    policyRisk.setRisk(risk.get());
+                    policyRisk.setSum_insured(Double.parseDouble(marketValueField.getValue()));
+                    // Save each Policy_risk entry
+                    policyRiskService.savePolicyRisk(policyRisk);
+                }
+            }
+        });
+
+
+
         formLayout.add(licenseNumberField, issueDateField, expireDateField, carMakeField, carModelField, carYearField,
-                carOdometerField, marketValueField, riskCheckboxGroup);
+                carOdometerField, marketValueField, riskCheckboxGroup,startDateField, durationComboBox, submitButton);
+
     }
 
     private void createHouseForm(VerticalLayout formLayout) {
@@ -192,7 +251,6 @@ public class CreatePolicyView extends VerticalLayout {
         formLayout.add(startDateField, durationComboBox);
     }
 
-
     private boolean isFormValid(ComboBox<String> agentComboBox, ComboBox<String> insuranceTypeComboBox) {
         boolean isValid = true;
 
@@ -210,8 +268,6 @@ public class CreatePolicyView extends VerticalLayout {
         } else {
             insuranceTypeComboBox.setInvalid(false);
         }
-
         return isValid;
     }
-
 }

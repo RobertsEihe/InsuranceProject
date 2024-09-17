@@ -1,47 +1,62 @@
 package com.project.InsuranceProject.data.services;
 
 import com.project.InsuranceProject.data.entity.Policy;
-import java.time.LocalDate;
+import com.project.InsuranceProject.data.repositories.PolicyRepository;
+import org.hibernate.Hibernate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class PolicyService {
 
-	private List<Policy> mockPolicies = new ArrayList<>();
+	private final PolicyRepository policyRepository;
 
-	public PolicyService() {
-		// Add some mock data for display
-		mockPolicies.add(new Policy(LocalDate.now(), LocalDate.now().plusMonths(6), 6, false, "UR", "PENDING", null));  // Adjust constructor as needed
-		mockPolicies.add(new Policy(LocalDate.now(), LocalDate.now().plusMonths(12), 12, true, "P", "APPROVED", null));
+	@Autowired
+	public PolicyService(PolicyRepository policyRepository) {
+		this.policyRepository = policyRepository;
 	}
 
+	// Fetch all policies that are under review
 	@Transactional(readOnly = true)
 	public List<Policy> getPoliciesUnderReview() {
-		// Return an empty list or mock data
-		return mockPolicies;
+		List<Policy> policies = policyRepository.findByUrStatus("UR");
+
+		// Manually initialize lazy-loaded properties
+		policies.forEach(policy -> {
+			Hibernate.initialize(policy.getClaims());  // This forces initialization of the claims collection
+		});
+		return policies;
 	}
 
+
+	// Search policies by search text (name or status)
 	@Transactional(readOnly = true)
 	public List<Policy> searchPolicies(String searchText) {
-		// Return an empty list or mock data based on search
-		return mockPolicies;
+		return policyRepository.searchPolicies(searchText);
 	}
 
-	// Mock approvePolicy method
+	// Approve a policy
 	@Transactional
 	public void approvePolicy(Policy policy) {
-		// Simulate policy approval (you can also update the policy object in mock data)
-		policy.setStatus("APPROVED");
+		policy.setUrStatus("APPROVED");
+		policyRepository.save(policy);
 	}
 
-	// Mock denyPolicy method
+	// Deny a policy
 	@Transactional
 	public void denyPolicy(Policy policy) {
-		// Simulate policy denial (you can also update the policy object in mock data)
-		policy.setStatus("DENIED");
+		policy.setUrStatus("DENIED");
+		policyRepository.save(policy);
+	}
+
+	// Fetch all policies
+	@Transactional(readOnly = true)
+	public List<Policy> getAllPolicies() {
+		List<Policy> policies = policyRepository.findAll();
+		policies.forEach(policy -> Hibernate.initialize(policy.getUsers()));  // Initialize users collection
+		return policies;
 	}
 }

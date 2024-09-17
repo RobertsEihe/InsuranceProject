@@ -4,6 +4,7 @@ import com.project.InsuranceProject.security.SecurityService;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Header;
@@ -20,6 +21,7 @@ import com.vaadin.flow.theme.lumo.LumoUtility;
 /**
  * The main view is a top-level placeholder for other views.
  */
+@CssImport("./themes/chat-theme/styles.css")
 public class MainLayout extends AppLayout {
 
     private H1 viewTitle;
@@ -39,7 +41,7 @@ public class MainLayout extends AppLayout {
         viewTitle = new H1();
         viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
         Button logOut = new Button("Log out", e -> securityService.logout());
-
+        logOut.addClassNames("align-right");
         addToNavbar(true, toggle, viewTitle, logOut);
     }
 
