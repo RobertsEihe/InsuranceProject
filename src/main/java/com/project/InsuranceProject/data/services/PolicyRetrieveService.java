@@ -20,5 +20,7 @@ public class PolicyRetrieveService {
     public List<Policy> getPolicyByUsername(String username) {
         return policyRepository.findByUsers_Username(username);
     }
-
+    public Policy savePolicy(Policy policy) {
+        return policyRepository.save(policy);
+    }
 }

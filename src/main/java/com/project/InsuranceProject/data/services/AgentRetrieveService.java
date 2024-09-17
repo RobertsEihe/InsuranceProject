@@ -16,11 +16,11 @@ public class AgentRetrieveService {
         this.agentRepository = agentRepository;
     }
 
-    public List<Users> getAllAgents() {
+    public List<Users> getAgentid() {
         return agentRepository.findByRole("agent");
     }
     public List<String> getAllAgentNames() {
-        return agentRepository.findByRole("AGENT")
+        return agentRepository.findByRole("ROLE_AGENT")
                 .stream()
                 .map(Users::getUsername) // Assuming Agent entity has a getName() method
                 .collect(Collectors.toList());

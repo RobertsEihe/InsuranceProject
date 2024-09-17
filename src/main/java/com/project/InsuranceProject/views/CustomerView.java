@@ -3,7 +3,10 @@ import com.project.InsuranceProject.data.entity.Policy;
 import com.project.InsuranceProject.data.services.PolicyRetrieveService;
 import com.project.InsuranceProject.security.Roles;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.charts.model.Label;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.H1;
@@ -24,6 +27,7 @@ import java.util.List;
 @PermitAll
 @Route(value = "Customerpolicy", layout = MainLayout.class)
 @RolesAllowed(Roles.CUSTOMER)
+@CssImport("./themes/chat-theme/styles.css")
 public class CustomerView extends VerticalLayout {
 
     private final Grid<Policy> policyGrid = new Grid<>(Policy.class);
@@ -62,10 +66,13 @@ public class CustomerView extends VerticalLayout {
         List<Policy> policies = policyRetrieveService.getPolicyByUsername(username);
         policyGrid.setItems(policies);
 
+        Button Create_policy = new Button("Create New Policy", e -> {
+            UI.getCurrent().navigate(CreatePolicyView.class);
+        });
+        Create_policy.addClassNames("align-right");
         //CreatePolicyView createPolicy = new CreatePolicyView();
-
         //formLayout.add(createPolicy);
-        add(formLayout);
+        add(formLayout,Create_policy);
     }
 
 }
