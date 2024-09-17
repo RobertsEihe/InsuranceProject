@@ -49,7 +49,7 @@ public class Users {
     private LocalDate date_of_birth;
 
     @Column
-    private int loyalty;
+    private int loyalty = 1;
 
     @Column
     private String dl_num;

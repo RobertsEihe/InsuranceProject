@@ -18,4 +18,7 @@ public interface PolicyRepository extends JpaRepository<Policy, Long> {
     List<Policy> searchPolicies(String searchText);
     // Fetch all policies
     List<Policy> findAll();
+
+    @Query("SELECT p FROM Policy p WHERE p.users.id = ?1 ORDER BY p.start_date ASC")
+    List<Policy> findByCustomerIdOrderByStartDateAsc(Long user_id);
 }

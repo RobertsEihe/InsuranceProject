@@ -11,11 +11,13 @@ import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 import jakarta.annotation.security.PermitAll;
 
 @PermitAll
 @Route(value = "", layout = AppLayoutNavbar.class)
 @CssImport("./styles/shared-styles.css")
+@AnonymousAllowed
 public class HomeView extends VerticalLayout {
 
     public HomeView() {

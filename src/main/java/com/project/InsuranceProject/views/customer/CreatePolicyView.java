@@ -1,14 +1,18 @@
 package com.project.InsuranceProject.views.customer;
 
 import com.project.InsuranceProject.data.entity.*;
+import com.project.InsuranceProject.data.logic.PolicyLogic;
 import com.project.InsuranceProject.data.services.*;
 import com.project.InsuranceProject.security.Roles;
 import com.project.InsuranceProject.views.MainLayout;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
@@ -22,8 +26,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
+import java.awt.*;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.List;
 
 
 @Route(value = "customer/createpolicy", layout = MainLayout.class)//someone for got to add this
@@ -38,15 +44,19 @@ public class CreatePolicyView extends VerticalLayout {
     private final PolicyRiskService policyRiskService;
     private final UserService userService;
     private final RiskRetrieveService riskRetrieveService;
+    private final PolicyLogic policyLogic;
+
+    Policy policy = new Policy();
 
     @Autowired
-    public CreatePolicyView(AgentRetrieveService agentRetrieveService, VehicleService vehicleService, PolicyRetrieveService policyService, PolicyRiskService policyRiskService, UserService userService, RiskRetrieveService riskRetrieveService) {
+    public CreatePolicyView(AgentRetrieveService agentRetrieveService, VehicleService vehicleService, PolicyRetrieveService policyService, PolicyRiskService policyRiskService, UserService userService, RiskRetrieveService riskRetrieveService, PolicyLogic policyLogic) {
         this.agentRetrieveService = agentRetrieveService;
         this.vehicleService = vehicleService;
         this.policyService = policyService;
         this.policyRiskService = policyRiskService;
         this.userService = userService;
         this.riskRetrieveService = riskRetrieveService;
+        this.policyLogic = policyLogic;
         createPolicyView();
     }
 
@@ -58,9 +68,10 @@ public class CreatePolicyView extends VerticalLayout {
 
         formLayout.add(heading);
 
-        Button PremiumCalc = new Button("Calculate Premium", e -> {
+        Button confirmPolicyButton = new Button("Confirm policy purchase", e -> {
             // When button is clicked, add the agent and insurance type fields
-           Notification.show("Details Submitted");
+            policyLogic.confirmPolicyPurchase(policy, policy.getUsers());
+           showSuccess("Policy purchased.");
         });
 
         Button submitButton = new Button("Proceed", e -> {
@@ -84,33 +95,33 @@ public class CreatePolicyView extends VerticalLayout {
         submitButton.addClickListener(e -> {
             submitButton.setVisible(false);
             createPolicyButton.setVisible(false);
-            PremiumCalc.setVisible(false);
+            confirmPolicyButton.setVisible(false);
             String insuranceType = insuranceTypeComboBox.getValue();
             if (isFormValid(agentComboBox, insuranceTypeComboBox)) {
                 // Process form data
                 if (insuranceType.equals("Vehicle")) {
                     createVehicleForm(formLayout);
                     //datepick(formLayout);
-                    PremiumCalc.setVisible(true);
+                    confirmPolicyButton.setVisible(true);
                 } else if (insuranceType.equals("House")) {
                     createHouseForm(formLayout);
                     datepick(formLayout);
-                    PremiumCalc.setVisible(true);
+                    confirmPolicyButton.setVisible(true);
                 } else if (insuranceType.equals("Health")) {
                     createHealthForm(formLayout);
                     datepick(formLayout);
-                    PremiumCalc.setVisible(true);
+                    confirmPolicyButton.setVisible(true);
                 }
-                formLayout.add(PremiumCalc);
+                formLayout.add(confirmPolicyButton);
 
                 Notification.show("Form submitted successfully.");
             } else {
                 Notification.show("Please fill out all required fields.", 3000, Notification.Position.MIDDLE);
             }
         });
-        PremiumCalc.setDisableOnClick(true);
-        PremiumCalc.addClickListener(e -> {
-
+        confirmPolicyButton.setDisableOnClick(true);
+        confirmPolicyButton.addClickListener(e -> {
+            // or here I should put policy Purchased. ??
         });
     }
 
@@ -168,10 +179,12 @@ public class CreatePolicyView extends VerticalLayout {
         durationComboBox.setItems(1, 3, 6, 12);
         durationComboBox.setValue(1);
 
+        Span premiumLabel = new Span();
 
-        Button submitButton = new Button("Submit", event -> {
+        Button submitButton = new Button("Calculate premium", event -> {
 
-            Policy policy = new Policy();
+            // moved to class scope
+            //Policy policy = new Policy();
             policy.setDuration(durationComboBox.getValue());
             policy.setEnd_date(startDateField.getValue().plusMonths(durationComboBox.getValue()));
             policy.setStart_date(startDateField.getValue());
@@ -211,13 +224,27 @@ public class CreatePolicyView extends VerticalLayout {
                 }
             }
 
+            policyLogic.calculatePolicyPremium(policy, policy.getUsers());
+            showSuccess("Data submitted");
+
+            if (policy != null) {
+                double premium = policy.getTotalPremium();
+
+                if(policy.getDuration() == 1){
+                    premiumLabel.setText("Total premium: €" + String.format("%.2f", premium));
+                } else {
+                    premiumLabel.setText("Total premium: €"+ String.format("%.2f", premium) + " (monthly: €" +
+                            String.format("%.2f",premium / policy.getDuration()) +")");
+                }
+                //Notification.show("Premium Calculated: $" + premium);
+            } else {
+                Notification.show("Please submit the policy first.");
+            }
 
         });
 
-
-
         formLayout.add(licenseNumberField, issueDateField, expireDateField, carMakeField, carModelField, carYearField,
-                carOdometerField, marketValueField, riskCheckboxGroup,startDateField, durationComboBox, submitButton);
+                carOdometerField, marketValueField, riskCheckboxGroup,startDateField, durationComboBox, submitButton, premiumLabel);
 
     }
 
@@ -276,5 +303,11 @@ public class CreatePolicyView extends VerticalLayout {
             insuranceTypeComboBox.setInvalid(false);
         }
         return isValid;
+    }
+
+    private void showSuccess(String messageText) {
+        Notification notification =
+                Notification.show(messageText);
+        notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
     }
 }
