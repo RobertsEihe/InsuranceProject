@@ -50,7 +50,7 @@ public class RegisterFormBinder {
 
                 String encodedPassword = passwordEncoder.encode(user.getPassword());
                 user.setPassword(encodedPassword);
-                user.setRole(Roles.AGENT);
+                user.setRole(Roles.CUSTOMER);
 
                 userService.saveUser(user);
                 showSuccess();

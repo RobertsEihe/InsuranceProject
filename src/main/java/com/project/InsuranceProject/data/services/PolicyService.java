@@ -59,4 +59,9 @@ public class PolicyService {
 		policies.forEach(policy -> Hibernate.initialize(policy.getUsers()));  // Initialize users collection
 		return policies;
 	}
+
+	@Transactional
+	public Policy savePolicy(Policy policy) {
+		return policyRepository.save(policy);
+	}
 }

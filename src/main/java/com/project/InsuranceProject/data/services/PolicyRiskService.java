@@ -5,6 +5,8 @@ import com.project.InsuranceProject.data.repositories.PolicyRiskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PolicyRiskService {
 
@@ -13,5 +15,9 @@ public class PolicyRiskService {
 
     public Policy_risk savePolicyRisk(Policy_risk policyRisk) {
         return policyRiskRepository.save(policyRisk);
+    }
+
+    public List<Policy_risk> findByPolicyID(Long id) {
+        return policyRiskRepository.findByPolicyID(id);
     }
 }

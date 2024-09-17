@@ -30,8 +30,11 @@ public class Policy {
     @Column(nullable = true)
     private String urStatus;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private double sum_insured;
+
+    @Column(nullable = true)
+    private double total_premium;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -71,6 +74,20 @@ public class Policy {
         this.status = status;
         this.urStatus = urStatus;
         this.sum_insured = sum_insured;
+        this.users = users;
+        this.agent_id = agent_id;
+    }
+
+    public Policy(LocalDate start_date, LocalDate end_date, int duration, boolean aut_renewal, String status, String urStatus,
+                  double sum_insured, double total_premium, Users users, Long agent_id) {
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.duration = duration;
+        this.aut_renewal = aut_renewal;
+        this.status = status;
+        this.urStatus = urStatus;
+        this.sum_insured = sum_insured;
+        this.total_premium = total_premium;
         this.users = users;
         this.agent_id = agent_id;
     }
@@ -169,5 +186,13 @@ public class Policy {
 
     public void setSum_insured(double sum_insured) {
         this.sum_insured = sum_insured;
+    }
+
+    public double getTotalPremium() {
+        return total_premium;
+    }
+
+    public void setTotalPremium(double total_premium) {
+        this.total_premium = total_premium;
     }
 }
