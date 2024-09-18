@@ -3,6 +3,7 @@ import com.project.InsuranceProject.data.entity.Users;
 import com.project.InsuranceProject.security.Roles;
 import com.project.InsuranceProject.views.shared.RegisterForm;
 
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
@@ -10,8 +11,11 @@ import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.data.binder.ValidationResult;
 import com.vaadin.flow.data.binder.ValueContext;
 import jakarta.annotation.security.PermitAll;
+import jakarta.validation.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.time.LocalDate;
 
 @PermitAll
 public class RegisterFormBinder {
@@ -40,6 +44,18 @@ public class RegisterFormBinder {
             binder.validate();
         });
 
+        binder.forField(registerForm.getNameField())
+                .withValidator(this::nameValidator).bind("name");
+
+        binder.forField(registerForm.getEmailField())
+                .withValidator(this::emailValidator).bind("email");
+
+        binder.forField(registerForm.getAddressField())
+                .withValidator(this::addressValidator).bind("address");
+
+        binder.forField(registerForm.getDateOfBirthField())
+                .withValidator(this::dateOfBirthValidator).bind("date_of_birth");
+
         binder.setStatusLabel(registerForm.getErrorMessageField());
 
         registerForm.getSubmitButton().addClickListener(event -> {
@@ -65,7 +81,12 @@ public class RegisterFormBinder {
     private ValidationResult passwordValidator(String pass1, ValueContext ctx) {
 
         if (pass1 == null || pass1.length() < 4) {
-            return ValidationResult.error("Password should be at least 8 characters long");
+            return ValidationResult.error("Password should be at least 8 characters long.");
+        }
+
+        String passwordPattern = "^(?=.*[a-zA-Z])(?=.*\\d).+$";
+        if (!pass1.matches(passwordPattern)) {
+            return ValidationResult.error("Password must contain letters and numbers");
         }
 
         if (!enablePasswordValidation) {
@@ -80,6 +101,43 @@ public class RegisterFormBinder {
         }
 
         return ValidationResult.error("Passwords do not match");
+    }
+
+    private ValidationResult nameValidator(String name, ValueContext ctx) {
+        if (name == null) {
+            return ValidationResult.error("Please provide name");
+        }
+
+        return ValidationResult.ok();
+    }
+
+    private ValidationResult emailValidator(String email, ValueContext ctx) {
+        if (email == null || email.isEmpty()) {
+            return ValidationResult.error("Please provide email");
+        }
+        // Simple email format regex (a@a.a)
+        String emailRegex = "^[\\w-\\.]+@[\\w-]+\\.[a-z]{2,}$";
+        if (!email.matches(emailRegex)) {
+            return ValidationResult.error("Invalid email format (example: name@surname.com)");
+        }
+
+        return ValidationResult.ok();
+    }
+
+    private ValidationResult addressValidator(String address, ValueContext ctx) {
+        if (address == null) {
+            return ValidationResult.error("Please provide address");
+        }
+
+        return ValidationResult.ok();
+    }
+
+    private ValidationResult dateOfBirthValidator(LocalDate date, ValueContext ctx) {
+        if (date == null) {
+            return ValidationResult.error("Please provide date of birth");
+        }
+
+        return ValidationResult.ok();
     }
 
     private void showSuccess() {
