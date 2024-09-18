@@ -1,16 +1,15 @@
 package com.project.InsuranceProject.views.agent;
-
 import com.project.InsuranceProject.security.SecurityService;
-import com.project.InsuranceProject.views.agent.forms.ViewPolicies;
-import com.project.InsuranceProject.views.agent.forms.ViewClaims;
-import com.project.InsuranceProject.views.agent.tables.AgentView;  // Import AgentView
+import com.project.InsuranceProject.views.agent.tables.AgentView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
@@ -41,17 +40,17 @@ public class AgentLayout extends AppLayout {
 
 		viewTitle = new H1();
 		viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
-
 		Button logOut = new Button("Log out", e -> securityService.logout());
-		logOut.getStyle().set("margin-left", "auto"); // Align logout button to the right
-
-		// Use HorizontalLayout to ensure proper alignment of title and logout button
+		logOut.addThemeVariants(ButtonVariant.LUMO_ERROR);
 		HorizontalLayout headerLayout = new HorizontalLayout(toggle, viewTitle, logOut);
 		headerLayout.setWidthFull();
-		headerLayout.setAlignItems(Alignment.CENTER); // Align items vertically
-		headerLayout.expand(viewTitle); // Push the logout button to the right
+		headerLayout.setPadding(true);
+		headerLayout.setSpacing(true);
+		headerLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+		headerLayout.expand(viewTitle);
+		logOut.getStyle().set("margin-right", "10px");
 
-		addToNavbar(true, headerLayout); // Add the whole layout to the navbar
+		addToNavbar(headerLayout);
 	}
 
 	private void addDrawerContent() {
@@ -67,10 +66,8 @@ public class AgentLayout extends AppLayout {
 	private SideNav createNavigation() {
 		SideNav nav = new SideNav();
 
-		// Adding consistent icons and navigation
+
 		nav.addItem(new SideNavItem("View Agent Policies", AgentView.class, VaadinIcon.HOME.create())); // "Agent View" button
-//		nav.addItem(new SideNavItem("View Policies", ViewPolicies.class, VaadinIcon.FILE_TEXT_O.create()));
-		nav.addItem(new SideNavItem("View Claims", ViewClaims.class, VaadinIcon.CLIPBOARD_TEXT.create()));
 
 		return nav;
 	}

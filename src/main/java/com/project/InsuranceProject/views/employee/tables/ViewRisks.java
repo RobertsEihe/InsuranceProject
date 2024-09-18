@@ -4,10 +4,14 @@ import com.project.InsuranceProject.data.entity.Risk;
 import com.project.InsuranceProject.data.services.EmployeeViewService;
 import com.project.InsuranceProject.security.Roles;
 import com.project.InsuranceProject.views.employee.EmployeeLayout;
+import com.project.InsuranceProject.views.employee.froms.RiskForm;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.editor.Editor;
-import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -27,18 +31,29 @@ public class ViewRisks extends VerticalLayout {
     private final EmployeeViewService employeeViewService;
     private Grid<Risk> riskGrid;
     private Select<String> typeFilter;
+    private RiskForm riskForm;
 
     public ViewRisks(EmployeeViewService employeeViewService) {
         this.employeeViewService = employeeViewService;
         setSizeFull();
+        createTopBar();
+        createRiskGrid();
+        createRiskForm();
+        add(riskGrid);
+        updateGrid();
+    }
 
-        H2 header = new H2("Risk Management");
-        add(header);
+    private void createTopBar() {
+        HorizontalLayout topBar = new HorizontalLayout();
+        topBar.setWidthFull();
+        topBar.setJustifyContentMode(JustifyContentMode.BETWEEN);
+        topBar.setAlignItems(Alignment.BASELINE);
 
         createTypeFilter();
-        createRiskGrid();
-        createAddRiskForm();
-        add(typeFilter, riskGrid);
+        createAddRiskButton();
+
+        topBar.add(typeFilter, createAddRiskButton());
+        add(topBar);
     }
 
     private void createTypeFilter() {
@@ -47,6 +62,13 @@ public class ViewRisks extends VerticalLayout {
         typeFilter.setItems("All", "House", "Vehicle", "Health");
         typeFilter.setValue("All");
         typeFilter.addValueChangeListener(event -> updateGrid());
+    }
+
+    private Button createAddRiskButton() {
+        Button addRiskButton = new Button("Add Risk");
+        addRiskButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        addRiskButton.addClickListener(event -> riskForm.open());
+        return addRiskButton;
     }
 
     private void createRiskGrid() {
@@ -74,6 +96,7 @@ public class ViewRisks extends VerticalLayout {
             HorizontalLayout buttons = new HorizontalLayout();
 
             Button editButton = new Button("Edit");
+            editButton.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
             editButton.addClickListener(e -> {
                 if (editor.isOpen())
                     editor.cancel();
@@ -81,21 +104,21 @@ public class ViewRisks extends VerticalLayout {
             });
 
             Button saveButton = new Button("Save");
+            saveButton.getStyle().set("background-color", "green");
+            saveButton.getStyle().set("color", "white");
             saveButton.addClickListener(e -> {
                 try {
-                    risk.setType(typeField.getValue());
-                    risk.setRisk(riskField.getValue());
-                    risk.setRate(rateField.getValue());
-
-                    employeeViewService.updateRisk(risk);
-                    Notification.show("Risk updated successfully", 3000, Notification.Position.MIDDLE);
-                    updateGrid();
+                    editor.save();
                 } catch (Exception ex) {
                     Notification.show("Error updating risk: " + ex.getMessage(), 3000, Notification.Position.MIDDLE);
                 }
             });
 
-            buttons.add(editButton, saveButton);
+            Button deleteButton = new Button(new Icon(VaadinIcon.TRASH));
+            deleteButton.addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_ICON);
+            deleteButton.addClickListener(e -> confirmDelete(risk));
+
+            buttons.add(editButton, saveButton, deleteButton);
             return buttons;
         }).setHeader("Actions").setWidth("300px").setFlexGrow(0);
 
@@ -113,43 +136,34 @@ public class ViewRisks extends VerticalLayout {
         riskGrid.getColumns().forEach(col -> col.setAutoWidth(true).setSortable(true));
     }
 
-    private void createAddRiskForm() {
-        HorizontalLayout formLayout = new HorizontalLayout();
+    private void createRiskForm() {
+        riskForm = new RiskForm(employeeViewService, this::updateGrid);
+    }
 
-        Select<String> newTypeField = new Select<>();
-        newTypeField.setLabel("Type");
-        newTypeField.setItems("House", "Vehicle", "Health");
+    private void confirmDelete(Risk risk) {
+        ConfirmDialog dialog = new ConfirmDialog();
+        dialog.setHeader("Confirm Delete");
+        dialog.setText("Are you sure you want to delete this risk?");
 
-        TextField newRiskField = new TextField("Risk");
-        NumberField newRateField = new NumberField("Rate");
+        dialog.setCancelable(true);
+        dialog.setCancelText("Cancel");
 
-        Button addButton = new Button("Add Risk");
-        formLayout.add(newTypeField, newRiskField, newRateField, addButton);
+        dialog.setConfirmText("Delete");
+        dialog.setConfirmButtonTheme("error primary");
 
-        addButton.addClickListener(event -> {
-            if (newTypeField.isEmpty() || newRiskField.isEmpty() || newRateField.isEmpty()) {
-                Notification.show("Please fill all fields", 3000, Notification.Position.MIDDLE);
-                return;
-            }
+        dialog.addConfirmListener(event -> deleteRisk(risk));
 
-            Risk newRisk = new Risk();
-            newRisk.setType(newTypeField.getValue());
-            newRisk.setRisk(newRiskField.getValue());
-            newRisk.setRate(newRateField.getValue());
+        dialog.open();
+    }
 
-            try {
-                employeeViewService.addRisk(newRisk);
-                Notification.show("Risk added successfully", 3000, Notification.Position.MIDDLE);
-                updateGrid();
-                newTypeField.clear();
-                newRiskField.clear();
-                newRateField.clear();
-            } catch (Exception e) {
-                Notification.show("Error adding risk: " + e.getMessage(), 3000, Notification.Position.MIDDLE);
-            }
-        });
-
-        add(formLayout);
+    private void deleteRisk(Risk risk) {
+        try {
+            employeeViewService.deleteRisk(risk.getRisk_id());
+            Notification.show("Risk deleted successfully", 3000, Notification.Position.MIDDLE);
+            updateGrid();
+        } catch (Exception e) {
+            Notification.show("Error deleting risk: " + e.getMessage(), 3000, Notification.Position.MIDDLE);
+        }
     }
 
     private void updateGrid() {

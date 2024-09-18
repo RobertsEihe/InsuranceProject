@@ -58,10 +58,8 @@ public class EmployeeViewService {
     }
     @Transactional
     public Risk addRisk(Risk risk) {
-        if (risk.getRisk_id() != null) {
-            throw new IllegalArgumentException("New risk should not have an ID");
-        }
         return riskRepository.save(risk);
     }
+
 
 }

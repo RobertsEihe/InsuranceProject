@@ -2,6 +2,7 @@ package com.project.InsuranceProject.views.agent.tables;
 
 import com.project.InsuranceProject.data.entity.Policy;
 import com.project.InsuranceProject.data.entity.Users;
+import com.project.InsuranceProject.data.services.ClaimService;
 import com.project.InsuranceProject.data.services.PolicyRetrieveService;
 import com.project.InsuranceProject.data.services.UserService;
 import com.project.InsuranceProject.security.Roles;
@@ -29,12 +30,15 @@ public class AgentView extends VerticalLayout {
 
 	private final PolicyRetrieveService policyRetrieveService;
 	private final UserService userService;
+	private final ClaimService claimService;
 	private Grid<Policy> policyGrid = new Grid<>(Policy.class);
 
 	@Autowired
-	public AgentView(PolicyRetrieveService policyRetrieveService, UserService userService) {
+	public AgentView(PolicyRetrieveService policyRetrieveService, UserService userService, ClaimService claimService) {
 		this.policyRetrieveService = policyRetrieveService;
 		this.userService = userService;
+		this.claimService = claimService;
+
 		setSizeFull();
 		configurePolicyGrid();
 		add(policyGrid);
@@ -55,8 +59,9 @@ public class AgentView extends VerticalLayout {
 		policyGrid.addComponentColumn(policy -> {
 			Button approveButton = new Button("Approve", click -> approvePolicy(policy));
 			Button denyButton = new Button("Deny", click -> denyPolicy(policy));
-			return new HorizontalLayout(approveButton, denyButton);
-		}).setHeader("Actions").setWidth("200px");
+			Button viewClaimsButton = new Button("View Claims", click -> viewClaims(policy));
+			return new HorizontalLayout(approveButton, denyButton, viewClaimsButton);
+		}).setHeader("Actions").setWidth("300px");
 
 		policyGrid.setSizeFull();
 	}
@@ -67,7 +72,8 @@ public class AgentView extends VerticalLayout {
 			List<Policy> policies = policyRetrieveService.getPoliciesByAgentId(agentId);
 			policyGrid.setItems(policies);
 		} else {
-			Notification.show("Unable to fetch policies. User not found.").addThemeVariants(NotificationVariant.LUMO_ERROR);
+			Notification.show("Unable to fetch policies. User not found.")
+					.addThemeVariants(NotificationVariant.LUMO_ERROR);
 		}
 	}
 
@@ -83,10 +89,14 @@ public class AgentView extends VerticalLayout {
 		updatePolicyList();
 	}
 
+	private void viewClaims(Policy policy) {
+		ViewClaims claimsView = new ViewClaims(policy, claimService);
+		claimsView.open();
+	}
+
 	private Long getCurrentUserId() {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if (principal instanceof UserDetails) {
-			UserDetails userDetails = (UserDetails) principal;
+		if (principal instanceof UserDetails userDetails) {
 			Optional<Users> user = userService.getUserByUsername(userDetails.getUsername());
 			return user.map(Users::getId).orElse(null);
 		}

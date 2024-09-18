@@ -5,6 +5,7 @@ import com.project.InsuranceProject.data.services.UserService;
 import com.project.InsuranceProject.security.Roles;
 import com.project.InsuranceProject.views.admin.AdminLayout;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -43,7 +44,6 @@ public class AddUsers extends VerticalLayout {
         this.passwordEncoder = passwordEncoder;
         setSizeFull();
 
-        H2 header = new H2("Add New User");
         roleSelect = new ComboBox<>("Select user role");
         roleSelect.setItems(Roles.CUSTOMER, Roles.AGENT, Roles.EMPLOYEE, Roles.ADMIN);
         roleSelect.addValueChangeListener(event -> createForm());
@@ -52,8 +52,9 @@ public class AddUsers extends VerticalLayout {
         userBinder = new Binder<>(Users.class);
 
         Button saveButton = new Button("Save", event -> saveUser());
+        saveButton.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
 
-        add(header, roleSelect, form, saveButton);
+        add(roleSelect, form, saveButton);
     }
 
     private void createForm() {

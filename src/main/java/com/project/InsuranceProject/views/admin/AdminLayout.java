@@ -6,10 +6,13 @@ import com.project.InsuranceProject.views.admin.tables.UserManagementView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
@@ -41,9 +44,18 @@ public class AdminLayout extends AppLayout {
         viewTitle = new H1();
         viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
         Button logOut = new Button("Log out", e -> securityService.logout());
+        logOut.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        HorizontalLayout headerLayout = new HorizontalLayout(toggle, viewTitle, logOut);
+        headerLayout.setWidthFull();
+        headerLayout.setPadding(true);
+        headerLayout.setSpacing(true);
+        headerLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+        headerLayout.expand(viewTitle);
+        logOut.getStyle().set("margin-right", "10px");
 
-        addToNavbar(true, toggle, viewTitle, logOut);
+        addToNavbar(headerLayout);
     }
+
 
     private void addDrawerContent() {
         Span appName = new Span("Admin menu");

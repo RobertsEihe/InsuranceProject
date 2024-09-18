@@ -1,12 +1,17 @@
 package com.project.InsuranceProject.views.employee;
 
 import com.project.InsuranceProject.views.employee.tables.ViewRisks;
+import com.project.InsuranceProject.security.SecurityService;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
@@ -17,8 +22,9 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 public class EmployeeLayout extends AppLayout {
 
     private H1 viewTitle;
-
-    public EmployeeLayout() {
+    private SecurityService securityService;
+    public EmployeeLayout(SecurityService securityService) {
+        this.securityService = securityService;
         setPrimarySection(Section.DRAWER);
         addDrawerContent();
         addHeaderContent();
@@ -30,8 +36,17 @@ public class EmployeeLayout extends AppLayout {
 
         viewTitle = new H1();
         viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
+        Button logOut = new Button("Log out", e -> securityService.logout());
+        logOut.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        HorizontalLayout headerLayout = new HorizontalLayout(toggle, viewTitle, logOut);
+        headerLayout.setWidthFull();
+        headerLayout.setPadding(true);
+        headerLayout.setSpacing(true);
+        headerLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+        headerLayout.expand(viewTitle);
+        logOut.getStyle().set("margin-right", "10px");
 
-        addToNavbar(true, toggle, viewTitle);
+        addToNavbar(headerLayout);
     }
 
     private void addDrawerContent() {

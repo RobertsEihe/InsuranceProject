@@ -1,5 +1,6 @@
 package com.project.InsuranceProject.data.services;
 
+import com.project.InsuranceProject.data.entity.Claim;
 import com.project.InsuranceProject.data.entity.Policy;
 import com.project.InsuranceProject.data.repositories.PolicyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,4 +40,7 @@ public class PolicyRetrieveService {
         policyRepository.save(policy);
     }
 
+    public List<Claim> getClaimsForPolicy(Policy policy) {
+        return null;
+    }
 }

@@ -64,8 +64,10 @@ public class ClaimForm extends Dialog {
         binder.bindInstanceFields(this);
 
         Button saveButton = new Button("Save", e -> validateAndSave());
-        saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        saveButton.getStyle().set("background-color", "green");
+        saveButton.getStyle().set("color", "white");
         Button cancelButton = new Button("Cancel", e -> close());
+        cancelButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
         HorizontalLayout buttonLayout = new HorizontalLayout(saveButton, cancelButton);
 

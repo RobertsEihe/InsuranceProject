@@ -24,5 +24,6 @@ public interface PolicyRepository extends JpaRepository<Policy, Long> {
     List<Policy> findByCustomerIdOrderByStartDateAsc(Long user_id);
     @Query("SELECT DISTINCT p FROM Policy p JOIN FETCH p.users WHERE p.agent_id = :agentId")
     List<Policy> findByAgentId(@Param("agentId") Long agentId);
-
+    @Query("SELECT DISTINCT p FROM Policy p LEFT JOIN FETCH p.claims WHERE p.agent_id = :agentId")
+    List<Policy> findByAgentIdWithClaims(@Param("agentId") Long agentId);
 }

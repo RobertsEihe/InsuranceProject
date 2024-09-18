@@ -5,7 +5,6 @@ import com.project.InsuranceProject.data.services.ClaimService;
 import com.project.InsuranceProject.data.services.PolicyRetrieveService;
 import com.project.InsuranceProject.security.Roles;
 import com.project.InsuranceProject.views.MainLayout;
-import com.project.InsuranceProject.views.customer.claims.ClaimForm;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -17,7 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Route(value = "customer/claims", layout = MainLayout.class)
-@RolesAllowed(Roles.CUSTOMER)
+@RolesAllowed({Roles.CUSTOMER, Roles.ADMIN})
 @PageTitle("My Claims")
 public class ClaimView extends VerticalLayout {
 

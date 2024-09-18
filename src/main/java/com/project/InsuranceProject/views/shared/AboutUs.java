@@ -10,11 +10,10 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import jakarta.annotation.security.PermitAll;
+
 
 @Route(value = "about-us", layout = AppLayoutNavbar.class)
 @PageTitle("About Us")
-@PermitAll
 @CssImport("./styles/shared-styles.css")
 @AnonymousAllowed
 public class AboutUs extends VerticalLayout {
