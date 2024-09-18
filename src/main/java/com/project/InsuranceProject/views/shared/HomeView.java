@@ -29,7 +29,7 @@ public class HomeView extends VerticalLayout {
         HorizontalLayout contentLayout = new HorizontalLayout();
         contentLayout.setSizeFull();
 
-        Image characterImage = new Image("images/suitman.png", "Character Image");
+        Image characterImage = new Image("/images/suitman.png", "Character Image");
         characterImage.setMaxHeight("80vh");
         characterImage.setWidth("auto");
         characterImage.getStyle().set("object-fit", "contain");
