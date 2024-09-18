@@ -39,6 +39,11 @@ public class PolicyRetrieveService {
         policy.setUrStatus("DENIED");
         policyRepository.save(policy);
     }
+    @Transactional
+    public void confirmPolicy(Policy policy) {
+        policy.setStatus("UR");
+        policyRepository.save(policy);
+    }
 
     public List<Claim> getClaimsForPolicy(Policy policy) {
         return null;
