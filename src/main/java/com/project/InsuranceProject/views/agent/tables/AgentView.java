@@ -43,9 +43,15 @@ public class AgentView extends VerticalLayout {
 	private HorizontalLayout createSearchLayout() {
 		Button searchButton = new Button("Search", click -> updatePolicyList());
 		searchField.setPlaceholder("Search by customer ID, name, type...");
+
+		// Ensure both components are aligned properly
+		searchField.setWidthFull();
+		searchButton.getStyle().set("height", "100%");  // Ensure the button takes the same height as the field
+
 		HorizontalLayout searchLayout = new HorizontalLayout(searchField, searchButton);
 		searchLayout.setWidthFull();
-		searchLayout.setAlignItems(Alignment.CENTER);
+		searchLayout.setAlignItems(Alignment.CENTER);  // Align both elements to center
+
 		return searchLayout;
 	}
 
@@ -54,51 +60,57 @@ public class AgentView extends VerticalLayout {
 		policyGrid.addColumn(Policy::getPolicy_id)
 				.setHeader("Policy ID")
 				.setKey("policy_id")
-				.setWidth("70px");  // Set width
+				.setWidth("70px");
 
 		// Display the Duration
 		policyGrid.addColumn(Policy::getDuration)
 				.setHeader("Duration")
 				.setKey("duration")
-				.setWidth("70px");  // Set width
+				.setWidth("70px");
 
 		// Display Username
 		policyGrid.addColumn(policy -> policy.getUsers() != null ? policy.getUsers().getUsername() : "N/A")
 				.setHeader("Username")
 				.setKey("username")
-				.setWidth("150px");  // Set width
+				.setWidth("150px");
 
 		// Display Email
 		policyGrid.addColumn(policy -> policy.getUsers() != null ? policy.getUsers().getEmail() : "N/A")
 				.setHeader("Email")
 				.setKey("email")
-				.setWidth("200px");  // Set width
+				.setWidth("200px");
 
 		// Display Phone
 		policyGrid.addColumn(policy -> policy.getUsers() != null ? policy.getUsers().getPhone() : "N/A")
 				.setHeader("Phone")
 				.setKey("phone")
-				.setWidth("150px");  // Set width
+				.setWidth("150px");
 
 		// Display Start Date
 		policyGrid.addColumn(policy -> policy.getStart_date() != null ?
 						policy.getStart_date().format(DateTimeFormatter.ISO_LOCAL_DATE) : "N/A")
 				.setHeader("Start Date")
 				.setKey("start_date")
-				.setWidth("150px");  // Set width
+				.setWidth("150px");
 
 		// Display End Date
 		policyGrid.addColumn(policy -> policy.getEnd_date() != null ?
 						policy.getEnd_date().format(DateTimeFormatter.ISO_LOCAL_DATE) : "N/A")
 				.setHeader("End Date")
 				.setKey("end_date")
-				.setWidth("150px");  // Set width
+				.setWidth("150px");
 
 		// Display Status
 		policyGrid.addColumn(Policy::getStatus)
 				.setHeader("Status")
 				.setKey("status")
-				.setWidth("70px");  // Set width
+				.setWidth("70px");
+
+		// Display UR Status
+		policyGrid.addColumn(Policy::getUrStatus)
+				.setHeader("UR Status")
+				.setKey("urStatus")
+				.setWidth("70px");
 
 		// Display Claims
 		policyGrid.addColumn(policy -> {
