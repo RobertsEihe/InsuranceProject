@@ -8,6 +8,7 @@ import com.project.InsuranceProject.data.services.UserService;
 import com.project.InsuranceProject.security.Roles;
 import com.project.InsuranceProject.views.agent.AgentLayout;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
@@ -58,7 +59,10 @@ public class AgentView extends VerticalLayout {
 
 		policyGrid.addComponentColumn(policy -> {
 			Button approveButton = new Button("Approve", click -> approvePolicy(policy));
+			approveButton.getStyle().set("background-color", "green");
+			approveButton.getStyle().set("color", "white");
 			Button denyButton = new Button("Deny", click -> denyPolicy(policy));
+			denyButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
 			Button viewClaimsButton = new Button("View Claims", click -> viewClaims(policy));
 			return new HorizontalLayout(approveButton, denyButton, viewClaimsButton);
 		}).setHeader("Actions").setWidth("300px");

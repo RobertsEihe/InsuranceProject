@@ -45,35 +45,27 @@ public class UserManagementView extends VerticalLayout {
 
     private void createUserGrid() {
         userGrid = new Grid<>(Users.class);
-        userGrid.setColumns("id", "username", "name", "email", "phone", "address");
-
-        userGrid.addColumn(user -> user.getDate_of_birth() != null ?
-                        user.getDate_of_birth().format(DateTimeFormatter.ISO_LOCAL_DATE) : "")
-                .setHeader("Date of Birth")
-                .setKey("date_of_birth");
-
-        Binder<Users> binder = new Binder<>(Users.class);
-
-        Grid.Column<Users> roleColumn = userGrid.addComponentColumn(user -> {
+        userGrid.setColumns("id", "username", "name", "email");
+        userGrid.addComponentColumn(user -> {
             Select<String> roleSelect = new Select<>();
             roleSelect.setItems(Roles.CUSTOMER, Roles.AGENT, Roles.EMPLOYEE, Roles.ADMIN);
             roleSelect.setValue(user.getRole());
             roleSelect.addValueChangeListener(event -> user.setRole(event.getValue()));
             return roleSelect;
         }).setHeader("Role").setKey("role");
-
         userGrid.addColumn(user -> Roles.CUSTOMER.equals(user.getRole()) ? user.getLoyalty() : "-")
                 .setHeader("Loyalty Points")
                 .setKey("loyalty");
 
-        Grid.Column<Users> fraudStatusColumn = userGrid.addComponentColumn(user -> {
+        userGrid.addComponentColumn(user -> {
             Checkbox fraudCheckbox = new Checkbox(user.getFraudStatus());
             fraudCheckbox.addValueChangeListener(event -> user.setFraudStatus(event.getValue()));
             return fraudCheckbox;
         }).setHeader("Fraud Status").setKey("fraudStatus");
-
         userGrid.addComponentColumn(user -> {
             Button saveButton = new Button("Save");
+            saveButton.getStyle().set("background-color", "green");
+            saveButton.getStyle().set("color", "white");
             saveButton.addClickListener(event -> {
                 try {
                     userService.updateUser(user);
@@ -83,13 +75,10 @@ public class UserManagementView extends VerticalLayout {
                 }
             });
             return saveButton;
-        }).setHeader("Actions");
-
+        }).setHeader("Actions").setKey("actions");
         userGrid.getColumns().forEach(col -> col.setAutoWidth(true).setSortable(true));
-
         updateGrid();
     }
-
     private void updateGrid() {
         try {
             List<Users> users;
