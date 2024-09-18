@@ -3,6 +3,7 @@ import com.project.InsuranceProject.data.services.RegisterFormBinder;
 import com.project.InsuranceProject.data.services.UserService;
 import com.project.InsuranceProject.views.shared.RegisterForm;
 
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
@@ -24,7 +25,15 @@ public class RegisterView extends VerticalLayout {
 
         setHorizontalComponentAlignment(Alignment.CENTER, registerForm);
 
-        add(registerForm);
+        setSizeFull();
+        setAlignItems(Alignment.CENTER);
+        setJustifyContentMode(JustifyContentMode.CENTER);
+
+        //Anchor loginLink = new Anchor("login", "Sign in");
+
+        add(registerForm
+               // loginLink
+        );
 
         RegisterFormBinder registerFormBinder = new RegisterFormBinder(registerForm, userService, passwordEncoder);
         registerFormBinder.addBindingAndValidation();

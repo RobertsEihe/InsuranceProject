@@ -68,8 +68,8 @@ public class AgentLayout extends AppLayout {
 		SideNav nav = new SideNav();
 
 		// Adding consistent icons and navigation
-		nav.addItem(new SideNavItem("Agent View", AgentView.class, VaadinIcon.HOME.create())); // "Agent View" button
-		nav.addItem(new SideNavItem("View Policies", ViewPolicies.class, VaadinIcon.FILE_TEXT_O.create()));
+		nav.addItem(new SideNavItem("View Agent Policies", AgentView.class, VaadinIcon.HOME.create())); // "Agent View" button
+//		nav.addItem(new SideNavItem("View Policies", ViewPolicies.class, VaadinIcon.FILE_TEXT_O.create()));
 		nav.addItem(new SideNavItem("View Claims", ViewClaims.class, VaadinIcon.CLIPBOARD_TEXT.create()));
 
 		return nav;

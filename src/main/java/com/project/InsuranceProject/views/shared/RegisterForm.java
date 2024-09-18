@@ -21,18 +21,14 @@ public class RegisterForm extends FormLayout {
     private EmailField email;
     private PasswordField password;
     private PasswordField passwordConfirm;
-    //private Checkbox allowMarketing;
     private Span errorMessageField;
     private Button submitButton;
 
 
     public RegisterForm() {
-        title = new H1("Registration");
+        title = new H1("Sign up");
         username = new TextField("Full name");
         email = new EmailField("Email");
-
-//        allowMarketing = new Checkbox("Allow Marketing Emails?");
-//        allowMarketing.getStyle().set("margin-top", "10px");
 
         password = new PasswordField("Password");
         passwordConfirm = new PasswordField("Confirm password");
@@ -42,14 +38,12 @@ public class RegisterForm extends FormLayout {
 
         errorMessageField = new Span();
 
-        submitButton = new Button("Register");
+        submitButton = new Button("Sign up");
         submitButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-
-        Anchor loginLink = new Anchor("login", "Login");
 
         add(title, username, email, password,
                 passwordConfirm, errorMessageField,
-                submitButton, loginLink);
+                submitButton);
 
         setMaxWidth("500px");
         setResponsiveSteps(

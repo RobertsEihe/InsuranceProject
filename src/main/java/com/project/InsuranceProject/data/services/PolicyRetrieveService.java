@@ -2,9 +2,9 @@ package com.project.InsuranceProject.data.services;
 
 import com.project.InsuranceProject.data.entity.Policy;
 import com.project.InsuranceProject.data.repositories.PolicyRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,4 +23,20 @@ public class PolicyRetrieveService {
     public Policy savePolicy(Policy policy) {
         return policyRepository.save(policy);
     }
+
+    @Transactional(readOnly = true)
+    public List<Policy> getPoliciesByAgentId(Long agentId) {
+        return policyRepository.findByAgentId(agentId);
+    }
+    @Transactional
+    public void approvePolicy(Policy policy) {
+        policy.setUrStatus("APPROVED");
+        policyRepository.save(policy);
+    }
+    @Transactional
+    public void denyPolicy(Policy policy) {
+        policy.setUrStatus("DENIED");
+        policyRepository.save(policy);
+    }
+
 }
