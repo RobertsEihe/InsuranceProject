@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 public class RegisterForm extends FormLayout {
 
     private H1 title;
-    private TextField username;
+    private TextField name;
     private EmailField email;
     private PasswordField password;
     private PasswordField passwordConfirm;
@@ -27,13 +27,13 @@ public class RegisterForm extends FormLayout {
 
     public RegisterForm() {
         title = new H1("Sign up");
-        username = new TextField("Full name");
+        name = new TextField("Full name");
         email = new EmailField("Email");
 
         password = new PasswordField("Password");
         passwordConfirm = new PasswordField("Confirm password");
 
-        setRequiredIndicatorVisible(username, email, password,
+        setRequiredIndicatorVisible(name, email, password,
                 passwordConfirm);
 
         errorMessageField = new Span();
@@ -41,7 +41,7 @@ public class RegisterForm extends FormLayout {
         submitButton = new Button("Sign up");
         submitButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        add(title, username, email, password,
+        add(title, name, email, password,
                 passwordConfirm, errorMessageField,
                 submitButton);
 
@@ -51,7 +51,7 @@ public class RegisterForm extends FormLayout {
                 new ResponsiveStep("490px", 2, ResponsiveStep.LabelsPosition.TOP));
 
         setColspan(title, 2);
-        setColspan(username, 2);
+        setColspan(name, 2);
         setColspan(email, 2);
         setColspan(errorMessageField, 2);
         setColspan(submitButton, 2);
