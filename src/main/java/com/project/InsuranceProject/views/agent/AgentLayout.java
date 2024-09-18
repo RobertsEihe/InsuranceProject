@@ -11,6 +11,8 @@ import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
@@ -39,10 +41,17 @@ public class AgentLayout extends AppLayout {
 
 		viewTitle = new H1();
 		viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
-		Button logOut = new Button("Log out", e -> securityService.logout());
 
-		// Consistent with AdminLayout - using the same Navbar structure
-		addToNavbar(true, toggle, viewTitle, logOut);
+		Button logOut = new Button("Log out", e -> securityService.logout());
+		logOut.getStyle().set("margin-left", "auto"); // Align logout button to the right
+
+		// Use HorizontalLayout to ensure proper alignment of title and logout button
+		HorizontalLayout headerLayout = new HorizontalLayout(toggle, viewTitle, logOut);
+		headerLayout.setWidthFull();
+		headerLayout.setAlignItems(Alignment.CENTER); // Align items vertically
+		headerLayout.expand(viewTitle); // Push the logout button to the right
+
+		addToNavbar(true, headerLayout); // Add the whole layout to the navbar
 	}
 
 	private void addDrawerContent() {
