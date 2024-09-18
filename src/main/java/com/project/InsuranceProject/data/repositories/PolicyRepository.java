@@ -3,6 +3,7 @@ package com.project.InsuranceProject.data.repositories;
 import com.project.InsuranceProject.data.entity.Policy;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,4 +22,7 @@ public interface PolicyRepository extends JpaRepository<Policy, Long> {
 
     @Query("SELECT p FROM Policy p WHERE p.users.id = ?1 ORDER BY p.start_date ASC")
     List<Policy> findByCustomerIdOrderByStartDateAsc(Long user_id);
+    @Query("SELECT DISTINCT p FROM Policy p JOIN FETCH p.users WHERE p.agent_id = :agentId")
+    List<Policy> findByAgentId(@Param("agentId") Long agentId);
+
 }
