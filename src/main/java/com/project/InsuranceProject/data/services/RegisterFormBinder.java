@@ -1,9 +1,9 @@
 package com.project.InsuranceProject.data.services;
 import com.project.InsuranceProject.data.entity.Users;
+import com.project.InsuranceProject.data.repositories.UserRepository;
 import com.project.InsuranceProject.security.Roles;
 import com.project.InsuranceProject.views.shared.RegisterForm;
 
-import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
@@ -11,7 +11,6 @@ import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.data.binder.ValidationResult;
 import com.vaadin.flow.data.binder.ValueContext;
 import jakarta.annotation.security.PermitAll;
-import jakarta.validation.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -119,6 +118,10 @@ public class RegisterFormBinder {
         String emailRegex = "^[\\w-\\.]+@[\\w-]+\\.[a-z]{2,}$";
         if (!email.matches(emailRegex)) {
             return ValidationResult.error("Invalid email format (example: name@surname.com)");
+        }
+
+        if (userService.isUsernameExists(email)) {
+            return ValidationResult.error("Email is already registered");
         }
 
         return ValidationResult.ok();

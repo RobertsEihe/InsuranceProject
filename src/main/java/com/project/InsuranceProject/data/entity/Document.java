@@ -10,11 +10,12 @@ public class Document {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long document_id;
 
-    @Column(nullable = false)
+    @Lob
+    @Column(nullable = true)
     private String document;
 
     @ManyToOne
-    @JoinColumn(name = "policy_id", nullable = false)
+    @JoinColumn(name = "policy_id", nullable = true)
     private Policy policy;
 
     public Document() {}

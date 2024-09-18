@@ -42,6 +42,7 @@ public class PolicyService {
 	@Transactional
 	public void approvePolicy(Policy policy) {
 		policy.setUrStatus("APPROVED");
+		policy.setStatus("P");
 		policyRepository.save(policy);
 	}
 

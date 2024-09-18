@@ -1,11 +1,12 @@
 package com.project.InsuranceProject.views.customer;
 import com.project.InsuranceProject.data.entity.Policy;
+import com.project.InsuranceProject.data.services.pdf.PDFService;
 import com.project.InsuranceProject.data.services.PolicyRetrieveService;
+import com.project.InsuranceProject.data.services.pdf.SavePDF;
 import com.project.InsuranceProject.security.Roles;
 import com.project.InsuranceProject.views.MainLayout;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
@@ -35,10 +36,14 @@ public class CustomerView extends VerticalLayout {
 
     private final Grid<Policy> policyGrid = new Grid<>(Policy.class);
     private final PolicyRetrieveService policyRetrieveService;
+    private final SavePDF savePDF;
+    private final PDFService pdfService;
 
     @Autowired
-    public CustomerView(PolicyRetrieveService policyRetrieveService) {
+    public CustomerView(PolicyRetrieveService policyRetrieveService, SavePDF savePDF, PDFService pdfService) {
         this.policyRetrieveService = policyRetrieveService;
+        this.savePDF = savePDF;
+        this.pdfService = pdfService;
         customerpolicy();
     }
     private void customerpolicy(){
@@ -76,6 +81,12 @@ public class CustomerView extends VerticalLayout {
                 approveButton.getStyle().set("color", "white");
                 HorizontalLayout actionButtons = new HorizontalLayout(approveButton);
                 return actionButtons;
+            } else if("P".equals(policy.getStatus())) {
+                Button approveButton = new Button("get PDF", click -> downloadPolicyPDF(policy));
+                approveButton.getStyle().set("background-color", "white");
+                approveButton.getStyle().set("color", "green");
+                HorizontalLayout actionButtons = new HorizontalLayout(approveButton);
+                return actionButtons;
             } else {
                 return new HorizontalLayout();
             }
@@ -98,6 +109,10 @@ public class CustomerView extends VerticalLayout {
     private void updatePolicyList(String username) {
         List<Policy> policies = policyRetrieveService.getPolicyByUsername(username);  // Fetch all policies
         policyGrid.setItems(policies);
+    }
+    private void downloadPolicyPDF(Policy policy){
+        savePDF.savePDFtoFile(policy);
+        Notification.show("File downloaded").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
     }
 }
 

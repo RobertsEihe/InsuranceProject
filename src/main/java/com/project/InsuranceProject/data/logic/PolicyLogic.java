@@ -1,13 +1,9 @@
 package com.project.InsuranceProject.data.logic;
 
-import com.project.InsuranceProject.data.entity.Policy;
-import com.project.InsuranceProject.data.entity.Policy_risk;
-import com.project.InsuranceProject.data.entity.Risk;
-import com.project.InsuranceProject.data.entity.Users;
+import com.project.InsuranceProject.data.entity.*;
 import com.project.InsuranceProject.data.repositories.RiskRepository;
-import com.project.InsuranceProject.data.services.PolicyRiskService;
-import com.project.InsuranceProject.data.services.PolicyService;
-import com.project.InsuranceProject.data.services.UserService;
+import com.project.InsuranceProject.data.services.*;
+import com.project.InsuranceProject.data.services.pdf.PDFService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -25,7 +21,11 @@ public class PolicyLogic {
     private final IncidentScoreService incidentScoreService;
     private final FraudCheckService fraudCheckService;
 
-    public PolicyLogic(UserService userService, PolicyService policyService, PolicyRiskService policyRiskService, RiskRepository riskRepository, LoyaltyService loyaltyService, IncidentScoreService incidentScoreService, FraudCheckService fraudCheckService) {
+    private final PDFService pdfService;
+
+    public PolicyLogic(UserService userService, PolicyService policyService, PolicyRiskService policyRiskService,
+                       RiskRepository riskRepository, LoyaltyService loyaltyService, IncidentScoreService incidentScoreService,
+                       FraudCheckService fraudCheckService, PDFService pdfService, PDFService pdfService1) {
         this.userService = userService;
         this.policyService = policyService;
         this.policyRiskService = policyRiskService;
@@ -33,6 +33,7 @@ public class PolicyLogic {
         this.loyaltyService = loyaltyService;
         this.incidentScoreService = incidentScoreService;
         this.fraudCheckService = fraudCheckService;
+        this.pdfService = pdfService1;
     }
 
     @Transactional
@@ -48,17 +49,6 @@ public class PolicyLogic {
                 userService.updateUser(customer);
             }
         }
-// I can't decide if I need to check again If the customer once has been fraudulent
-//            boolean possibleFraud = fraudCheckService.fraudCheck(customer.getId());
-//        System.out.println("possibleFraud:");
-//        System.out.println(possibleFraud);
-//            if (possibleFraud) {
-//                customer.setFraudStatus(true);
-//                userService.updateUser(customer);
-//            } else {
-//                customer.setFraudStatus(false);
-//                userService.updateUser(customer);
-//        }
 
         if (customer.getFraudStatus()) {
             policy.setStatus("UR");
@@ -66,6 +56,7 @@ public class PolicyLogic {
             policy.setStatus("P");
         }
         policyService.savePolicy(policy);
+        pdfService.saveDocumentToDatabase(policy);
     }
 
     @Transactional
@@ -73,10 +64,8 @@ public class PolicyLogic {
 
         double calculatedPremium = calculatePremium(policy, customer);
         policy.setTotalPremium(calculatedPremium);
-
         policyService.savePolicy(policy);
     }
-
 
     private double calculatePremium(Policy policy, Users customer) {
         double sumInsured = policy.getSum_insured();
@@ -110,7 +99,6 @@ public class PolicyLogic {
 
         return l_totalPremium;
     }
-
 }
 
 
