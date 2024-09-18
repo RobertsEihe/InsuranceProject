@@ -74,7 +74,7 @@ public class MainLayout extends AppLayout {
         SideNav nav = new SideNav();
         nav.addItem(
                 new SideNavItem("Your Policies", "customer/policy", VaadinIcon.DASHBOARD.create()),
-                new SideNavItem("Create New Policy", "customer/createpolicy", VaadinIcon.LIST.create()),
+                new SideNavItem("Create Policy", "customer/createpolicy", VaadinIcon.LIST.create()),
                 new SideNavItem("Your Claims", "customer/claims", VaadinIcon.RECORDS.create()));
         return nav;
 
