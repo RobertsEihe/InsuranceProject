@@ -32,3 +32,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Project files ###
+/src/main/java/com/project/InsuranceProject/data/services/pdf/SavePDF.java

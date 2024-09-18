@@ -32,11 +32,13 @@ public class PolicyRetrieveService {
     @Transactional
     public void approvePolicy(Policy policy) {
         policy.setUrStatus("APPROVED");
+        policy.setStatus("P");
         policyRepository.save(policy);
     }
     @Transactional
     public void denyPolicy(Policy policy) {
         policy.setUrStatus("DENIED");
+        policy.setStatus("D");
         policyRepository.save(policy);
     }
     @Transactional
