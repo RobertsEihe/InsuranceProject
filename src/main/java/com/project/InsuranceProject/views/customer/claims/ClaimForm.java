@@ -55,6 +55,7 @@ public class ClaimForm extends Dialog {
     private void createForm() {
         policyComboBox = new ComboBox<>("Select Policy");
         riskComboBox = new ComboBox<>("Select Covered Risk");
+        riskComboBox.setEnabled(false);
         type = new TextField("Claim Type");
         dateLoss = new DatePicker("Date of Loss");
         amount = new NumberField("Amount");
@@ -82,6 +83,17 @@ public class ClaimForm extends Dialog {
         add(formLayout, buttonLayout);
 
         setWidth("400px");
+
+        policyComboBox.addValueChangeListener(event -> {
+            Policy selectedPolicy = event.getValue();
+            if (selectedPolicy != null) {
+                riskComboBox.setEnabled(true);
+                setupRiskComboBox(selectedPolicy);
+            } else {
+                riskComboBox.clear();
+                riskComboBox.setEnabled(false);
+            }
+        });
     }
 
     private void validateAndSave() {
@@ -102,7 +114,7 @@ public class ClaimForm extends Dialog {
     public void open() {
         binder.readBean(new Claim()); // Reset form with a new Claim object
         setupPolicyComboBox();
-        setupRiskComboBox();
+        //setupRiskComboBox();
         dateLoss.setValue(null);
         amount.clear();
         description.clear();
@@ -120,16 +132,14 @@ public class ClaimForm extends Dialog {
         }
     }
 
-    private void setupRiskComboBox() {
+    private void setupRiskComboBox(Policy policy) {
         String username = getCurrentUsername();
         if (username != null) {
-            //List<Policy> userPolicies = policyRetrieveService.getPolicyByUsername(username);
-            List<Policy_risk> coveredRisks = policyRiskService.getPolicyRiskByUsername(username);
+            List<Policy_risk> coveredRisks = policyRiskService.findByPolicyID(policy.getPolicy_id());
             System.out.println("part one done");
             riskComboBox.setItems(coveredRisks);
             System.out.println("part two done");
-            //riskComboBox.setItemLabelGenerator(coveredRisk -> "Risk: " + coveredRisk.getRisk().getRisk());
-            riskComboBox.setItemLabelGenerator(coveredRisk -> "Risk: " + coveredRisk.getSum_insured());
+            riskComboBox.setItemLabelGenerator(coveredRisk -> coveredRisk.getRisk().getRisk());
             System.out.println("part three done");
         } else {
             Notification.show("Error: Unable to retrieve user information");

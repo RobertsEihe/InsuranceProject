@@ -75,27 +75,20 @@ class PolicyLogicTest {
         policy.setSum_insured(100000);
         policy.setPolicy_id(1L);
 
-        // Mock the fraud check service to return false (no fraud detected)
         when(fraudCheckService.fraudCheck(customer.getId())).thenReturn(false);
 
-        // Mocking the premium calculation logic
         when(policyRiskService.findByPolicyID(policy.getPolicy_id())).thenReturn(new ArrayList<>());
         when(incidentScoreService.calculateIncidentScore(customer.getId())).thenReturn(0);
-        when(loyaltyService.calculateLoyalty(customer)).thenReturn(0);
+        when(loyaltyService.calculateLoyalty(customer)).thenReturn(1);
 
-        // Mock the behavior of PDFService
         doNothing().when(pdfService).saveDocumentToDatabase(policy);
 
-        // Call the method
         policyLogic.confirmPolicyPurchase(policy, customer);
 
-        // Verify that fraudCheckService.fraudCheck was called
         verify(fraudCheckService).fraudCheck(customer.getId());
 
-        // Assert that the policy status is set to "P" (purchased)
         assertEquals("P", policy.getStatus());
 
-        // Verify that the policy was saved
         verify(policyService).savePolicy(policy);
     }
 
@@ -110,25 +103,20 @@ class PolicyLogicTest {
         policy.setSum_insured(100000);
         policy.setPolicy_id(1L);
 
-        // Mock the fraud check service to return true (fraud detected)
         when(fraudCheckService.fraudCheck(customer.getId())).thenReturn(true);
 
-        // Mock the premium calculation logic
         when(policyRiskService.findByPolicyID(policy.getPolicy_id())).thenReturn(new ArrayList<>());
         when(incidentScoreService.calculateIncidentScore(customer.getId())).thenReturn(0);
-        when(loyaltyService.calculateLoyalty(customer)).thenReturn(0);
+        when(loyaltyService.calculateLoyalty(customer)).thenReturn(1);
 
-        // Call the method
         policyLogic.confirmPolicyPurchase(policy, customer);
 
-        // Verify that fraudCheckService.fraudCheck was called
         verify(fraudCheckService).fraudCheck(customer.getId());
 
-        // Assert that the customer's fraud status was updated and policy status is "UR" (under review)
         assertTrue(customer.getFraudStatus());
         assertEquals("UR", policy.getStatus());
 
-        // Verify that the customer and policy were saved
+        // Verify that the customer and policy were saved(not saved for real)
         verify(userService).updateUser(customer);
         verify(policyService).savePolicy(policy);
     }
@@ -140,32 +128,27 @@ class PolicyLogicTest {
 
         Policy policy = new Policy();
         policy.setDuration(2);
-        policy.setSum_insured(100000);
+        policy.setSum_insured(10000);
         policy.setPolicy_id(1L);
 
         List<Policy_risk> policyRisks = new ArrayList<>();
         Policy_risk policyRisk = new Policy_risk();
         Risk risk = new Risk();
         risk.setRisk_id(1L);
-        risk.setRate(0.05);  // 5% risk rate
+        risk.setRate(0.01);  // risk rate for Crash risk
         policyRisk.setRisk(risk);
         policyRisks.add(policyRisk);
 
-        // Mock the policy risks and risk repository
         when(policyRiskService.findByPolicyID(policy.getPolicy_id())).thenReturn(policyRisks);
         when(riskRepository.findById(1L)).thenReturn(Optional.of(risk));
 
-        // Mock the loyalty and incident score services
-        when(loyaltyService.calculateLoyalty(customer)).thenReturn(1); // 5% discount
+        when(loyaltyService.calculateLoyalty(customer)).thenReturn(1);
         when(incidentScoreService.calculateIncidentScore(customer.getId())).thenReturn(2); // 20% incident score
 
-        // Call the method
         policyLogic.calculatePolicyPremium(policy, customer);
 
-        // Assert that the premium is calculated correctly
-        assertEquals(11500.0, policy.getTotalPremium(), 0.01); // Expected premium after all calculations
+        assertEquals(230.0, Math.round(policy.getTotalPremium()), 0.01);
 
-        // Verify that the policy was saved
         verify(policyService).savePolicy(policy);
     }
 

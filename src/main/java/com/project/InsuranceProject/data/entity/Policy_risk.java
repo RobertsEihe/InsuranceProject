@@ -15,7 +15,7 @@ public class Policy_risk {
     @JoinColumn(name = "policy_id")
     private Policy policy;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "risk_id")
     private Risk risk;
 
