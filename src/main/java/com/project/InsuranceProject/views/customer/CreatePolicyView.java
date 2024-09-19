@@ -126,7 +126,7 @@ public class CreatePolicyView extends VerticalLayout {
         });
         confirmPolicyButton.setDisableOnClick(true);
         confirmPolicyButton.addClickListener(e -> {
-            // or here I should put policy Purchased. ??
+           confirmPolicyButton.setDisableOnClick(true);
         });
     }
 
@@ -282,28 +282,6 @@ public class CreatePolicyView extends VerticalLayout {
         separator.setHeight("2px");
         separator.setWidth("100%");
         separator.getStyle().set("background-color", "black");
-        /*TextField licenseNumberField = new TextField("Driver's License Number");
-        DatePicker issueDateField = new DatePicker("Issue Date");
-        DatePicker expireDateField = new DatePicker("Expire Date");
-
-        TextField carMakeField = new TextField("Car Make");
-        TextField carModelField = new TextField("Car Model");
-        TextField carYearField = new TextField("Year");
-        TextField carOdometerField = new TextField("Odometer Reading");
-        TextField marketValueField = new TextField("Current Market Value");
-
-        CheckboxGroup<String> riskCheckboxGroup = new CheckboxGroup<>();
-        riskCheckboxGroup.setLabel("Select Risks to Cover");
-        riskCheckboxGroup.setItems("Theft", "Crash", "Flood", "Vandalism");
-
-        DatePicker startDateField = new DatePicker("Start Date");
-        startDateField.setMin(LocalDate.now());
-
-        ComboBox<Integer> durationComboBox = new ComboBox<>("Duration (months)");
-        durationComboBox.setItems(1, 3, 6, 12);
-        durationComboBox.setValue(1);*/
-
-
 
         Span premiumLabel = new Span();
 
@@ -354,19 +332,25 @@ public class CreatePolicyView extends VerticalLayout {
 
 
             if(isValid) {
+                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                String username = null;
+                if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+                    username = ((UserDetails) authentication.getPrincipal()).getUsername();
+                }
+                Optional<Users> userAuth = userService.getUserByUsername(username);
+
+                Users user = userAuth.get();
+                user.setDl_num(licenseNumberField.getValue());
+                user.setDl_issue_date(issueDateField.getValue());
+                user.setDl_expire_Date(expireDateField.getValue());
+                userService.saveUser(user);
 
                 policy.setDuration(durationComboBox.getValue());
                 policy.setEnd_date(startDateField.getValue().plusMonths(durationComboBox.getValue()));
                 policy.setStart_date(startDateField.getValue());
                 policy.setSum_insured(Double.parseDouble(marketValueField.getValue()));
                 policy.setStatus("Q");
-                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-                String username = null;
-                if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
-                    username = ((UserDetails) authentication.getPrincipal()).getUsername();
-                }
-                Optional<Users> user = userService.getUserByUsername(username);
-                policy.setUsers(user.get());
+                policy.setUsers(userAuth.get());
                 Optional<Users> agent = userService.getUserByUsername(agentComboBox.getValue());
                 policy.setAgent_id(agent.get().getId());
                 policyService.savePolicy(policy);

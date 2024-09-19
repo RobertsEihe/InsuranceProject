@@ -1,5 +1,7 @@
 package com.project.InsuranceProject.views.shared;
 
+import com.project.InsuranceProject.data.entity.Users;
+import com.project.InsuranceProject.data.services.UserRetrievalService;
 import com.project.InsuranceProject.security.SecurityService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -16,13 +18,18 @@ import com.vaadin.flow.router.RouterLink;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @CssImport("./styles/shared-styles.css")
 public class AppLayoutNavbar extends AppLayout {
-    private SecurityService securityService;
+    private final SecurityService securityService;
+    private final UserRetrievalService userRetrievalService;
 
-    public AppLayoutNavbar() {
-        this.securityService = new SecurityService();
+    public AppLayoutNavbar(SecurityService securityService, UserRetrievalService userRetrievalService) {
+        this.securityService = securityService;
+        this.userRetrievalService = userRetrievalService;
         HorizontalLayout leftNav = createLeftNav();
         HorizontalLayout rightNav = createRightNav();
         HorizontalLayout header = new HorizontalLayout(leftNav, rightNav);
@@ -52,15 +59,17 @@ public class AppLayoutNavbar extends AppLayout {
     private HorizontalLayout createRightNav() {
         HorizontalLayout rightNav = new HorizontalLayout();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = null;
+        String username;
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
             username = ((UserDetails) authentication.getPrincipal()).getUsername();
-            Avatar avatarName = new Avatar(username);
+             Optional<Users> user = userRetrievalService.getUserByUsername(username);
+             String name = user.map(Users::getName).orElse(username);
+            Avatar avatarName = new Avatar(name);
             avatarName.addClassName("Avatar");
-            Span user = new Span("Welcome "+username+"!");
+            Span usernametext = new Span("Welcome "+name);
             Button logOut = new Button("Log out", e -> securityService.logout());
             logOut.addThemeVariants(ButtonVariant.LUMO_ERROR);
-            rightNav.add(avatarName,user,logOut);
+            rightNav.add(avatarName,usernametext,logOut);
         }
         else {
             Button signInButton = new Button("Sign In", e -> UI.getCurrent().navigate("login"));

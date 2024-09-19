@@ -1,5 +1,7 @@
 package com.project.InsuranceProject.views.employee;
 
+import com.project.InsuranceProject.data.entity.Users;
+import com.project.InsuranceProject.data.services.UserRetrievalService;
 import com.project.InsuranceProject.views.employee.tables.ViewRisks;
 import com.project.InsuranceProject.security.SecurityService;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -24,12 +26,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Optional;
+
 public class EmployeeLayout extends AppLayout {
 
     private H1 viewTitle;
-    private SecurityService securityService;
-    public EmployeeLayout(SecurityService securityService) {
+    private final SecurityService securityService;
+    private final UserRetrievalService userRetrievalService;
+    public EmployeeLayout(SecurityService securityService, UserRetrievalService userRetrievalService) {
         this.securityService = securityService;
+        this.userRetrievalService = userRetrievalService;
         setPrimarySection(Section.DRAWER);
         addDrawerContent();
         addHeaderContent();
@@ -42,16 +48,17 @@ public class EmployeeLayout extends AppLayout {
         viewTitle = new H1();
         viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = null;
+        String username=null;
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
-            username = ((UserDetails) authentication.getPrincipal()).getUsername();
-        }
-        Avatar avatarName = new Avatar(username);
-        avatarName.setColorIndex(2);
-        Span user = new Span("Welcome "+username+"!");
+            username = ((UserDetails) authentication.getPrincipal()).getUsername();}
+        Optional<Users> user = userRetrievalService.getUserByUsername(username);
+        String name = user.map(Users::getName).orElse(username);
+        Avatar avatarName = new Avatar(name);
+        avatarName.addClassName("Avatar");
+        Span usernametext = new Span("Welcome "+name);
         Button logOut = new Button("Log out", e -> securityService.logout());
         logOut.addThemeVariants(ButtonVariant.LUMO_ERROR);
-        HorizontalLayout headerLayout = new HorizontalLayout(toggle,viewTitle,avatarName,user,logOut);
+        HorizontalLayout headerLayout = new HorizontalLayout(toggle,viewTitle,avatarName,usernametext,logOut);
         headerLayout.setWidthFull();
         headerLayout.setPadding(true);
         headerLayout.setSpacing(true);
