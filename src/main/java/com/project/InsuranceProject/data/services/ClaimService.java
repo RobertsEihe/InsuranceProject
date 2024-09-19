@@ -21,10 +21,10 @@ public class ClaimService {
 		this.policyRepository = policyRepository;
 	}
 
-	@Transactional(readOnly = true)
-	public List<Claim> getClaimsUnderReview() {
-		return claimRepository.findByStatus("UR");
-	}
+//	@Transactional(readOnly = true)
+//	public List<Claim> getClaimsUnderReview() {
+//		return claimRepository.findByStatus("UR");
+//	}
 
 	@Transactional
 	public void approveClaim(Claim claim) {
@@ -38,11 +38,11 @@ public class ClaimService {
 		claimRepository.save(claim);
 	}
 
-	@Transactional(readOnly = true)
-	public List<Claim> getAllClaims() {
-		return claimRepository.findAll();
-	}
-	// For Customer View to retrieve its claims and ClaimForm
+//	@Transactional(readOnly = true)
+//	public List<Claim> getAllClaims() {
+//		return claimRepository.findAll();
+//	}
+//	// For Customer View to retrieve its claims and ClaimForm
 	public List<Claim> getClaimsByUsername(String username) {
 		return claimRepository.findByPolicyUsersUsername(username);
 	}
