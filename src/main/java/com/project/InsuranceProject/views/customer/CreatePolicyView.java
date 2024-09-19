@@ -103,14 +103,6 @@ public class CreatePolicyView extends VerticalLayout {
                     createVehicleForm(formLayout);
                     //datepick(formLayout);
                     //confirmPolicyButton.setVisible(true);
-                } else if (insuranceType.equals("House")) {
-                    createHouseForm(formLayout);
-                    datepick(formLayout);
-                    confirmPolicyButton.setVisible(true);
-                } else if (insuranceType.equals("Health")) {
-                    createHealthForm(formLayout);
-                    datepick(formLayout);
-                    confirmPolicyButton.setVisible(true);
                 }
                 formLayout.add(confirmPolicyButton);
 
@@ -149,7 +141,7 @@ public class CreatePolicyView extends VerticalLayout {
         });
         // Initialize the ComboBox for selecting insurance type
         insuranceTypeComboBox = new ComboBox<>("Add Insurance Type");
-        insuranceTypeComboBox.setItems("Vehicle", "House", "Health");
+        insuranceTypeComboBox.setItems("Vehicle");
         insuranceTypeComboBox.setPlaceholder("List of Insurance Type");
         insuranceTypeComboBox.setRequiredIndicatorVisible(true);
         insuranceTypeComboBox.setWidth("400px");
@@ -424,31 +416,6 @@ public class CreatePolicyView extends VerticalLayout {
         HorizontalLayout horizontalLayout = new HorizontalLayout(submitButton, cancelButton);
         formLayout.add(separator,heading,accordion,horizontalLayout,premiumLabel);
 
-    }
-
-    private void createHouseForm(VerticalLayout formLayout) {
-        TextField addressField = new TextField("Address");
-        ComboBox<String> typeComboBox = new ComboBox<>("Type");
-        typeComboBox.setItems("Apartment", "House");
-
-        TextField yearBuiltField = new TextField("Year Built");
-        TextField areaField = new TextField("Area (in sq meters)");
-        ComboBox<String> materialTypeComboBox = new ComboBox<>("Material Type");
-        materialTypeComboBox.setItems("Stone", "Wood");
-
-        CheckboxGroup<String> riskCheckboxGroup = new CheckboxGroup<>();
-        riskCheckboxGroup.setLabel("Select Risks to Cover");
-        riskCheckboxGroup.setItems("Fire", "Flood", "Wind", "Vandalism", "Damage During Construction");
-
-        formLayout.add(addressField, typeComboBox, yearBuiltField, areaField, materialTypeComboBox, riskCheckboxGroup);
-    }
-
-    private void createHealthForm(VerticalLayout formLayout) {
-        CheckboxGroup<String> riskCheckboxGroup = new CheckboxGroup<>();
-        riskCheckboxGroup.setLabel("Select Risks to Cover");
-        riskCheckboxGroup.setItems("Hospitalization", "Prescription Drugs", "Over-the-Counter (OTC) Drugs", "Sports Club Subscription", "Prescription Glasses");
-
-        formLayout.add(riskCheckboxGroup);
     }
 
     private void datepick(VerticalLayout formLayout) {

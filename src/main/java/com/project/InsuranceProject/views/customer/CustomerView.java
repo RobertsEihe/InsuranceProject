@@ -64,12 +64,16 @@ public class CustomerView extends VerticalLayout {
         policyGrid.setItems(policies);
         //policyGrid.setSelectionMode(Grid.SelectionMode.MULTI);
         policyGrid.removeAllColumns();
-        policyGrid.addColumn(Policy::getPolicy_id).setHeader("Policy ID");
+        policyGrid.addColumn(Policy::getPolicy_id).setHeader("Policy ID").setSortable(true).setAutoWidth(true);;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        policyGrid.addColumn(policy -> policy.getStart_date().format(formatter)).setHeader("Start Date");
-        policyGrid.addColumn(policy -> policy.getEnd_date().format(formatter)).setHeader("End Date");
-        policyGrid.addColumn(policy -> String.format("€ %.2f", policy.getSum_insured())).setHeader("Sum Insured");
-        policyGrid.addColumn(policy -> String.format("€ %.2f", policy.getTotalPremium())).setHeader("Total Premium");
+        policyGrid.addColumn(policy -> policy.getStart_date().format(formatter)).setHeader("Start Date").setAutoWidth(true);
+        policyGrid.addColumn(policy -> policy.getEnd_date().format(formatter)).setHeader("End Date").setAutoWidth(true);
+        policyGrid.addColumn(policy -> String.format("€ %.2f", policy.getSum_insured())).setHeader("Sum Insured").setAutoWidth(true);
+        policyGrid.addColumn(policy -> String.format("€ %.2f", policy.getTotalPremium())).setHeader("Total Premium").setAutoWidth(true);
+        policyGrid.addColumn(policy -> {
+            List<String> riskTypes = policyRetrieveService.getRiskTypesByPolicyId(policy.getPolicy_id());
+            return String.join(", ", riskTypes);
+        }).setHeader("Risk Types").setAutoWidth(true);
         policyGrid.addColumn(Policy::getStatus).setHeader("Status");
         policyGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
         String finalUsername = username;
@@ -90,7 +94,7 @@ public class CustomerView extends VerticalLayout {
             } else {
                 return new HorizontalLayout();
             }
-        });
+        }).setAutoWidth(true);
         Button Create_policy = new Button("Create New Policy", e -> {
             UI.getCurrent().navigate(CreatePolicyView.class);
         });

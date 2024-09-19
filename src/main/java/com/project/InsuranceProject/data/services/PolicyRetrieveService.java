@@ -2,7 +2,9 @@ package com.project.InsuranceProject.data.services;
 
 import com.project.InsuranceProject.data.entity.Claim;
 import com.project.InsuranceProject.data.entity.Policy;
+import com.project.InsuranceProject.data.entity.Policy_risk;
 import com.project.InsuranceProject.data.repositories.PolicyRepository;
+import com.project.InsuranceProject.data.repositories.PolicyRiskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,8 @@ public class PolicyRetrieveService {
 
     @Autowired
     private PolicyRepository policyRepository;
+    @Autowired
+    private PolicyRiskRepository policyRiskRepository;
 
     public List<Policy>getPolicyCustomer(long policy) {
         return policyRepository.findByUsers_Id(policy);
@@ -23,6 +27,10 @@ public class PolicyRetrieveService {
     }
     public Policy savePolicy(Policy policy) {
         return policyRepository.save(policy);
+    }
+
+    public List<String> getRiskTypesByPolicyId(Long policyId) {
+        return policyRiskRepository.findRiskTypesByPolicyId(policyId);
     }
 
     @Transactional(readOnly = true)
