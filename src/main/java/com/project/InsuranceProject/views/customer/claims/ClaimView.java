@@ -5,7 +5,7 @@ import com.project.InsuranceProject.data.services.ClaimService;
 import com.project.InsuranceProject.data.services.PolicyRetrieveService;
 import com.project.InsuranceProject.data.services.PolicyRiskService;
 import com.project.InsuranceProject.security.Roles;
-import com.project.InsuranceProject.views.MainLayout;
+import com.project.InsuranceProject.views.customer.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
