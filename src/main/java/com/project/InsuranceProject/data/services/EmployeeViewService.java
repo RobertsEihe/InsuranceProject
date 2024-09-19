@@ -15,7 +15,6 @@ public class EmployeeViewService {
     @Autowired private PolicyRepository policyRepository;
     @Autowired private RiskRepository riskRepository;
     @Autowired private VehicleRepository vehicleRepository;
-    @Autowired private PaymentRepository paymentRepository;
     @Autowired private UserRepository userRepository;
     @Autowired private DocumentRepository documentRepository;
     @Autowired private ClaimRepository claimRepository;

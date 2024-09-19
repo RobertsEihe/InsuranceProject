@@ -25,8 +25,6 @@ class EmployeeViewTest {
     @Mock
     private VehicleRepository vehicleRepository;
     @Mock
-    private PaymentRepository paymentRepository;
-    @Mock
     private UserRepository userRepository;
     @Mock
     private DocumentRepository documentRepository;
