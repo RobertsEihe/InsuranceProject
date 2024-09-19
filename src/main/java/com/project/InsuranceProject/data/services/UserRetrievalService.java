@@ -12,8 +12,7 @@ public class UserRetrievalService {
     @Autowired
         private UserRepository userRepository;
 
-        public Long getUserIdByUsername(String username) {
-            Optional<Users> userOptional = userRepository.findByUsername(username);
-            return userOptional.map(Users::getId).orElse(null);
+    public Optional<Users> getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }
