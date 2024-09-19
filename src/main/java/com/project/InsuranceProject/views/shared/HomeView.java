@@ -1,5 +1,6 @@
 package com.project.InsuranceProject.views.shared;
 
+import com.project.InsuranceProject.views.customer.CustomerView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -51,6 +52,7 @@ public class HomeView extends VerticalLayout {
         description.getStyle().set("font-size", "18px").set("color", "#666666");
 
         Button getStartedButton = new Button("Get Started");
+        getStartedButton.addClickListener( e -> {UI.getCurrent().navigate(CustomerView.class);});
         getStartedButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         getStartedButton.getStyle().set("background-color", "#007bff").set("color", "white");
 

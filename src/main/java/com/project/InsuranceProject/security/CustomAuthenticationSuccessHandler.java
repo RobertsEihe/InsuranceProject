@@ -26,12 +26,15 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             } else if (authority.getAuthority().equals(Roles.AGENT)) {
                 response.sendRedirect("/agent");
                 return;
-            }else if (authority.getAuthority().equals(Roles.CUSTOMER)) {
-            response.sendRedirect("/customer/policy");
-            return;
-        }
-        }
+            } else if (authority.getAuthority().equals(Roles.CUSTOMER)) {
+                response.sendRedirect("/");
+                return;
+            } else if (authority.getAuthority().equals(Roles.EMPLOYEE)) {
+                response.sendRedirect("/employee/risk-management");
+                return;
+            }
 
-        response.sendRedirect("/");
+            response.sendRedirect("/");
+        }
     }
 }
