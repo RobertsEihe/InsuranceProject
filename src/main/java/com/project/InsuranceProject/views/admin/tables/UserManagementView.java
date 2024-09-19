@@ -1,73 +1,96 @@
 package com.project.InsuranceProject.views.admin.tables;
 
-import com.project.InsuranceProject.data.entity.Agent;
-import com.project.InsuranceProject.data.entity.Customer;
-import com.project.InsuranceProject.data.services.AgentService;
+import com.project.InsuranceProject.data.entity.Users;
 import com.project.InsuranceProject.data.services.UserService;
+import com.project.InsuranceProject.security.Roles;
 import com.project.InsuranceProject.views.admin.AdminLayout;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.tabs.Tab;
-import com.vaadin.flow.component.tabs.Tabs;
+import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 
-@PermitAll
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
 @PageTitle("User Management")
 @Route(value = "admin/user-management", layout = AdminLayout.class)
+@RolesAllowed(Roles.ADMIN)
 public class UserManagementView extends VerticalLayout {
 
     private final UserService userService;
-    private final AgentService agentService;
-    private Grid<Customer> customerGrid;
-    private Grid<Agent> agentGrid;
-    private Div contentContainer;
+    private Grid<Users> userGrid;
+    private Select<String> roleFilter;
 
-    public UserManagementView(UserService userService, AgentService agentService) {
+    public UserManagementView(UserService userService) {
         this.userService = userService;
-        this.agentService = agentService;
         setSizeFull();
-
-        Tab customersTab = new Tab("Customers");
-        Tab agentsTab = new Tab("Agents");
-        Tabs tabs = new Tabs(customersTab, agentsTab);
-        tabs.addSelectedChangeListener(event -> setContent(event.getSelectedTab()));
-
-        contentContainer = new Div();
-        contentContainer.setSizeFull();
-
-        add(tabs, contentContainer);
-        setContent(customersTab);
+        createRoleFilter();
+        createUserGrid();
+        add(roleFilter, userGrid);
     }
 
-    private void setContent(Tab tab) {
-        contentContainer.removeAll();
-        if (tab.getLabel().equals("Customers")) {
-            contentContainer.add(createCustomerGrid());
-        } else if (tab.getLabel().equals("Agents")) {
-            contentContainer.add(createAgentGrid());
+    private void createRoleFilter() {
+        roleFilter = new Select<>();
+        roleFilter.setLabel("Filter by Role");
+        roleFilter.setItems("All", Roles.CUSTOMER, Roles.AGENT, Roles.EMPLOYEE, Roles.ADMIN);
+        roleFilter.setValue("All");
+        roleFilter.addValueChangeListener(event -> updateGrid());
+    }
+
+    private void createUserGrid() {
+        userGrid = new Grid<>(Users.class);
+        userGrid.setColumns("id", "username", "name", "email");
+        userGrid.addComponentColumn(user -> {
+            Select<String> roleSelect = new Select<>();
+            roleSelect.setItems(Roles.CUSTOMER, Roles.AGENT, Roles.EMPLOYEE, Roles.ADMIN);
+            roleSelect.setValue(user.getRole());
+            roleSelect.addValueChangeListener(event -> user.setRole(event.getValue()));
+            return roleSelect;
+        }).setHeader("Role").setKey("role");
+        userGrid.addColumn(user -> Roles.CUSTOMER.equals(user.getRole()) ? user.getLoyalty() : "-")
+                .setHeader("Loyalty Points")
+                .setKey("loyalty");
+
+        userGrid.addComponentColumn(user -> {
+            Checkbox fraudCheckbox = new Checkbox(user.getFraudStatus());
+            fraudCheckbox.addValueChangeListener(event -> user.setFraudStatus(event.getValue()));
+            return fraudCheckbox;
+        }).setHeader("Fraud Status").setKey("fraudStatus");
+        userGrid.addComponentColumn(user -> {
+            Button saveButton = new Button("Save");
+            saveButton.getStyle().set("background-color", "green");
+            saveButton.getStyle().set("color", "white");
+            saveButton.addClickListener(event -> {
+                try {
+                    userService.updateUser(user);
+                    Notification.show("User updated successfully", 3000, Notification.Position.MIDDLE);
+                } catch (Exception e) {
+                    Notification.show("Error updating user: " + e.getMessage(), 3000, Notification.Position.MIDDLE);
+                }
+            });
+            return saveButton;
+        }).setHeader("Actions").setKey("actions");
+        userGrid.getColumns().forEach(col -> col.setAutoWidth(true).setSortable(true));
+        updateGrid();
+    }
+    private void updateGrid() {
+        try {
+            List<Users> users;
+            String selectedRole = roleFilter.getValue();
+            if ("All".equals(selectedRole)) {
+                users = userService.getAllUsers();
+            } else {
+                users = userService.getUsersByRole(selectedRole);
+            }
+            userGrid.setItems(users);
+        } catch (Exception e) {
+            Notification.show("Error loading users: " + e.getMessage(), 3000, Notification.Position.MIDDLE);
         }
-    }
-
-    private Grid<Customer> createCustomerGrid() {
-        customerGrid = new Grid<>(Customer.class);
-        customerGrid.setColumns("customer_id", "name", "email", "phone", "address", "date_of_birth", "loyalty");
-        customerGrid.getColumns().forEach(col -> col.setAutoWidth(true));
-        customerGrid.setItems(userService.getAllCustomers());
-        return customerGrid;
-    }
-
-    private Grid<Agent> createAgentGrid() {
-        agentGrid = new Grid<>(Agent.class);
-        agentGrid.setColumns("agent_id", "name", "date_of_birth");
-        agentGrid.getColumns().forEach(col -> col.setAutoWidth(true));
-        agentGrid.setItems(agentService.getAllAgents());
-        agentGrid.getColumnByKey("agent_id").setHeader("ID");
-        agentGrid.getColumnByKey("name").setHeader("Name");
-        agentGrid.getColumnByKey("date_of_birth").setHeader("Date of Birth");
-
-        return agentGrid;
     }
 }

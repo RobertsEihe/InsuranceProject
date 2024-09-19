@@ -1,30 +1,40 @@
 package com.project.InsuranceProject.security;
 
-//import com.project.InsuranceProject.views.helloworld.HelloWorldView;
-
-import com.project.InsuranceProject.views.LoginView;
+import com.project.InsuranceProject.views.shared.LoginView;
 import com.vaadin.flow.spring.security.VaadinWebSecurity;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
+@EnableMethodSecurity(jsr250Enabled = true)
 @Configuration
 public class SecurityConfig extends VaadinWebSecurity {
 
+    private final CustomAuthenticationSuccessHandler successHandler;
+
+    public SecurityConfig(CustomAuthenticationSuccessHandler successHandler) {
+        this.successHandler = successHandler;
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         super.configure(http);
         setLoginView(http, LoginView.class);
+
+        http
+
+                .formLogin(formLogin ->
+                        formLogin
+                                .loginPage("/login")
+                                .successHandler(successHandler)
+                                .permitAll());
     }
 
     @Override
@@ -34,11 +44,7 @@ public class SecurityConfig extends VaadinWebSecurity {
     }
 
     @Bean
-    //@Override
-    protected UserDetailsService userDetailsService() {
-        return new InMemoryUserDetailsManager(User.withUsername("user")
-                .password("{noop}userpass")
-                .roles("USER")
-                .build());
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

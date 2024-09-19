@@ -2,6 +2,7 @@ package com.project.InsuranceProject.data.entity;
 
 import jakarta.persistence.*;
 import java.util.List;
+import java.util.SimpleTimeZone;
 
 @Entity
 @Table(name = "risk")
@@ -15,35 +16,24 @@ public class Risk {
     private String type;
 
     @Column(nullable = false)
-    private float risk;
+    private String risk;
 
     @Column(nullable = false)
-    private float rate;
+    private double rate;
 
-    @ManyToOne
-    @JoinColumn(name = "policy_id", nullable = false)
-    private Policy policy;
-    @OneToMany(mappedBy = "risk")
-    private List<Vehicle> vehicles;
 
-    @OneToMany(mappedBy = "risk")
-    private List<House> houses;
+    public Risk() {
+    }
 
-    @OneToOne(mappedBy = "risk")
-    private Health health;
-
-    public Risk(String type, float risk, float rate, Policy policy, List<Vehicle> vehicles, List<House> houses, Health health) {
+    public Risk(String type, String risk, double rate, List<Policy_risk> policy_risk) {
 
         this.type = type;
         this.risk = risk;
         this.rate = rate;
-        this.policy = policy;
-        this.vehicles = vehicles;
-        this.houses = houses;
-        this.health = health;
+
     }
 
-    public Risk( String type, float risk, float rate) {
+    public Risk( String type, String risk, double rate) {
         this.type = type;
         this.risk = risk;
         this.rate = rate;
@@ -65,51 +55,20 @@ public class Risk {
         this.type = type;
     }
 
-    public float getRisk() {
+    public String getRisk() {
         return risk;
     }
 
-    public void setRisk(float risk) {
+    public void setRisk(String risk) {
         this.risk = risk;
     }
 
-    public float getRate() {
+    public double getRate() {
         return rate;
     }
 
-    public void setRate(float rate) {
+    public void setRate(double rate) {
         this.rate = rate;
     }
 
-    public Policy getPolicy() {
-        return policy;
-    }
-
-    public void setPolicy(Policy policy) {
-        this.policy = policy;
-    }
-
-    public List<Vehicle> getVehicles() {
-        return vehicles;
-    }
-
-    public void setVehicles(List<Vehicle> vehicles) {
-        this.vehicles = vehicles;
-    }
-
-    public List<House> getHouses() {
-        return houses;
-    }
-
-    public void setHouses(List<House> houses) {
-        this.houses = houses;
-    }
-
-    public Health getHealth() {
-        return health;
-    }
-
-    public void setHealth(Health health) {
-        this.health = health;
-    }
 }

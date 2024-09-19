@@ -2,6 +2,9 @@ package com.project.InsuranceProject.data.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+import java.util.Set;
+
 @Entity
 @Table(name = "vehicle")
 public class Vehicle {
@@ -25,19 +28,16 @@ public class Vehicle {
     @Column(nullable = false)
     private float current_value;
 
-    @ManyToOne
-    @JoinColumn(name = "risk_id", nullable = false)
-    private Risk risk;
 
     public Vehicle() {}
 
-    public Vehicle(String make, String model, int year, int odd, float current_value, Risk risk) {
+    public Vehicle(String make, String model, int year, int odd, float current_value) {
         this.make = make;
         this.model = model;
         this.year = year;
         this.odd = odd;
         this.current_value = current_value;
-        this.risk = risk;
+
     }
 
     public Long getVehicle_id() {
@@ -88,11 +88,4 @@ public class Vehicle {
         this.current_value = current_value;
     }
 
-    public Risk getRisk() {
-        return risk;
-    }
-
-    public void setRisk(Risk risk) {
-        this.risk = risk;
-    }
 }

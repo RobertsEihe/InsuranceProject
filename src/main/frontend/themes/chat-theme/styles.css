@@ -1,0 +1,19 @@
+.mainsection {
+    background-size: cover;
+    background-image: url("http://localhost:8080/VAADIN/build/a-Bi1eQv_n.png");
+    height: 100%;
+    width: 100%;
+}
+.H1{
+    color: aquamarine;
+}
+.align-right{
+    margin-left: auto;
+    margin-right: 0;
+    padding-left: 5px;
+    text-align: center;
+}
+.Avatar{
+    background-color: #007bff;
+    color: white;
+}

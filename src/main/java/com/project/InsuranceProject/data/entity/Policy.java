@@ -12,11 +12,9 @@ public class Policy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long policy_id;
 
-    @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private LocalDate start_date;
 
-    @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private LocalDate end_date;
 
@@ -29,35 +27,69 @@ public class Policy {
     @Column(nullable = false)
     private String status;
 
-    @Column(nullable = false)
-    private String ur_status;
+    @Column(nullable = true)
+    private String urStatus;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
+    @Column(nullable = true)
+    private double sum_insured;
 
-    @ManyToOne
-    @JoinColumn(name = "agent_id", nullable = false)
-    private Agent agent;
+    @Column(nullable = true)
+    private double total_premium;
 
-    @OneToMany(mappedBy = "policy")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private Users users;
+
+    // Recovered agent_id as a simple column
+    @Column(nullable = true)
+    private Long agent_id;
+
+    @OneToMany(mappedBy = "policy", fetch = FetchType.EAGER)
     private List<Claim> claims;
 
-    @OneToMany(mappedBy = "policy")
+    @OneToMany(mappedBy = "policy", fetch = FetchType.EAGER)
     private List<Document> documents;
 
     public Policy() {}
 
-    public Policy(LocalDate start_date, LocalDate end_date, int duration, boolean aut_renewal, String status, String ur_status,
-                  Customer customer, Agent agent) {
+    public Policy(LocalDate start_date, LocalDate end_date, int duration, boolean aut_renewal, String status, String urStatus,
+                  Users users, Long agent_id) {
         this.start_date = start_date;
         this.end_date = end_date;
         this.duration = duration;
         this.aut_renewal = aut_renewal;
         this.status = status;
-        this.ur_status = ur_status;
-        this.customer = customer;
-        this.agent = agent;
+        this.urStatus = urStatus;
+        this.users = users;
+        this.agent_id = agent_id;
+    }
+
+    //here is sum_insured added
+    public Policy(LocalDate start_date, LocalDate end_date, int duration, boolean aut_renewal, String status, String urStatus, double sum_insured,
+                  Users users, Long agent_id) {
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.duration = duration;
+        this.aut_renewal = aut_renewal;
+        this.status = status;
+        this.urStatus = urStatus;
+        this.sum_insured = sum_insured;
+        this.users = users;
+        this.agent_id = agent_id;
+    }
+
+    public Policy(LocalDate start_date, LocalDate end_date, int duration, boolean aut_renewal, String status, String urStatus,
+                  double sum_insured, double total_premium, Users users, Long agent_id) {
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.duration = duration;
+        this.aut_renewal = aut_renewal;
+        this.status = status;
+        this.urStatus = urStatus;
+        this.sum_insured = sum_insured;
+        this.total_premium = total_premium;
+        this.users = users;
+        this.agent_id = agent_id;
     }
 
     public Long getPolicy_id() {
@@ -108,28 +140,28 @@ public class Policy {
         this.status = status;
     }
 
-    public String getUr_status() {
-        return ur_status;
+    public String getUrStatus() {
+        return urStatus;
     }
 
-    public void setUr_status(String ur_status) {
-        this.ur_status = ur_status;
+    public void setUrStatus(String urStatus) {
+        this.urStatus = urStatus;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public Users getUsers() {
+        return users;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setUsers(Users users) {
+        this.users = users;
     }
 
-    public Agent getAgent() {
-        return agent;
+    public Long getAgent_id() {
+        return agent_id;
     }
 
-    public void setAgent(Agent agent) {
-        this.agent = agent;
+    public void setAgent_id(Long agent_id) {
+        this.agent_id = agent_id;
     }
 
     public List<Claim> getClaims() {
@@ -146,5 +178,21 @@ public class Policy {
 
     public void setDocuments(List<Document> documents) {
         this.documents = documents;
+    }
+
+    public double getSum_insured() {
+        return sum_insured;
+    }
+
+    public void setSum_insured(double sum_insured) {
+        this.sum_insured = sum_insured;
+    }
+
+    public double getTotalPremium() {
+        return total_premium;
+    }
+
+    public void setTotalPremium(double total_premium) {
+        this.total_premium = total_premium;
     }
 }
