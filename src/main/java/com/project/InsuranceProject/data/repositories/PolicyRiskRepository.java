@@ -12,4 +12,7 @@ public interface PolicyRiskRepository extends JpaRepository<Policy_risk, Long> {
 
     @Query("SELECT p FROM Policy_risk p WHERE p.policy.id = ?1")
     List<Policy_risk> findByPolicyID(Long id);
+
+    @Query("SELECT p FROM Policy_risk p WHERE p.policy.users.username = ?1")
+    List<Policy_risk> getPolicyRiskByUsername(String username);
 }

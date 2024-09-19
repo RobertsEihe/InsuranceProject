@@ -20,4 +20,6 @@ public class PolicyRiskService {
     public List<Policy_risk> findByPolicyID(Long id) {
         return policyRiskRepository.findByPolicyID(id);
     }
+
+    public List<Policy_risk> getPolicyRiskByUsername(String username) {return policyRiskRepository.getPolicyRiskByUsername(username);}
 }

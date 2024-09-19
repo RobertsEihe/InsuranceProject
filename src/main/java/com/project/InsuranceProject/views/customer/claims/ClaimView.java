@@ -3,6 +3,7 @@ package com.project.InsuranceProject.views.customer.claims;
 import com.project.InsuranceProject.data.entity.Claim;
 import com.project.InsuranceProject.data.services.ClaimService;
 import com.project.InsuranceProject.data.services.PolicyRetrieveService;
+import com.project.InsuranceProject.data.services.PolicyRiskService;
 import com.project.InsuranceProject.security.Roles;
 import com.project.InsuranceProject.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
@@ -24,11 +25,13 @@ public class ClaimView extends VerticalLayout {
     private final ClaimService claimService;
     private final PolicyRetrieveService policyRetrieveService;
     private final ClaimForm claimForm;
+    private final PolicyRiskService policyRiskService;
 
-    public ClaimView(ClaimService claimService, PolicyRetrieveService policyRetrieveService) {
+    public ClaimView(ClaimService claimService, PolicyRetrieveService policyRetrieveService, PolicyRiskService policyRiskService) {
         this.claimService = claimService;
         this.policyRetrieveService = policyRetrieveService;
-        this.claimForm = new ClaimForm(claimService, policyRetrieveService, this::updateList);
+        this.policyRiskService = policyRiskService;
+        this.claimForm = new ClaimForm(claimService, policyRetrieveService, this::updateList, policyRiskService);
 
         addClassName("claim-view");
         setSizeFull();

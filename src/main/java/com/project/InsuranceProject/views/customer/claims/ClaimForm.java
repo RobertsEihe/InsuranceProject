@@ -2,8 +2,11 @@ package com.project.InsuranceProject.views.customer.claims;
 
 import com.project.InsuranceProject.data.entity.Claim;
 import com.project.InsuranceProject.data.entity.Policy;
+import com.project.InsuranceProject.data.entity.Policy_risk;
+import com.project.InsuranceProject.data.entity.Risk;
 import com.project.InsuranceProject.data.services.ClaimService;
 import com.project.InsuranceProject.data.services.PolicyRetrieveService;
+import com.project.InsuranceProject.data.services.PolicyRiskService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -26,8 +29,10 @@ public class ClaimForm extends Dialog {
     private final ClaimService claimService;
     private final PolicyRetrieveService policyRetrieveService;
     private final Runnable onSaveCallback;
+    private final PolicyRiskService policyRiskService;
 
     private ComboBox<Policy> policyComboBox;
+    private ComboBox<Policy_risk> riskComboBox;
     private TextField type;
     private DatePicker dateLoss;
     private NumberField amount;
@@ -35,10 +40,11 @@ public class ClaimForm extends Dialog {
 
     private Binder<Claim> binder;
 
-    public ClaimForm(ClaimService claimService, PolicyRetrieveService policyRetrieveService, Runnable onSaveCallback) {
+    public ClaimForm(ClaimService claimService, PolicyRetrieveService policyRetrieveService, Runnable onSaveCallback, PolicyRiskService policyRiskService) {
         this.claimService = claimService;
         this.policyRetrieveService = policyRetrieveService;
         this.onSaveCallback = onSaveCallback;
+        this.policyRiskService = policyRiskService;
 
         setCloseOnEsc(true);
         setCloseOnOutsideClick(false);
@@ -48,6 +54,7 @@ public class ClaimForm extends Dialog {
 
     private void createForm() {
         policyComboBox = new ComboBox<>("Select Policy");
+        riskComboBox = new ComboBox<>("Select Covered Risk");
         type = new TextField("Claim Type");
         dateLoss = new DatePicker("Date of Loss");
         amount = new NumberField("Amount");
@@ -56,7 +63,7 @@ public class ClaimForm extends Dialog {
         binder = new BeanValidationBinder<>(Claim.class);
 
         FormLayout formLayout = new FormLayout();
-        formLayout.add(policyComboBox, type, dateLoss, amount, description);
+        formLayout.add(policyComboBox, riskComboBox, type, dateLoss, amount, description);
 
         binder.forField(policyComboBox).asRequired("Policy is required").bind(Claim::getPolicy, Claim::setPolicy);
         binder.forField(amount).asRequired("Amount is required")
@@ -95,6 +102,7 @@ public class ClaimForm extends Dialog {
     public void open() {
         binder.readBean(new Claim()); // Reset form with a new Claim object
         setupPolicyComboBox();
+        setupRiskComboBox();
         dateLoss.setValue(null);
         amount.clear();
         description.clear();
@@ -107,6 +115,22 @@ public class ClaimForm extends Dialog {
             List<Policy> userPolicies = policyRetrieveService.getPolicyByUsername(username);
             policyComboBox.setItems(userPolicies);
             policyComboBox.setItemLabelGenerator(policy -> "Policy ID: " + policy.getPolicy_id());
+        } else {
+            Notification.show("Error: Unable to retrieve user information");
+        }
+    }
+
+    private void setupRiskComboBox() {
+        String username = getCurrentUsername();
+        if (username != null) {
+            //List<Policy> userPolicies = policyRetrieveService.getPolicyByUsername(username);
+            List<Policy_risk> coveredRisks = policyRiskService.getPolicyRiskByUsername(username);
+            System.out.println("part one done");
+            riskComboBox.setItems(coveredRisks);
+            System.out.println("part two done");
+            //riskComboBox.setItemLabelGenerator(coveredRisk -> "Risk: " + coveredRisk.getRisk().getRisk());
+            riskComboBox.setItemLabelGenerator(coveredRisk -> "Risk: " + coveredRisk.getSum_insured());
+            System.out.println("part three done");
         } else {
             Notification.show("Error: Unable to retrieve user information");
         }
