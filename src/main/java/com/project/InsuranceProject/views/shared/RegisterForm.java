@@ -3,13 +3,10 @@ package com.project.InsuranceProject.views.shared;
 import com.vaadin.flow.component.HasValueAndElement;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 
@@ -53,7 +50,6 @@ public class RegisterForm extends FormLayout {
 
         addFocusListeners();
 
-
         setRequiredIndicatorVisible(name, email, address, date_of_birth, password,
                 passwordConfirm);
 
@@ -77,6 +73,10 @@ public class RegisterForm extends FormLayout {
         setColspan(emailInfo, 2);
         setColspan(address, 2);
         setColspan(date_of_birth, 2);
+        setColspan(password, 2);
+        setColspan(passwordInfo, 2);
+        setColspan(passwordConfirm, 2);
+        setColspan(passwordConfirmInfo, 2);
         setColspan(errorMessageField, 2);
         setColspan(submitButton, 2);
     }
