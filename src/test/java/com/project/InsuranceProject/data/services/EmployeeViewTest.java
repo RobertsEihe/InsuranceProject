@@ -23,11 +23,7 @@ class EmployeeViewTest {
     @Mock
     private RiskRepository riskRepository;
     @Mock
-    private HouseRepository houseRepository;
-    @Mock
     private VehicleRepository vehicleRepository;
-    @Mock
-    private HealthRepository healthRepository;
     @Mock
     private PaymentRepository paymentRepository;
     @Mock

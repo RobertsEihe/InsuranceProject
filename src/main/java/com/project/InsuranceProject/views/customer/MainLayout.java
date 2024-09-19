@@ -1,4 +1,4 @@
-package com.project.InsuranceProject.views;
+package com.project.InsuranceProject.views.customer;
 
 import com.project.InsuranceProject.security.SecurityService;
 import com.vaadin.flow.component.applayout.AppLayout;

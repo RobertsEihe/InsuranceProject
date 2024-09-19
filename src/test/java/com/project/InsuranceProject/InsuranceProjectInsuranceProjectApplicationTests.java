@@ -10,4 +10,6 @@ class InsuranceProjectInsuranceProjectApplicationTests {
 	void contextLoads() {
 	}
 
+
+
 }
