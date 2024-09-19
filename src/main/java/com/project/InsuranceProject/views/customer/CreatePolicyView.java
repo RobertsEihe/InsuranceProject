@@ -311,17 +311,47 @@ public class CreatePolicyView extends VerticalLayout {
 
             // moved to class scope
             //Policy policy = new Policy();
-            boolean isValid = !licenseNumberField.isEmpty()
-                    && issueDateField.getValue() != null
-                    && expireDateField.getValue() != null
-                    && !carMakeField.isEmpty()
-                    && !carModelField.isEmpty()
-                    && !carYearField.isEmpty()
-                    && !carOdometerField.isEmpty()
-                    && !marketValueField.isEmpty()
-                    && !riskCheckboxGroup.getSelectedItems().isEmpty()
-                    && startDateField.getValue() != null
-                    && durationComboBox.getValue() != null;
+            boolean isValid = true;
+
+
+            if (licenseNumberField.isEmpty() || issueDateField.getValue() == null || expireDateField.getValue() == null ||
+                    carMakeField.isEmpty() || carModelField.isEmpty() || carYearField.isEmpty() ||
+                    carOdometerField.isEmpty() || marketValueField.isEmpty() ||
+                    riskCheckboxGroup.getSelectedItems().isEmpty() || startDateField.getValue() == null ||
+                    durationComboBox.getValue() == null){
+                       isValid = false;
+
+                   }
+            LocalDate issueDate = issueDateField.getValue();
+            LocalDate expireDate = expireDateField.getValue();
+            LocalDate startDate = startDateField.getValue();
+            // Check if the issue date is before the expire date
+            if (issueDate != null && expireDate != null && issueDate.isAfter(expireDate)) {
+                Notification notification = Notification.show(" Driving License Expire date must be after issue date.");
+                notification.setDuration(3000);
+                notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                isValid = false;
+
+            }
+
+            // Ensure the policy's start date is not before the driving license issue date
+            if (startDate != null && issueDate != null && startDate.isBefore(issueDate)) {
+                Notification notification = Notification.show("Policy start date cannot be before the driving license issue date.");
+                notification.setDuration(3000);
+                notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                isValid = false;
+
+            }
+
+            // Ensure the policy's end date is before the driving license expire date
+            if (expireDate != null && startDate != null && expireDate.isBefore(startDate.plusMonths(durationComboBox.getValue()))) {
+                Notification notification = Notification.show("Driver's license expiry date must be after the policy end date.");
+                notification.setDuration(3000);
+                notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                isValid = false;
+
+            }
+
 
             if(isValid) {
 
@@ -397,8 +427,9 @@ public class CreatePolicyView extends VerticalLayout {
 
             }
             else {
-              Notification notification = Notification.show("Please fill in all required fields.");
-              notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                Notification notification = Notification.show("Please fill in all required fields.");
+                notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                notification.setDuration(3000);
             }
         });
 
