@@ -25,7 +25,7 @@ public class PolicyLogic {
 
     public PolicyLogic(UserService userService, PolicyService policyService, PolicyRiskService policyRiskService,
                        RiskRepository riskRepository, LoyaltyService loyaltyService, IncidentScoreService incidentScoreService,
-                       FraudCheckService fraudCheckService, PDFService pdfService, PDFService pdfService1) {
+                       FraudCheckService fraudCheckService, PDFService pdfService) {
         this.userService = userService;
         this.policyService = policyService;
         this.policyRiskService = policyRiskService;
@@ -33,7 +33,7 @@ public class PolicyLogic {
         this.loyaltyService = loyaltyService;
         this.incidentScoreService = incidentScoreService;
         this.fraudCheckService = fraudCheckService;
-        this.pdfService = pdfService1;
+        this.pdfService = pdfService;
     }
 
     @Transactional
